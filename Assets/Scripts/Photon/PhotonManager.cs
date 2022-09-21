@@ -9,41 +9,63 @@ using UnityEngine.UI;
 public class PhotonManager : MonoBehaviourPunCallbacks
 {
     [Header("[ Texts ]")]
-    [SerializeField] private TextMeshProUGUI ServerStateTxt = null;
-    [SerializeField] private TextMeshProUGUI clentStateTxt = null;
-    [SerializeField] private TextMeshProUGUI clentNickNameTxt = null;
-    [SerializeField] private TextMeshProUGUI countOfRoomsTxt = null;
-    [SerializeField] private TextMeshProUGUI countOfPlayersOnMasterTxt = null;
-    [SerializeField] private TextMeshProUGUI countOfPlayersInRoomsTxt = null;
-    [SerializeField] private TextMeshProUGUI countOfPlayersTxt = null;
-    [SerializeField] private TextMeshProUGUI lobbyStateTxt = null;
-    [SerializeField] private TextMeshProUGUI roomStateTxt = null;
+    [SerializeField] private TextMeshProUGUI    ServerStateTxt              = null;     // 서버 상태 텍스트
+    [SerializeField] private TextMeshProUGUI    clentStateTxt               = null;     // 클라이언트 상태 텍스트
+    [SerializeField] private TextMeshProUGUI    clentNickNameTxt            = null;     // 클라이언트 닉네임 텍스트
+    [SerializeField] private TextMeshProUGUI    countOfRoomsTxt             = null;     // 룸 개수 텍스트
+    [SerializeField] private TextMeshProUGUI    countOfPlayersOnMasterTxt   = null;     // 마스터 서버 상에 있는 플레이어 텍스트
+    [SerializeField] private TextMeshProUGUI    countOfPlayersInRoomsTxt    = null;     // 게임 서버 상에 있는 플레이어 텍스트
+    [SerializeField] private TextMeshProUGUI    countOfPlayersTxt           = null;     // 플레이어 수 텍스트
+    [SerializeField] private TextMeshProUGUI    lobbyStateTxt               = null;     // 로비 상태 텍스트
+    [SerializeField] private TextMeshProUGUI    roomStateTxt                = null;     // 방 상태 텍스트
 
 
     [Header("[ InputFields ]")]
-    [SerializeField] private TMP_InputField roomInput = null;
-    [SerializeField] private TMP_InputField nickNameInput = null;
+    [SerializeField] private TMP_InputField     nickNameInput               = null;     // 닉네임 인풋 필드
 
     [Header("[ Panels ]")]
-    [SerializeField] private LobbyManager lobbyPanel = null;
-    [SerializeField] private RoomManager roomPanel = null;
-    [SerializeField] private GridLayoutGroup roomListPanel;
+    [SerializeField] private LobbyManager       lobbyPanel                  = null;     // 로비 패널
+    [SerializeField] private RoomManager        roomPanel                   = null;     // 룸 패널
+    [SerializeField] private GridLayoutGroup    roomListPanel               = null;     // 룸리스트 패널
 
+    [Header("[ Buttons ]")]
+    [SerializeField] private Button connectServerBtn        = null;     // 서버 연결 버튼
+    [SerializeField] private Button disConnectServerBtn     = null;     // 서버 연결 해제 버튼
+    [SerializeField] private Button joinLobbyBtn            = null;     // 로비 접속 버튼
+
+    // 채팅 매니저
+    UIChatManager chatManager = null;
+
+    // 룸리스트 UI 관리 리스트.
+    List<RoomInfo> uiRoomList = new List<RoomInfo>();
+
+    private void Awake()
+    {
+        // 게임 시작시 스크린 사이즈를 맞춰줌 16 : 9 사이즈 마지막 인자값은 전체화면 유무
+        Screen.SetResolution(1920, 1080, false);
+
+        //AutomaticallySyncScene 은 방에 있는 모든 클라이언트들을 자동적으로 마스터 클라이언트와 동일한 레벨을 로드시킨다.
+        PhotonNetwork.AutomaticallySyncScene = true;
+
+        // UIChatManager
+        chatManager = FindObjectOfType<UIChatManager>();
+    }
     void Start()
     {
-
-
         ServerStateTxt.text = "ServerState : DisConnected";
         clentNickNameTxt.text = "Client NickName : None";
+
+        connectServerBtn.onClick.AddListener(delegate { OnClickConnectToMasterServer(); });
+        disConnectServerBtn.onClick.AddListener(delegate { OnClickDiconnectToMasterServer(); });
+        joinLobbyBtn.onClick.AddListener(delegate { OnClickJoinLobby(); });
+
 
     }
 
     void Update()
     {
-
-
+        // 서버 상태 업데이트
         ServerStateTxt.text = "ServerState : " + PhotonNetwork.Server;
-
         // 클라이언트의 현재 상태를 가져온다.
         clentStateTxt.text = "Clent_State : " + PhotonNetwork.NetworkClientState.ToString();
         // 라이브 룸의 개수를 가져온다.
@@ -54,17 +76,11 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         countOfPlayersInRoomsTxt.text = "CountOfPlayersInRooms : " + PhotonNetwork.CountOfPlayersInRooms.ToString();
         // 연결되어 있는 플레이어의 총 수를 가져온다.
         countOfPlayersTxt.text = "CountOfPlayers : " + PhotonNetwork.CountOfPlayers.ToString();
-
-
-        //lobbyStateTxt.text = PhotonNetwork.InLobby ? "Lobby_State : In Lobby" : "Lobby_State : Not Lobby";
-        //roomStateTxt.text = PhotonNetwork.InRoom ? "Room_State : In Room" : "Room_State : Not Room";
-
+        // 방 상태 업데이트
+        roomStateTxt.text = "Room_State : " + PhotonNetwork.InRoom;
+        // 로비 상태 업데이트
+        lobbyStateTxt.text = "Lobby_State : " + PhotonNetwork.InLobby;
     }
-
-
-
-
-    #region Photon_Method
 
     // 마스터 서버 접속 요청.
     public void OnClickConnectToMasterServer() => PhotonNetwork.ConnectUsingSettings();
@@ -77,54 +93,17 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     {
         if (nickNameInput.text.Length == 0) return;
         PhotonNetwork.JoinLobby();
+        chatManager.ConnectedMyChat();
     }
 
-    // 방이 있으면 Join 없으면 방 생성
-    public void OnClickJoinOnCreateRoom()
-    {
-        // 룸 이름을 정하지 않았다면
-        if (roomInput.text.Length == 0)
-        {
-            Debug.Log("###### Input Room Name ");
-            return;
-        }
-        PhotonNetwork.JoinOrCreateRoom(roomInput.text, new RoomOptions { MaxPlayers = 2 }, null); // 로비에 접속하기.
 
-    }
+    // Photon Cloud Server에 접속에 성공시 불리는 콜백 함수.
+    public override void OnConnectedToMaster() =>
+        ServerStateTxt.text = "ServerState : Sucess Connected Master Server";
 
-    // 방을 나간다.
-    public void OnClickLeaveRoom()
-    {
-        if (!PhotonNetwork.InRoom)
-        {
-            Debug.Log("###### Not In Room.");
-            return;
-        }
-        PhotonNetwork.LeaveRoom();
-    }
-
-    // 로비를 나간다.
-    public void OnClickLeaveLobby()
-    {
-        if (!PhotonNetwork.InLobby)
-        {
-            Debug.Log("###### Not In Lobby.");
-            return;
-        }
-
-        PhotonNetwork.LeaveLobby();
-    }
-
-    // 방을 참가하려면, Connect 되어있거나 Lobby에 참가해있어야 한다.
-
-    public void OnClickCreateRoom()
-    {
-        // 방 생성하고, 참가.
-        // 방 이름, 최대 플레이어 수, 비공개 등을 지정 가능.
-        // 왜 CreateRoom은 임의의 방이름이 주어지고 JoinOnCreate는 주어지지 않는지?
-        PhotonNetwork.CreateRoom(roomInput.text, new RoomOptions { MaxPlayers = 2 });
-    }
-
+    // 마스터 서버 연결이 끊겼을 때 호출되는 함수.
+    public override void OnDisconnected(DisconnectCause cause) =>
+        ServerStateTxt.text = "ServerState : DisConnected Master Server  ->" + cause;
 
 
     public void SetNickName(string nickName)
@@ -139,73 +118,36 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LocalPlayer.NickName = nickName;
         clentNickNameTxt.text = "Client_NickName : " + PhotonNetwork.LocalPlayer.NickName;
     }
-    #endregion
-
-
-
-
-    #region Photon_CallBack_Functions
-
-    /// <summary>
-    /// Photon Cloud Server에 접속에 성공시 불리는 콜백 함수.
-    /// PhotonNetwork.ConnectUsingSettings()가 성공하면 불린다.
-    /// </summary>
-    public override void OnConnectedToMaster()
-    {
-        ServerStateTxt.text = "ServerState : Sucess Connected Master Server";
-
-    }
-    // 마스터 서버 연결이 끊겼을 때 호출되는 함수.
-    public override void OnDisconnected(DisconnectCause cause)
-    {
-        
-        ServerStateTxt.text = "ServerState : DisConnected Master Server " + cause;
-    }
-
-    // 로비에 접속시 호출되는 함수
+    #region Lobby
+    // 로비에 접속시 호출되는 콜백 함수
     public override void OnJoinedLobby()
     {
-        lobbyStateTxt.text = "Lobby_State : Joined Lobby";
+        chatManager.ClearText();
         lobbyPanel.gameObject.SetActive(true);
+    } 
 
-        //Debug.Log("#########RoomCnt : " + GameObject.FindGameObjectsWithTag("Room").Length);
-        //foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Room"))
-        //{
-        //    RoomsPool.Instance.Release(obj);
-        //}
-    }
+    // 로비를 나가면 호출 되는 콜백 함수
+    public override void OnLeftLobby() => lobbyPanel.gameObject.SetActive(false);
+    #endregion
 
-    // 방에 접속시 호출되는 함수
+    #region Room
+    // 방에 접속시 호출되는 콜백 함수.
     public override void OnJoinedRoom()
     {
         lobbyPanel.gameObject.SetActive(false);
         roomPanel.gameObject.SetActive(true);
-        roomStateTxt.text = "Room_State : Joined Room";
     }
 
 
-
-    // 로비를 나가면 호출 되는 함수
-    public override void OnLeftLobby()
-    {
-        lobbyPanel.gameObject.SetActive(false);
-        lobbyStateTxt.text = "Lobby_State : Left Lobby";
-    }
-
-    // 로비를 나가면 호출 되는 함수
+    // Room을 나가면 호출 되는 함수
     public override void OnLeftRoom()
     {
         roomPanel.gameObject.SetActive(false);
-        //lobbyPanel.gameObject.SetActive(true);
-       
         if (!PhotonNetwork.InLobby)
-        {
             Debug.Log("Not In Lobby");
-        }
+        
         StartCoroutine(ConnetcedLobby());
         roomStateTxt.text = "Room_State : Left Room";
-
-
     }
 
     // 룸에서 나온후 마스터서버에 접속되자마자 로비로 접속 요청을 위한 코루틴
@@ -220,58 +162,52 @@ public class PhotonManager : MonoBehaviourPunCallbacks
                 yield break;
             }
         }
-
     }
+    #endregion
 
+    #region RoomListUI
     // 계속 업데이트를 받아야 하기 때문에 계속 활성화 되어있는 매니저에서 체크한다.
     // 서버상의 룸 리스트를 받아오는 콜백 함수이다.
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
+        Debug.Log("OnRoomListUpdate In PhotonManager");
+        // 업데이트 시기 : 로비로 접속시기, 다른 클라이언트가 방을 들어갔을 시, 방이 하나 사라졋을시.
         // Room Tag를 가진 오브젝트를 찾아서 회수한다. 
         // 회수를 안하면 방을 나갈시 계속해서 남아있게 된다.
-        Debug.Log("RoomListCnt : " + roomList.Count);
+
+        // UIRoom이 업데이트 되는 시기마다 room프리펩 전체 회수
         foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Room"))
-        {
             RoomsPool.Instance.Release(obj);
-        }
-        // 룸 프리펩 생성 
+
+
+        // 룸 업데이트 콜백 함수 정보를 기준으로 UIroomList 업데이트 
         foreach (RoomInfo roomInfo in roomList)
         {
-            //RoomInfo room = roomList[i];
-            TitleRoomInList roomObj = RoomsPool.Instance.Get(transform.position).GetComponent<TitleRoomInList>();
-            Debug.Log("Clone room : " + roomObj.name);
-            roomObj.transform.SetParent(roomListPanel.transform);
-            roomObj.roomName = roomInfo.Name;
-            roomObj.roomInPlayer = roomInfo.PlayerCount.ToString();
-            roomObj.maxRoomInPlayer = roomInfo.MaxPlayers.ToString();
+            // 서버상 룸의 제거예정 상태인지를 확인하여 UIroomList에서 삭제
+            // 아니라면 룸에 포함되어있는지 확인하여 생성.
+            if (roomInfo.RemovedFromList) uiRoomList.Remove(roomInfo);
+            else if (!uiRoomList.Contains(roomInfo)) uiRoomList.Add(roomInfo);
         }
+
+        // UIroomList 수 만큼 프리펩을 새로 생성한다.
+        foreach (RoomInfo roomInfo in uiRoomList) CreateRoomUI(roomInfo);
+
     }
 
-
-
-
-
-    // 룸안에서 로비의 룸리스트 정보를 얻기 위한 스켈레톤 코드
-    public void PullRoomList()
+    // UI 프리펩 추가
+    void CreateRoomUI(RoomInfo roomInfo)
     {
-        BringRoom roomPoller = gameObject.AddComponent<BringRoom>();
-        roomPoller.OnGetRoomsInfo
-        (
-            (roomInfos) =>
-            {
-                // 룸리스트를 받고나서 작업 코드 넣기
-                Debug.Log($"현재 방 갯수 : {roomInfos.Count} \n 현재 방 이름 : {roomInfos[0].Name}");
-
-                // 마지막엔 오브젝트 제거해주기
-                Destroy(roomPoller);
-            }
-        );
+        TitleRoomInList roomObj = RoomsPool.Instance.Get(transform.position).GetComponent<TitleRoomInList>();
+        roomObj.transform.SetParent(roomListPanel.transform);
+        roomObj.roomName = roomInfo.Name;
+        roomObj.roomInPlayer = roomInfo.PlayerCount.ToString();
+        roomObj.maxRoomInPlayer = roomInfo.MaxPlayers.ToString();
     }
-
 
     #endregion
 
 
+    // 인스펙터상의 옵션 추가.
     [ContextMenu("[Info]")]
     public void RoomInfo()
     {
@@ -301,4 +237,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks
             Debug.Log("연결 되었는 지 ? : " + PhotonNetwork.IsConnected);
         }
     }
+
+
 }
