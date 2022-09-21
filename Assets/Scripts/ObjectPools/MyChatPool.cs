@@ -1,12 +1,14 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class RoomsPool : BaseObjectPool<RoomsPool, GameObject>
+public class MyChatPool : BaseObjectPool<MyChatPool, GameObject>
 {
     [SerializeField] private GameObject prefabs;
 
     private void Awake()
     {
-        prefabs = Resources.Load<GameObject>("Prefabs/PhotonLobby/RoomInLobby");
+        prefabs = Resources.Load<GameObject>("Prefabs/PhotonLobby/ChatTxt");
     }
     protected override GameObject getPrefab()
     {
