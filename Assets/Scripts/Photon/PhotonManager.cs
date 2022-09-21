@@ -59,6 +59,14 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         disConnectServerBtn.onClick.AddListener(delegate { OnClickDiconnectToMasterServer(); });
         joinLobbyBtn.onClick.AddListener(delegate { OnClickJoinLobby(); });
 
+        nickNameInput.onEndEdit.AddListener(delegate (string name) {
+            // 연결이 되어있지 않으면 리턴.
+            if (!PhotonNetwork.IsConnected) return;
+            // 인풋필드를 막는다.
+            nickNameInput.enabled = false;
+            SetNickName(name); 
+        });
+
 
     }
 
@@ -93,6 +101,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     {
         if (nickNameInput.text.Length == 0) return;
         PhotonNetwork.JoinLobby();
+        
+        // 챗 연결
         chatManager.ConnectedMyChat();
     }
 
