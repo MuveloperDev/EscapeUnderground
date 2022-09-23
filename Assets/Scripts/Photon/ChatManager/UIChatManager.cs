@@ -34,7 +34,6 @@ public class UIChatManager : MonoBehaviour, IChatClientListener
         ConnectedMyChat = ConnectedChat;
         ClearText = delegate
         {
-            Debug.Log("ClearText");
             for (int i = 0; i < content.transform.childCount; i++)
                 MyChatPool.Instance.Release(content.transform.GetChild(i).gameObject);
         };

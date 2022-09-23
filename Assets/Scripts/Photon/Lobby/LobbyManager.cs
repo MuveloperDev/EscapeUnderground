@@ -81,6 +81,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     // 방이 있으면 Join 없으면 방 생성
     public void OnClickJoinOnCreateRoom()
     {
+        if (!PhotonNetwork.InLobby) return;
         // 룸이 존재한다면 랜덤 접속
         if (PhotonNetwork.CountOfRooms > 0)
         {
@@ -104,6 +105,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     // 방 생성
     void OnClickCreateRoom()
     {
+        if(!PhotonNetwork.InLobby) return ;
         // 배팅 금액
         float cost = WalletManager.Instance.SetCost();
 

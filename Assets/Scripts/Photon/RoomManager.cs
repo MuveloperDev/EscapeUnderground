@@ -34,6 +34,7 @@ public class RoomManager : MonoBehaviour
     // 방을 떠난다.
     void onClickLeaveRoom()
     {
+        if (!PhotonNetwork.InRoom) return;
         WalletManager.Instance.GiveBackMoney();
         PhotonNetwork.LeaveRoom();
     } 
