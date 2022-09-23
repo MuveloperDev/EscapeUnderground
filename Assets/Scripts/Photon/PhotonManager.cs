@@ -198,7 +198,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     // 서버상의 룸 리스트를 받아오는 콜백 함수이다.
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        Debug.Log("OnRoomListUpdate In PhotonManager");
         // 업데이트 시기 : 로비로 접속시기, 다른 클라이언트가 방을 들어갔을 시, 방이 하나 사라졋을시.
         // Room Tag를 가진 오브젝트를 찾아서 회수한다. 
         // 회수를 안하면 방을 나갈시 계속해서 남아있게 된다.
@@ -211,6 +210,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         // 룸 업데이트 콜백 함수 정보를 기준으로 UIroomList 업데이트 
         foreach (RoomInfo roomInfo in roomList)
         {
+            Debug.Log("RoomUI Create");
             // 서버상 룸의 제거예정 상태인지를 확인하여 UIroomList에서 삭제
             // 아니라면 룸에 포함되어있는지 확인하여 생성.
             if (roomInfo.RemovedFromList) uiRoomList.Remove(roomInfo);
