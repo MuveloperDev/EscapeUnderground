@@ -17,6 +17,7 @@
 namespace Photon.Realtime
 {
     using System.Collections;
+    using System.Diagnostics.Contracts;
     using ExitGames.Client.Photon;
 
     #if SUPPORTED_UNITY || NETFX_CORE
@@ -214,7 +215,6 @@ namespace Photon.Realtime
                     return;
                 }
             }
-
             // fetch the "well known" properties of the room, if available
             if (propertiesToCache.ContainsKey(GamePropertyKey.MaxPlayers))
             {

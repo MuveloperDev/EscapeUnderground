@@ -17,7 +17,7 @@ public class RoomManager : MonoBehaviour
     [SerializeField] private Button leaveRoomBtn = null;
     [SerializeField] private Button gameStartBtn = null;
 
-
+    
     private void OnEnable()
     {
         roomTitleTxt.text = PhotonNetwork.CurrentRoom.Name;
@@ -32,7 +32,11 @@ public class RoomManager : MonoBehaviour
     }
 
     // 방을 떠난다.
-    void onClickLeaveRoom() => PhotonNetwork.LeaveRoom();
+    void onClickLeaveRoom()
+    {
+        WalletManager.Instance.GiveBackMoney();
+        PhotonNetwork.LeaveRoom();
+    } 
 
     // 게임씬으로 이동한다.
     void OnClickLoadGameScene()
