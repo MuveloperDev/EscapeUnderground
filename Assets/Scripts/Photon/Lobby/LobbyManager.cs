@@ -3,16 +3,18 @@ using UnityEngine.UI;
 using TMPro;
 using Photon.Pun;
 using Photon.Realtime;
+using System;
+using ExitGames.Client.Photon;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
 
     [Header("[ Panels ]")]
-    [SerializeField] private Image createRoomPanel  = null;
-    [SerializeField] private Image findRoomPanel    = null;
+    [SerializeField] private Image createRoomPanel = null;
+    [SerializeField] private Image findRoomPanel = null;
 
     [Header("[ InputFields ]")]
-    [SerializeField] private TMP_InputField roomNameInputField      = null;
+    [SerializeField] private TMP_InputField roomNameInputField = null;
     [SerializeField] private TMP_InputField findRoomNameInputField = null;
 
     [Header("[ ScrollView ]")]
@@ -22,13 +24,14 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     [SerializeField] private TextMeshProUGUI cntPlayers;
 
     [Header("[ Buttons ]")]
-    [SerializeField] private Button openCreateRoomBtn   = null;     // 방 생성패널 열기 버튼
-    [SerializeField] private Button CreateRoomBtn       = null;     // 방 생성패널 열기 버튼
+    [SerializeField] private Button openCreateRoomBtn = null;     // 방 생성패널 열기 버튼
+    [SerializeField] private Button CreateRoomBtn = null;     // 방 생성패널 열기 버튼
     [SerializeField] private Button joinOrCreateRoomBtn = null;     // 방 접속 혹은 생성 버튼
-    [SerializeField] private Button leaveLobbyBtn       = null;     // 로비 접속 해제 버튼
-    [SerializeField] private Button findEnterRoomBtn    = null;     // 방 찾기 버튼
-    [SerializeField] private Button returnLobbyInCRBtn  = null;     // 방 찾기 버튼
+    [SerializeField] private Button leaveLobbyBtn = null;     // 로비 접속 해제 버튼
+    [SerializeField] private Button findEnterRoomBtn = null;     // 방 찾기 버튼
+    [SerializeField] private Button returnLobbyInCRBtn = null;     // 방 찾기 버튼
 
+    MyWallet myWallet = null;   // myWallet
     private void OnEnable()
     {
         Init();
@@ -46,6 +49,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     void Init()
     {
+        myWallet = FindObjectOfType<MyWallet>();
         findRoomPanel.gameObject.SetActive(false);
         createRoomPanel.gameObject.SetActive(false);
     }
@@ -79,9 +83,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         // 룸이 존재한다면 랜덤 접속
         if (PhotonNetwork.CountOfRooms > 0)
-        { 
-            PhotonNetwork.JoinRandomRoom(); 
-            return; 
+        {
+            PhotonNetwork.JoinRandomRoom();
+            return;
         }
         OnClickActiveCreateRoomPanel();
     }
@@ -95,8 +99,35 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     // 방생성 패널 활성화.
     public void OnClickActiveCreateRoomPanel() => createRoomPanel.gameObject.SetActive(true);
+
+
     // 방 생성
-    void OnClickCreateRoom() => PhotonNetwork.CreateRoom(roomNameInputField.text, new RoomOptions { MaxPlayers = 2 });
+    void OnClickCreateRoom()
+    {
+        // 배팅 금액
+        float cost = WalletManager.Instance.SetCost();
+
+        // 코스트를 지불할 수 없다면 리턴.
+        if (myWallet.MyMoney < cost) return;
+
+        // 내가 방을 만든다면 코스트를 지불하고 방을 만든다.
+        //WalletManager.Instance.BetMoney(cost);
+
+        // 룸 옵션 설정
+        RoomOptions roomOptions = new RoomOptions();
+        roomOptions.MaxPlayers = 2;
+
+        // 룸 안에서의 프로퍼티를 정의.
+        roomOptions.CustomRoomProperties = new Hashtable() { { "Cost",  cost } };
+        // 로비로 내려줄 프로퍼티를 정해주어야 한다.
+        // 형식은 string의 배열 형태로 CustomRoomPropertiesForLobby에 담아주어야 로비에서 받아 사용이 가능하다.
+        string[] CustomPropertiesListForLobby = new string[] { "Cost"};
+        roomOptions.CustomRoomPropertiesForLobby = CustomPropertiesListForLobby;
+
+        // 재정의된 룸옵션을 룸에 담아준다.
+        PhotonNetwork.CreateRoom(roomNameInputField.text, roomOptions) ;
+    }
+
     // 방생성 패널에서 로비로
     void OnClickCloseCreateRoomPanel() => createRoomPanel.gameObject.SetActive(false);
     public void SetRoomName(string name) => roomNameInputField.text = name;

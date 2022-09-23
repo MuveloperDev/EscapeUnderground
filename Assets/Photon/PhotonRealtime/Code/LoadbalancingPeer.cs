@@ -1326,6 +1326,7 @@ namespace Photon.Realtime
 
         /// <summary>(245) Room Time To Live. How long a room stays available (and in server-memory), after the last player becomes inactive. After this time, the room gets persisted or destroyed.</summary>
         public const byte EmptyRoomTtl = (byte)245;
+
     }
 
 
@@ -1874,7 +1875,7 @@ namespace Photon.Realtime
         /// Note: for backwards compatibility null omits any check.
         /// </remarks>
         public string[] Plugins;
-
+        
         /// <summary>
         /// Tells the server to skip room events for joining and leaving players.
         /// </summary>
@@ -1921,6 +1922,7 @@ namespace Photon.Realtime
         /// </remarks>
         public bool BroadcastPropsChangeToAll { get { return this.broadcastPropsChangeToAll; } set { this.broadcastPropsChangeToAll = value; } }
         private bool broadcastPropsChangeToAll = true;
+
 
         #if SERVERSDK
         public bool CheckUserOnJoin { get; set; }

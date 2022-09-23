@@ -5,6 +5,8 @@ using Photon.Pun;
 using TMPro;
 using Photon.Realtime;
 using UnityEngine.UI;
+using ExitGames.Client.Photon;
+using UnityEngine.SceneManagement;
 
 public class PhotonManager : MonoBehaviourPunCallbacks
 {
@@ -39,19 +41,26 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     // 룸리스트 UI 관리 리스트.
     List<RoomInfo> uiRoomList = new List<RoomInfo>();
 
+    // 월렛
+    MyWallet myWallet = null;
     private void Awake()
     {
         // 게임 시작시 스크린 사이즈를 맞춰줌 16 : 9 사이즈 마지막 인자값은 전체화면 유무
-        Screen.SetResolution(1920, 1080, false);
+        Screen.SetResolution(800, 600, false);
 
         //AutomaticallySyncScene 은 방에 있는 모든 클라이언트들을 자동적으로 마스터 클라이언트와 동일한 레벨을 로드시킨다.
         PhotonNetwork.AutomaticallySyncScene = true;
 
         // UIChatManager
         chatManager = FindObjectOfType<UIChatManager>();
+
+        
+        myWallet = FindObjectOfType<MyWallet>();
     }
     void Start()
     {
+        
+        OnClickConnectToMasterServer();
         ServerStateTxt.text = "ServerState : DisConnected";
         clentNickNameTxt.text = "Client NickName : None";
 
@@ -72,6 +81,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
     void Update()
     {
+
         // 서버 상태 업데이트
         ServerStateTxt.text = "ServerState : " + PhotonNetwork.Server;
         // 클라이언트의 현재 상태를 가져온다.
@@ -108,8 +118,11 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
 
     // Photon Cloud Server에 접속에 성공시 불리는 콜백 함수.
-    public override void OnConnectedToMaster() =>
+    public override void OnConnectedToMaster() { 
         ServerStateTxt.text = "ServerState : Sucess Connected Master Server";
+        // 월렛 텍스트 업데이트
+        myWallet.moneyUpdate();
+    }
 
     // 마스터 서버 연결이 끊겼을 때 호출되는 함수.
     public override void OnDisconnected(DisconnectCause cause) =>
@@ -146,8 +159,13 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     {
         lobbyPanel.gameObject.SetActive(false);
         roomPanel.gameObject.SetActive(true);
+        WalletManager.Instance.BetMoney((float)PhotonNetwork.CurrentRoom.CustomProperties["Cost"]);
     }
-
+    public override void OnJoinRandomFailed(short returnCode, string message)
+    {
+        Debug.Log("Fuck");
+        return;
+    }
 
     // Room을 나가면 호출 되는 함수
     public override void OnLeftRoom()
@@ -212,6 +230,10 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         roomObj.roomName = roomInfo.Name;
         roomObj.roomInPlayer = roomInfo.PlayerCount.ToString();
         roomObj.maxRoomInPlayer = roomInfo.MaxPlayers.ToString();
+
+        // 커스텀 프로퍼티로 방의 값을 추가한다.
+        //roomInfo.CustomProperties.Add("cost", WalletManager.Instance.SetCost());
+        roomObj.cost = (float)roomInfo.CustomProperties["Cost"];
     }
 
     #endregion
