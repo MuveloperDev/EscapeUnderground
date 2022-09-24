@@ -9,14 +9,17 @@ public class MapSpawner : MonoBehaviourPun
     [SerializeField] private GameObject challMap = null;
     [SerializeField] int idx;
 
-    BrickListManager brickListManager1;
-    BrickListManager brickListManager2;
+    BrickListManager BrickListManager;
 
-    List<string> mapPrefabList = new List<string>() { "Map1", "Map2", "Map3" };
+    List<string> mapPrefabList = new List<string>() { "Prefabs/Map/Map1", "Prefabs/Map/Map2", "Prefabs/Map/Map3" };
     List<Vector3> offsetPos = new List<Vector3>() { new Vector3(-9.5f, -1.5f, 0) , new Vector3(-0.5f, -1.5f, 0) };
 
     // MapSelectManager에서 가져온 값으로 랜덤한 idx 설정
     private void Awake()
+    {
+        
+    }
+    private void Start()
     {
         idx = MapSelectManager.Instance.GetMapSelect();
     }
@@ -34,10 +37,10 @@ public class MapSpawner : MonoBehaviourPun
     {
         // 위치 동기화
         if (PhotonNetwork.IsMasterClient)
-            playerMap = PhotonNetwork.Instantiate(mapPrefabList[0], transform.position + offsetPos[0], Quaternion.identity);
-        else playerMap = PhotonNetwork.Instantiate(mapPrefabList[0], transform.position + offsetPos[1], Quaternion.identity);
-        brickListManager1 = playerMap.GetComponent<BrickListManager>();
-        brickListManager1.hpManager();
+            playerMap = PhotonNetwork.Instantiate(mapPrefabList[idx], transform.position + offsetPos[0], Quaternion.identity);
+        else playerMap = PhotonNetwork.Instantiate(mapPrefabList[idx], transform.position + offsetPos[1], Quaternion.identity);
+        BrickListManager = playerMap.GetComponent<BrickListManager>();
+        BrickListManager.hpManager();
         
     }
 }
