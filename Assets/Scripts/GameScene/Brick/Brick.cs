@@ -34,14 +34,12 @@ public class Brick : MonoBehaviourPun
     public void ReceiveDamage(float Damage) 
     {
         curHP -= Damage;
-        // 델리게이트에 photonView.RPC 연결
-        //uiManager.uiUpdate(textHP, curHP); // 충돌할 때 마다 체력의 UI변경
+
         uiManager.CallUpdateHpText(textHP, curHP);
-        //uiManager.CallUpdateHPSlider(curHP);
+
         if (curHP <= 0)
         {
             curHP = 0;
-
             photonView.RPC("RelaseBrick", RpcTarget.All);
         }
     }
@@ -51,7 +49,6 @@ public class Brick : MonoBehaviourPun
     void RelaseBrick()
     {
         brickListManager.listBrick.Remove(this);
-        Debug.Log(brickListManager.listBrick.Count);
         BrickPool.Instance.Release(this);
         HPTextPool.Instance.Release(textHP.gameObject);
     }

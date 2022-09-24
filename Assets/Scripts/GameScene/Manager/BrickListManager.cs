@@ -32,6 +32,13 @@ public class BrickListManager : MonoBehaviourPunCallbacks
     }
     private void Update()
     {
+        // 방에서 플레이어가 중도에 나갔을 시
+        if (PhotonNetwork.CurrentRoom.PlayerCount < 2)
+        {
+            uiManager.ShowWinText();
+            Invoke("LoadWin", 2f);
+        }
+
         if (listBrick.Count <= 0)
         {
             if (photonView.IsMine)
