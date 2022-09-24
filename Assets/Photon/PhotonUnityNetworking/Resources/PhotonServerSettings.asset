@@ -40,6 +40,16 @@ MonoBehaviour:
   - Fire
   - RespawnSpaceship
   - LoadStartScene
+  - RelaseBrick
+  - PlayerMove
+  - UpdateHPText
+  - UpdateHPSlider
+  - Hit
+  - ReceiveDamage
+  - CallUpdateHPSlider
+  - SetActiveArrow
+  - InitSlidervalue
+  - SildbarSeting
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

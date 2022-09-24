@@ -46,7 +46,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     private void Awake()
     {
         // 게임 시작시 스크린 사이즈를 맞춰줌 16 : 9 사이즈 마지막 인자값은 전체화면 유무
-        Screen.SetResolution(800, 600, false);
+        Screen.SetResolution(1920, 1080, false);
 
         //AutomaticallySyncScene 은 방에 있는 모든 클라이언트들을 자동적으로 마스터 클라이언트와 동일한 레벨을 로드시킨다.
         PhotonNetwork.AutomaticallySyncScene = true;
