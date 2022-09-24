@@ -91,6 +91,7 @@ public class BrickListManager : MonoBehaviourPunCallbacks
     [PunRPC]
     void LoadStartScene()
     {
+        if(!PhotonNetwork.InRoom) return;
         PhotonNetwork.LeaveRoom();
     }
     public override void OnLeftRoom()
