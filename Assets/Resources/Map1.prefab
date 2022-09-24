@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7283989860245017219}
   - component: {fileID: 119954299997765656}
   - component: {fileID: 8729400741076716795}
+  - component: {fileID: 8274290673828399233}
   m_Layer: 0
   m_Name: Iron Brick(Clone)
   m_TagString: Brick
@@ -128,6 +129,28 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &8274290673828399233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 119309405718017830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &948500771515757773
 GameObject:
   m_ObjectHideFlags: 0
@@ -140,6 +163,7 @@ GameObject:
   - component: {fileID: 7138982355691938940}
   - component: {fileID: 1745560176317796663}
   - component: {fileID: 4981395939633822661}
+  - component: {fileID: 5061598899109493130}
   m_Layer: 0
   m_Name: Stone Brick(Clone)
   m_TagString: Brick
@@ -256,6 +280,28 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &5061598899109493130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 948500771515757773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &1272533491833233969
 GameObject:
   m_ObjectHideFlags: 0
@@ -268,6 +314,7 @@ GameObject:
   - component: {fileID: 7935767007452382460}
   - component: {fileID: 4238289713091680042}
   - component: {fileID: 6194834641805223744}
+  - component: {fileID: 3933585390337740312}
   m_Layer: 0
   m_Name: Stone Brick(Clone)
   m_TagString: Brick
@@ -384,6 +431,28 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &3933585390337740312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1272533491833233969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &1645492893537236326
 GameObject:
   m_ObjectHideFlags: 0
@@ -703,6 +772,9 @@ GameObject:
   - component: {fileID: 1645492893885382066}
   - component: {fileID: 1645492893885382065}
   - component: {fileID: 1645492893885382064}
+  - component: {fileID: 2313287101783146281}
+  - component: {fileID: 72977938617896739}
+  - component: {fileID: 8226237855632249089}
   m_Layer: 0
   m_Name: Ball
   m_TagString: Ball
@@ -839,6 +911,62 @@ MonoBehaviour:
   attackPower: 1
   wallCount: []
   idx: 0
+--- !u!114 &2313287101783146281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1645492893885382071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 72977938617896739}
+  - {fileID: 8226237855632249089}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &72977938617896739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1645492893885382071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
+--- !u!114 &8226237855632249089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1645492893885382071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e7cb724808c322458aa4d15f5035fa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 0
+  m_TeleportEnabled: 0
+  m_TeleportIfDistanceGreaterThan: 3
 --- !u!1 &1645492893934116059
 GameObject:
   m_ObjectHideFlags: 0
@@ -925,6 +1053,8 @@ GameObject:
   - component: {fileID: 1645492894111228081}
   - component: {fileID: 3403423377610061874}
   - component: {fileID: 7934570161734516703}
+  - component: {fileID: 1148624792686963914}
+  - component: {fileID: -7010693281542719467}
   m_Layer: 0
   m_Name: Map1
   m_TagString: Untagged
@@ -966,9 +1096,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb379c447e66512428f36110d582e88d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  listBrick: []
   fullHP: 0
   fullCurHP: 0
-  sliderHpPrefab: {fileID: 1573283523906190601, guid: f4b8a10c40d2e6c439308361369e72df, type: 3}
   uiManager: {fileID: 7934570161734516703}
 --- !u!114 &7934570161734516703
 MonoBehaviour:
@@ -984,9 +1114,48 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sliHP: {fileID: 0}
   textHP: {fileID: 0}
-  gameOverPrefab: {fileID: 4324547589388070464, guid: 948214820baec234c91d3dc5a8f9a3cf, type: 3}
+  WinPrefab: {fileID: 0}
   sliderHpPrefab: {fileID: 1573283523906190601, guid: f4b8a10c40d2e6c439308361369e72df, type: 3}
   brickListManager: {fileID: 3403423377610061874}
+--- !u!114 &1148624792686963914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1645492894111228080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: -7010693281542719467}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &-7010693281542719467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1645492894111228080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1 &1645492894806223968
 GameObject:
   m_ObjectHideFlags: 0
@@ -1305,6 +1474,7 @@ GameObject:
   - component: {fileID: 5771425238021453713}
   - component: {fileID: 3798843149777240929}
   - component: {fileID: 8179858421742429076}
+  - component: {fileID: 8873729188996607007}
   m_Layer: 0
   m_Name: Soil Brick(Clone)
   m_TagString: Brick
@@ -1421,6 +1591,28 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &8873729188996607007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1813576268657903526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &2210531328817588338
 GameObject:
   m_ObjectHideFlags: 0
@@ -1433,6 +1625,7 @@ GameObject:
   - component: {fileID: 2568829080512185825}
   - component: {fileID: 3774317784883116160}
   - component: {fileID: 8610718114541484204}
+  - component: {fileID: 2223077637699486138}
   m_Layer: 0
   m_Name: Soil Brick(Clone)
   m_TagString: Brick
@@ -1549,6 +1742,28 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &2223077637699486138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2210531328817588338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &3072119978171785372
 GameObject:
   m_ObjectHideFlags: 0
@@ -1561,6 +1776,7 @@ GameObject:
   - component: {fileID: 3153046341159395834}
   - component: {fileID: 1636941774304914460}
   - component: {fileID: 1858984274203806340}
+  - component: {fileID: 53640435897989696}
   m_Layer: 0
   m_Name: Stone Brick(Clone)
   m_TagString: Brick
@@ -1677,6 +1893,28 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &53640435897989696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3072119978171785372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &3151492695503690613
 GameObject:
   m_ObjectHideFlags: 0
@@ -1689,6 +1927,7 @@ GameObject:
   - component: {fileID: 1788946835208186712}
   - component: {fileID: 484880928166954162}
   - component: {fileID: 5644151524472139902}
+  - component: {fileID: 1574880059293799305}
   m_Layer: 0
   m_Name: Stone Brick(Clone)
   m_TagString: Brick
@@ -1805,6 +2044,28 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1574880059293799305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3151492695503690613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &3500213703815343000
 GameObject:
   m_ObjectHideFlags: 0
@@ -1817,6 +2078,7 @@ GameObject:
   - component: {fileID: 2501314604712441899}
   - component: {fileID: 4520884561098324908}
   - component: {fileID: 8969609596671068748}
+  - component: {fileID: 5585588102667647986}
   m_Layer: 0
   m_Name: Soil Brick(Clone)
   m_TagString: Brick
@@ -1933,6 +2195,28 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &5585588102667647986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3500213703815343000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &3567233701035289998
 GameObject:
   m_ObjectHideFlags: 0
@@ -1945,6 +2229,7 @@ GameObject:
   - component: {fileID: 3595185936557915791}
   - component: {fileID: 8689260684535687260}
   - component: {fileID: 5264192146834961370}
+  - component: {fileID: 3618470851353024050}
   m_Layer: 0
   m_Name: Stone Brick(Clone)
   m_TagString: Brick
@@ -2061,6 +2346,28 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &3618470851353024050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3567233701035289998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &3996481857772080457
 GameObject:
   m_ObjectHideFlags: 0
@@ -2073,6 +2380,7 @@ GameObject:
   - component: {fileID: 4122923680219632699}
   - component: {fileID: 7191091447199800416}
   - component: {fileID: 8044665909555674601}
+  - component: {fileID: 5924908759138777967}
   m_Layer: 0
   m_Name: Stone Brick(Clone)
   m_TagString: Brick
@@ -2189,6 +2497,28 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &5924908759138777967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3996481857772080457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &4260570746208862820
 GameObject:
   m_ObjectHideFlags: 0
@@ -2201,6 +2531,7 @@ GameObject:
   - component: {fileID: 6768939096889357033}
   - component: {fileID: 8445476619628347516}
   - component: {fileID: 4684415820305309762}
+  - component: {fileID: 1798602127132892094}
   m_Layer: 0
   m_Name: Stone Brick(Clone)
   m_TagString: Brick
@@ -2317,6 +2648,28 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1798602127132892094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4260570746208862820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &4823997655806399590
 GameObject:
   m_ObjectHideFlags: 0
@@ -2329,6 +2682,7 @@ GameObject:
   - component: {fileID: 790505452288851895}
   - component: {fileID: 4981967625243183203}
   - component: {fileID: 4865812367186602558}
+  - component: {fileID: 899784456926990742}
   m_Layer: 0
   m_Name: Iron Brick(Clone)
   m_TagString: Brick
@@ -2445,6 +2799,28 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &899784456926990742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4823997655806399590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &4983444041505065197
 GameObject:
   m_ObjectHideFlags: 0
@@ -2457,6 +2833,7 @@ GameObject:
   - component: {fileID: 8085396125267796564}
   - component: {fileID: 2191283174598496601}
   - component: {fileID: 8304502722514604772}
+  - component: {fileID: 1127974606217878592}
   m_Layer: 0
   m_Name: Iron Brick(Clone)
   m_TagString: Brick
@@ -2573,6 +2950,28 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1127974606217878592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4983444041505065197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &5101445798944864966
 GameObject:
   m_ObjectHideFlags: 0
@@ -2585,6 +2984,7 @@ GameObject:
   - component: {fileID: 9003109269387501139}
   - component: {fileID: 1096464013689102490}
   - component: {fileID: 2925431207106016967}
+  - component: {fileID: 1184641233346026724}
   m_Layer: 0
   m_Name: Soil Brick(Clone)
   m_TagString: Brick
@@ -2701,6 +3101,28 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1184641233346026724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5101445798944864966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &6017349925654351436
 GameObject:
   m_ObjectHideFlags: 0
@@ -2713,6 +3135,7 @@ GameObject:
   - component: {fileID: 8437628696726847670}
   - component: {fileID: 7578196997123446206}
   - component: {fileID: 8551721064648085891}
+  - component: {fileID: 1330433498229882488}
   m_Layer: 0
   m_Name: Soil Brick(Clone)
   m_TagString: Brick
@@ -2829,6 +3252,28 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1330433498229882488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6017349925654351436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &6232473293973068669
 GameObject:
   m_ObjectHideFlags: 0
@@ -2841,6 +3286,7 @@ GameObject:
   - component: {fileID: 6410141870250994542}
   - component: {fileID: 2190566082040337214}
   - component: {fileID: 8759645225679853444}
+  - component: {fileID: 1534376050744193949}
   m_Layer: 0
   m_Name: Soil Brick(Clone)
   m_TagString: Brick
@@ -2957,6 +3403,28 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1534376050744193949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6232473293973068669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &6309252281300679117
 GameObject:
   m_ObjectHideFlags: 0
@@ -2969,6 +3437,7 @@ GameObject:
   - component: {fileID: 1111005361620768163}
   - component: {fileID: 7294814264411124699}
   - component: {fileID: 5769972875877313}
+  - component: {fileID: 7341544642398496079}
   m_Layer: 0
   m_Name: Stone Brick(Clone)
   m_TagString: Brick
@@ -3085,6 +3554,28 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &7341544642398496079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6309252281300679117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &6450459778354163664
 GameObject:
   m_ObjectHideFlags: 0
@@ -3097,6 +3588,7 @@ GameObject:
   - component: {fileID: 2559311957959039562}
   - component: {fileID: 6309353188102295734}
   - component: {fileID: 538385395467472362}
+  - component: {fileID: 3519026185554936287}
   m_Layer: 0
   m_Name: Stone Brick(Clone)
   m_TagString: Brick
@@ -3213,6 +3705,28 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &3519026185554936287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6450459778354163664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &6631320087692401263
 GameObject:
   m_ObjectHideFlags: 0
@@ -3225,6 +3739,7 @@ GameObject:
   - component: {fileID: 7402300453126003966}
   - component: {fileID: 9109623234527278206}
   - component: {fileID: 4903357952625742120}
+  - component: {fileID: 6697271717851676348}
   m_Layer: 0
   m_Name: Iron Brick(Clone)
   m_TagString: Brick
@@ -3341,6 +3856,28 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &6697271717851676348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6631320087692401263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &6821867961865522500
 GameObject:
   m_ObjectHideFlags: 0
@@ -3353,6 +3890,7 @@ GameObject:
   - component: {fileID: 3340741415545478547}
   - component: {fileID: 1377632165406854260}
   - component: {fileID: 5951505687017958088}
+  - component: {fileID: 6124595879094942771}
   m_Layer: 0
   m_Name: Soil Brick(Clone)
   m_TagString: Brick
@@ -3469,6 +4007,28 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &6124595879094942771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6821867961865522500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &7139555211712189238
 GameObject:
   m_ObjectHideFlags: 0
@@ -3481,6 +4041,7 @@ GameObject:
   - component: {fileID: 7160204391841797284}
   - component: {fileID: 3468171527334925262}
   - component: {fileID: 4841893953694799996}
+  - component: {fileID: 8181120235385542993}
   m_Layer: 0
   m_Name: Soil Brick(Clone)
   m_TagString: Brick
@@ -3597,6 +4158,28 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &8181120235385542993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7139555211712189238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &7199519044594017455
 GameObject:
   m_ObjectHideFlags: 0
@@ -3609,6 +4192,7 @@ GameObject:
   - component: {fileID: 7841638514271973928}
   - component: {fileID: 7183250176058197022}
   - component: {fileID: 2592484874722143944}
+  - component: {fileID: 4711018763300035620}
   m_Layer: 0
   m_Name: Iron Brick(Clone)
   m_TagString: Brick
@@ -3725,6 +4309,28 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &4711018763300035620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7199519044594017455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &7780833385373594547
 GameObject:
   m_ObjectHideFlags: 0
@@ -3737,6 +4343,7 @@ GameObject:
   - component: {fileID: 7039015684692439418}
   - component: {fileID: 5487054249006761033}
   - component: {fileID: 4692640369247188634}
+  - component: {fileID: 941196984152955154}
   m_Layer: 0
   m_Name: Soil Brick(Clone)
   m_TagString: Brick
@@ -3853,6 +4460,28 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &941196984152955154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7780833385373594547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &7916333438341294552
 GameObject:
   m_ObjectHideFlags: 0
@@ -3865,6 +4494,7 @@ GameObject:
   - component: {fileID: 5815804977015234200}
   - component: {fileID: 3171085317667180226}
   - component: {fileID: 3816999134073575627}
+  - component: {fileID: 4081592967958126009}
   m_Layer: 0
   m_Name: Soil Brick(Clone)
   m_TagString: Brick
@@ -3981,6 +4611,28 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &4081592967958126009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7916333438341294552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &8254929044823359342
 GameObject:
   m_ObjectHideFlags: 0
@@ -3993,6 +4645,7 @@ GameObject:
   - component: {fileID: 8588275972400641237}
   - component: {fileID: 973587615700107155}
   - component: {fileID: 7995599416212009974}
+  - component: {fileID: 3316796257900356809}
   m_Layer: 0
   m_Name: Iron Brick(Clone)
   m_TagString: Brick
@@ -4109,6 +4762,28 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &3316796257900356809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8254929044823359342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &8906993410169436446
 GameObject:
   m_ObjectHideFlags: 0
@@ -4121,6 +4796,7 @@ GameObject:
   - component: {fileID: 7285161696121167661}
   - component: {fileID: 4067279539078594617}
   - component: {fileID: 7404097539259335958}
+  - component: {fileID: 7830359132358497419}
   m_Layer: 0
   m_Name: Stone Brick(Clone)
   m_TagString: Brick
@@ -4237,3 +4913,25 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &7830359132358497419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8906993410169436446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0

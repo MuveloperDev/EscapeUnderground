@@ -10,6 +10,7 @@ public class GameManager : SingleTon<GameManager>
     {
         isGameOver = false;
     }
+
     // 게임 종료를 Ball에게 알려줌
     public bool GetGameOver()
     {

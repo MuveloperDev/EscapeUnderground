@@ -1,6 +1,7 @@
 using UnityEngine;
+using Photon.Pun;
 
-public class Brick : MonoBehaviour
+public class Brick : MonoBehaviourPun
 {
     [SerializeField] private float curHP = 0;  // 벽돌의 현재 체력
     [SerializeField] private float maxHP = 10;  // 설정된 벽돌의 최대 체력
@@ -17,20 +18,41 @@ public class Brick : MonoBehaviour
         curHP = maxHP;  // 시작시 현재 체력값을 벽돌의 최대 체력으로 설정
         brickListManager.AddBrick(this);
         textHP.transform.position = Camera.main.WorldToScreenPoint(new Vector2(transform.position.x, transform.position.y));  // HP Text의 위치를 카메라 기준으로 변환
-        uiManager.UpdateHPText(textHP, curHP); // 해당하는 벽돌의 체력을 UI로 출력
+        uiManager.CallUpdateHpText(textHP, curHP); // 해당하는 벽돌의 체력을 UI로 출력
+        //uiManager.CallUpdateHPSlider(curHP);
     }
+
+    public void CallReceveDamage(float damage)
+    {
+        photonView.RPC("ReceiveDamage", RpcTarget.All, damage);
+    }
+
 
     // 데미지를 받았을 때 실행되는 함수
     // 체력 1감소 체력이 0이 되었을 때 해당 오브젝트 꺼줌
-    void ReceiveDamage(float Damage) 
+    [PunRPC]
+    public void ReceiveDamage(float Damage) 
     {
         curHP -= Damage;
-        uiManager.UpdateHPText(textHP, curHP); // 충돌할 때 마다 체력의 UI변경
+        // 델리게이트에 photonView.RPC 연결
+        //uiManager.uiUpdate(textHP, curHP); // 충돌할 때 마다 체력의 UI변경
+        uiManager.CallUpdateHpText(textHP, curHP);
+        //uiManager.CallUpdateHPSlider(curHP);
         if (curHP <= 0)
         {
             curHP = 0;
-            BrickPool.Instance.Release(this);
-            HPTextPool.Instance.Release(textHP.gameObject);
+
+            photonView.RPC("RelaseBrick", RpcTarget.All);
         }
+    }
+
+    // Brick 회수 함수
+    [PunRPC]
+    void RelaseBrick()
+    {
+        brickListManager.listBrick.Remove(this);
+        Debug.Log(brickListManager.listBrick.Count);
+        BrickPool.Instance.Release(this);
+        HPTextPool.Instance.Release(textHP.gameObject);
     }
 }

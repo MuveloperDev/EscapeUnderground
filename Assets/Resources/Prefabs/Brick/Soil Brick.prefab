@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1230772659064122590}
   - component: {fileID: 1230772659064122591}
   - component: {fileID: 1230772659064122560}
+  - component: {fileID: 8200400561768322490}
   m_Layer: 0
   m_Name: Soil Brick
   m_TagString: Brick
@@ -73,7 +74,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -977568507
-  m_SortingLayer: 3
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0.7169812, g: 0.23910706, b: 0.01690993, a: 1}
@@ -100,6 +101,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   curHP: 0
   maxHP: 10
+  brickListManager: {fileID: 0}
+  uiManager: {fileID: 0}
 --- !u!61 &1230772659064122560
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -126,3 +129,25 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &8200400561768322490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1230772659064122561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0

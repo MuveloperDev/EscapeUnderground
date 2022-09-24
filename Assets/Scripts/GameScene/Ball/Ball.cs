@@ -1,6 +1,8 @@
 using UnityEngine;
+using Photon.Pun;
 
-public class Ball : MonoBehaviour
+
+public class Ball : MonoBehaviourPun
 {
     [Header("RigidBody")]
     [SerializeField] private Rigidbody2D rigid2D = null;                // 플레이어의 rigidbody2D를 담을 변수
@@ -38,11 +40,14 @@ public class Ball : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!photonView.IsMine) return;
         if (!move)
         {
+            
             PlayerMove();           // Ball의 움직임
         }
     }
+
     // Ball의 이동 및 회전
     private void PlayerMove()
     {
@@ -66,18 +71,22 @@ public class Ball : MonoBehaviour
             } 
         }
     }
+
     // Ball 발사
     void ClickMouse()
     {
         move = true;
-        arrow.gameObject.SetActive(false);
+        photonView.RPC("SetActiveArrow", RpcTarget.All, false);
+        //arrow.gameObject.SetActive(false);
         rigid2D.AddRelativeForce(Vector2.right * pushPower, ForceMode2D.Force);         // 오브젝트의 기준으로 이동, ForceMode2D.Force = 일정한 속도로 이동
     }
+
     // 충돌시 태그에 따른 조건문
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Brick")
         {
+            //photonView.RPC("Hit", RpcTarget.All, collision);
             Hit(collision); 
         }
         if (collision.gameObject.tag == "Wall")
@@ -103,13 +112,21 @@ public class Ball : MonoBehaviour
         {
             this.rigid2D.velocity = Vector2.zero;           // Ball이 지면에 도착하면 정지
             move = false;
-            arrow.gameObject.SetActive(true);
+            photonView.RPC("SetActiveArrow", RpcTarget.All, true);
+            //arrow.gameObject.SetActive(true);
         }
+    }
+
+    [PunRPC]
+    void SetActiveArrow(bool set)
+    { 
+        arrow.gameObject.SetActive(set);
     }
 
     void  Hit(Collision2D target)
     {
-        target.gameObject.SendMessage("ReceiveDamage", attackPower, SendMessageOptions.DontRequireReceiver);
-        brickListManager.SendMessage("ReceiveDamage", attackPower, SendMessageOptions.DontRequireReceiver);
+
+        brickListManager.ReceiveDamage(attackPower);
+        target.gameObject.GetComponent<Brick>().CallReceveDamage(attackPower);
     }
 }
