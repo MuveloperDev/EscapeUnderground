@@ -43,7 +43,6 @@ public class Ball : MonoBehaviourPun
         if (!photonView.IsMine) return;
         if (!move)
         {
-            
             PlayerMove();           // Ball의 움직임
         }
     }
@@ -86,7 +85,6 @@ public class Ball : MonoBehaviourPun
     {
         if (collision.gameObject.tag == "Brick")
         {
-            //photonView.RPC("Hit", RpcTarget.All, collision);
             Hit(collision); 
         }
         if (collision.gameObject.tag == "Wall")
@@ -118,10 +116,8 @@ public class Ball : MonoBehaviourPun
     }
 
     [PunRPC]
-    void SetActiveArrow(bool set)
-    { 
-        arrow.gameObject.SetActive(set);
-    }
+    void SetActiveArrow(bool set) => arrow.gameObject.SetActive(set);
+
 
     void  Hit(Collision2D target)
     {
