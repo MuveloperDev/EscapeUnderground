@@ -6,25 +6,25 @@ using Photon.Pun;
 public delegate void HpManager();
 public class BrickListManager : MonoBehaviourPunCallbacks
 {
-    
-	public List<Brick> listBrick = new List<Brick>();
-	[SerializeField] private float fullHP;
-	[SerializeField] private float fullCurHP;
+
+    public List<Brick> listBrick = new List<Brick>();
+    [SerializeField] private float fullHP;
+    [SerializeField] private float fullCurHP;
     [SerializeField] private UIManager uiManager;
-    
+
     // 최대 체력과 현재 체력을 넘겨줄 프로퍼티
     public float FullHP { get { return fullHP; } }
     public float FullCurHP { get { return fullCurHP; } }
 
     public HpManager hpManager;
-
+    public Ball myBall;
 
     private void Awake()
     {
         hpManager = MaxHP;
         //uiManager.SliderBarSetting();
         uiManager.SildbarSeting();
-        
+        myBall = FindObjectOfType<Ball>();
     }
     private void Start()
     {
@@ -47,10 +47,10 @@ public class BrickListManager : MonoBehaviourPunCallbacks
                 Invoke("LoadWin", 2f);
             }
             else
-            { 
+            {
                 uiManager.ShowLoseText();
                 Invoke("LoadLose", 2f);
-            } 
+            }
         }
 
     }
@@ -68,9 +68,9 @@ public class BrickListManager : MonoBehaviourPunCallbacks
 
     // 생성된 Brick을 List에 담아준다
     public void AddBrick(Brick brick)
-	{
-		listBrick.Add(brick);
-	}
+    {
+        listBrick.Add(brick);
+    }
     // List에 담겨진 Brick의 HP 총합계를 구한다
     public void MaxHP()
     {
@@ -81,7 +81,11 @@ public class BrickListManager : MonoBehaviourPunCallbacks
     }
     public void CallReceveDamage(float damage)
     {
-        photonView.RPC("ReceiveDamage", RpcTarget.All, damage);
+        if (photonView.IsMine)
+        {
+            photonView.RPC("ReceiveDamage", RpcTarget.All, damage);
+            Debug.Log("CallReceveDamage" + damage);
+        }
     }
 
     // 충돌시 Slider로 전달
@@ -89,7 +93,7 @@ public class BrickListManager : MonoBehaviourPunCallbacks
     public void ReceiveDamage(float Damage)
     {
         uiManager.CallUpdateHPSlider(Damage);
-
+        Debug.Log("ReceiveDamage" + Damage);
     }
 
     // 게임이 끝나면 모든 클라이언트들에게 LoadStartScene을 호출한다.
@@ -98,7 +102,7 @@ public class BrickListManager : MonoBehaviourPunCallbacks
     [PunRPC]
     void LoadStartScene()
     {
-        if(!PhotonNetwork.InRoom) return;
+        if (!PhotonNetwork.InRoom) return;
         PhotonNetwork.LeaveRoom();
     }
     public override void OnLeftRoom()

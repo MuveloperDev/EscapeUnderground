@@ -9,7 +9,7 @@ public class Ball : MonoBehaviourPun
     [SerializeField] private Transform arrow = null;                    // 자식개체인 arrow를 담을 변수
     [SerializeField] private Transform[] childrenObject = null;         // GetComponentsInChildren은 배열로 가져오기 때문에 그것을 담아줄 변수
     [SerializeField] private BrickListManager brickListManager;
-
+    
     [Header("Mouse")]
     [SerializeField] Vector3 mouseDir;                      // mouse의 position값을 저장할 변수
 
@@ -67,7 +67,7 @@ public class Ball : MonoBehaviourPun
                 {
                     ClickMouse();
                 }
-            } 
+            }
         }
     }
 
@@ -85,7 +85,7 @@ public class Ball : MonoBehaviourPun
     {
         if (collision.gameObject.tag == "Brick")
         {
-            Hit(collision); 
+            Hit(collision);
         }
         if (collision.gameObject.tag == "Wall")
         {
@@ -118,11 +118,12 @@ public class Ball : MonoBehaviourPun
     [PunRPC]
     void SetActiveArrow(bool set) => arrow.gameObject.SetActive(set);
 
-
-    void  Hit(Collision2D target)
+    void Hit(Collision2D target)
     {
-
-        brickListManager.ReceiveDamage(attackPower);
-        target.gameObject.GetComponent<Brick>().CallReceveDamage(attackPower);
+        if (photonView.IsMine)
+        {
+            brickListManager.ReceiveDamage(attackPower);
+            target.gameObject.GetComponent<Brick>().CallReceveDamage(attackPower);
+        }
     }
 }
