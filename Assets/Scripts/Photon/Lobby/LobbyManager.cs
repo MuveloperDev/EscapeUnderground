@@ -32,23 +32,28 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     [SerializeField] private Button returnLobbyInCRBtn = null;     // 방 찾기 버튼
 
     MyWallet myWallet = null;   // myWallet
+
+    // 사운드 매니저
+    StartSceneAudioManager audioManager = null;
     private void OnEnable()
     {
+        
         Init();
         //버튼 연결.
-        openCreateRoomBtn.onClick.AddListener(delegate { OnClickActiveCreateRoomPanel(); });
-        CreateRoomBtn.onClick.AddListener(delegate { OnClickCreateRoom(); });
-        joinOrCreateRoomBtn.onClick.AddListener(delegate { OnClickJoinOnCreateRoom(); });
-        leaveLobbyBtn.onClick.AddListener(delegate { OnClickLeaveLobby(); });
-        findEnterRoomBtn.onClick.AddListener(delegate { OnClickOpenFindRoomPanel(); });
-        returnLobbyInCRBtn.onClick.AddListener(delegate { OnClickCloseCreateRoomPanel(); });
+        openCreateRoomBtn.onClick.AddListener(delegate { OnClickActiveCreateRoomPanel(); audioManager.SoundPlay(audioManager.ClickSound); });
+        CreateRoomBtn.onClick.AddListener(delegate { OnClickCreateRoom(); audioManager.SoundPlay(audioManager.ClickSound); });
+        joinOrCreateRoomBtn.onClick.AddListener(delegate { OnClickJoinOnCreateRoom(); audioManager.SoundPlay(audioManager.ClickSound); });
+        leaveLobbyBtn.onClick.AddListener(delegate { OnClickLeaveLobby(); audioManager.SoundPlay(audioManager.ClickSound); });
+        findEnterRoomBtn.onClick.AddListener(delegate { OnClickOpenFindRoomPanel(); audioManager.SoundPlay(audioManager.ClickSound); });
+        returnLobbyInCRBtn.onClick.AddListener(delegate { OnClickCloseCreateRoomPanel(); audioManager.SoundPlay(audioManager.ClickSound); });
         // InputField 연결
-        roomNameInputField.onEndEdit.AddListener(delegate (string roomName) { SetRoomName(roomName); });
-        findRoomNameInputField.onEndEdit.AddListener(delegate (string roomName) { SetFindRoomName(roomName); });
+        roomNameInputField.onEndEdit.AddListener(delegate (string roomName) { SetRoomName(roomName); audioManager.SoundPlay(audioManager.ClickSound); });
+        findRoomNameInputField.onEndEdit.AddListener(delegate (string roomName) { SetFindRoomName(roomName); audioManager.SoundPlay(audioManager.ClickSound); });
     }
 
     void Init()
     {
+        audioManager = FindObjectOfType<StartSceneAudioManager>();
         myWallet = FindObjectOfType<MyWallet>();
         findRoomPanel.gameObject.SetActive(false);
         createRoomPanel.gameObject.SetActive(false);

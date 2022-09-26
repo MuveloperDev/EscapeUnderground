@@ -41,6 +41,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     // 룸리스트 UI 관리 리스트.
     List<RoomInfo> uiRoomList = new List<RoomInfo>();
 
+    // 사운드 매니저
+    StartSceneAudioManager audioManager = null;
+
     // 월렛
     MyWallet myWallet = null;
     private void Awake()
@@ -54,7 +57,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         // UIChatManager
         chatManager = FindObjectOfType<UIChatManager>();
 
-        
+        audioManager = FindObjectOfType<StartSceneAudioManager>();
+
         myWallet = FindObjectOfType<MyWallet>();
     }
     void Start()
@@ -64,16 +68,17 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         ServerStateTxt.text = "ServerState : DisConnected";
         clentNickNameTxt.text = "Client NickName : None";
 
-        connectServerBtn.onClick.AddListener(delegate { OnClickConnectToMasterServer(); });
-        disConnectServerBtn.onClick.AddListener(delegate { OnClickDiconnectToMasterServer(); });
-        joinLobbyBtn.onClick.AddListener(delegate { OnClickJoinLobby(); });
+        connectServerBtn.onClick.AddListener(delegate { OnClickConnectToMasterServer(); audioManager.SoundPlay(audioManager.ClickSound); });
+        disConnectServerBtn.onClick.AddListener(delegate { OnClickDiconnectToMasterServer(); audioManager.SoundPlay(audioManager.ClickSound); });
+        joinLobbyBtn.onClick.AddListener(delegate { OnClickJoinLobby(); audioManager.SoundPlay(audioManager.ClickSound); });
 
         nickNameInput.onEndEdit.AddListener(delegate (string name) {
             // 연결이 되어있지 않으면 리턴.
             if (!PhotonNetwork.IsConnected) return;
             // 인풋필드를 막는다.
             nickNameInput.enabled = false;
-            SetNickName(name); 
+            SetNickName(name);
+            audioManager.SoundPlay(audioManager.ClickSound);
         });
 
 

@@ -50,6 +50,7 @@ MonoBehaviour:
   - SetActiveArrow
   - InitSlidervalue
   - SildbarSeting
+  - SetEndGame
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
