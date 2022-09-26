@@ -18,17 +18,14 @@ public class BrickListManager : MonoBehaviourPunCallbacks
     public float FullCurHP { get { return fullCurHP; } }
 
     public HpManager hpManager;
-<<<<<<< Updated upstream
-    public Ball myBall;
 
-=======
+    public Ball myBall;
 
     bool endGame = false;
     bool winGame = false;
     bool loseGame = false;
     GameSceneAudioManager audioManager = null;
     Ball ball = null;
->>>>>>> Stashed changes
     private void Awake()
     {
         ball = transform.GetComponentInChildren<Ball>();
@@ -68,17 +65,14 @@ public class BrickListManager : MonoBehaviourPunCallbacks
                 EndGame(1, audioManager.LoseSound);
                 endGame = true;
             }
-<<<<<<< Updated upstream
             else
             {
                 uiManager.ShowLoseText();
                 Invoke("LoadLose", 2f);
             }
-=======
             ball.gameObject.SetActive(false);
             
             Debug.Log("EndGame IN Update : " + endGame);
->>>>>>> Stashed changes
         }
 
     }
