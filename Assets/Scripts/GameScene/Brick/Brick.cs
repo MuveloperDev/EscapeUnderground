@@ -11,7 +11,7 @@ public class Brick : MonoBehaviourPun
 
     public float MaxHP { get { return maxHP; } }
     RectTransform textHP;  // HP Text의 위치 -> 2D좌표 이기 때문에 RectTransform으로 설정
-    
+
     private void OnEnable()
     {
         textHP = HPTextPool.Instance.Gethp().GetComponent<RectTransform>();
@@ -24,16 +24,20 @@ public class Brick : MonoBehaviourPun
 
     public void CallReceveDamage(float damage)
     {
-        photonView.RPC("ReceiveDamage", RpcTarget.All, damage);
+        if (photonView.IsMine)
+        {
+            photonView.RPC("ReceiveDamage", RpcTarget.All, damage);
+            Debug.Log("(Brick)CallReceveDamage" + damage);
+        }
     }
-
 
     // 데미지를 받았을 때 실행되는 함수
     // 체력 1감소 체력이 0이 되었을 때 해당 오브젝트 꺼줌
     [PunRPC]
-    public void ReceiveDamage(float Damage) 
+    public void ReceiveDamage(float Damage)
     {
         curHP -= Damage;
+        Debug.Log("(Brick)ReceiveDamage" + Damage);
 
         uiManager.CallUpdateHpText(textHP, curHP);
 

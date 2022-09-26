@@ -24,7 +24,7 @@ public class UIManager : MonoBehaviourPun
     }
     private void Start()
     {
-        ShowWinText = delegate 
+        ShowWinText = delegate
         {
             WinText();
             GameManager.Instance.SetGameOver(true);
@@ -47,11 +47,13 @@ public class UIManager : MonoBehaviourPun
         sliderHp.transform.position = Camera.main.WorldToScreenPoint(new Vector2(transform.position.x, -5.1f));
     }
 
-    
+
     public void CallUpdateHpText(RectTransform obj, float curHP)
     {
+
         birckHPText = obj.GetComponent<Text>();
         photonView.RPC("UpdateHPText", RpcTarget.All, curHP);
+
     }
 
 
@@ -62,16 +64,21 @@ public class UIManager : MonoBehaviourPun
         birckHPText.text = curHP.ToString();
     }
     // slider의 값이 변할때마다 호출
-    
+
     public void CallUpdateHPSlider(float damage)
     {
-        photonView.RPC("UpdateHPSlider", RpcTarget.All, damage);
+        if (photonView.IsMine)
+        {
+            photonView.RPC("UpdateHPSlider", RpcTarget.All, damage);
+            Debug.Log("CallUpdateHPSlider" + damage);
+        }
     }
-
+    
     [PunRPC]
     public void UpdateHPSlider(float damage)
     {
-        sliHP.value -= damage;
+            sliHP.value -= damage;
+            Debug.Log("UpdateHPSlider" + damage);
     }
     // 게임오버시 텍스트를 출력 시키는 함수
     public void WinText()
