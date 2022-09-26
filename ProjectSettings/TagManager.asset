@@ -11,6 +11,8 @@ TagManager:
   - Place
   - Brick
   - GameOverPanel
+  - Win
+  - Lose
   layers:
   - Default
   - TransparentFX

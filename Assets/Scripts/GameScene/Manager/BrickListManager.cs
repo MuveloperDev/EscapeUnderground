@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Photon.Pun;
 using System.Collections;
+using TMPro;
 
 // brick의 HP를 전체 합산한 함수
 public delegate void HpManager();
@@ -13,88 +15,63 @@ public class BrickListManager : MonoBehaviourPunCallbacks
     [SerializeField] private float fullCurHP;
     [SerializeField] private UIManager uiManager;
 
+    
+
     // 최대 체력과 현재 체력을 넘겨줄 프로퍼티
     public float FullHP { get { return fullHP; } }
     public float FullCurHP { get { return fullCurHP; } }
 
     public HpManager hpManager;
 
-    public Ball myBall;
+    [SerializeField]  GameSceneAudioManager audioManager = null;
+    [SerializeField] LoadSceneStart loadSceneStart = null;
 
-    bool endGame = false;
-    bool winGame = false;
-    bool loseGame = false;
-    GameSceneAudioManager audioManager = null;
-    Ball ball = null;
     private void Awake()
     {
-        ball = transform.GetComponentInChildren<Ball>();
-        endGame = false;
         audioManager = FindObjectOfType<GameSceneAudioManager>();
         hpManager = MaxHP;
-        //uiManager.SliderBarSetting();
         uiManager.SildbarSeting();
-        myBall = FindObjectOfType<Ball>();
+    }
+    private void OnEnable()
+    {
+        loadSceneStart = FindObjectOfType<LoadSceneStart>();
     }
     private void Start()
     {
         fullCurHP = fullHP;
     }
+
+
+
     private void Update()
     {
-        if (endGame) return;
         // 방에서 플레이어가 중도에 나갔을 시
         if (PhotonNetwork.CurrentRoom.PlayerCount < 2)
-        {
-            Debug.Log("EndGame 0");
             EndGame(0, audioManager.WinSound);
-        }
 
-        if (listBrick.Count <= 0 && !endGame)
+
+        if (listBrick.Count <= 0)
         {
-            Debug.Log("EndGame 1" + endGame);
             if (photonView.IsMine)
-            {
-                Debug.Log("IsMine : " + endGame);
                 EndGame(0, audioManager.WinSound);
-                endGame = true;
-            }
             if (!photonView.IsMine)
-            {
-                Debug.Log("IsMine None : " + endGame);
                 EndGame(1, audioManager.LoseSound);
-                endGame = true;
-            }
-            else
-            {
-                uiManager.ShowLoseText();
-                Invoke("LoadLose", 2f);
-            }
-            ball.gameObject.SetActive(false);
-            
-            Debug.Log("EndGame IN Update : " + endGame);
         }
-
     }
 
     void EndGame(int trigger, AudioClip clip)
     {
-        if (endGame) return;
+        if (uiManager.WinTextProperty != null || uiManager.LoseTextProperty != null)
+            if (uiManager.WinTextProperty.IsActive() || uiManager.LoseTextProperty.IsActive()) return;
 
-        Debug.Log("EndGame 2" + endGame );
         audioManager.BGMSound(clip);
         if (trigger == 0)
         {
-            
-            winGame = true;
-            Debug.Log("Win" + endGame + "/" + winGame);
             uiManager.ShowWinText();
             Invoke("LoadWin", 3f);
         }
-        else if (trigger == 1)
+        if (trigger == 1)
         {
-            loseGame = true;
-            Debug.Log("lose" + endGame + "/" + loseGame);
             uiManager.ShowLoseText();
             Invoke("LoadLose", 3f);
         }
@@ -149,10 +126,5 @@ public class BrickListManager : MonoBehaviourPunCallbacks
     {
         if (!PhotonNetwork.InRoom) return;
         PhotonNetwork.LeaveRoom();
-    }
-    public override void OnLeftRoom()
-    {
-        // 자기자신을 호출하여 방에 싱크된 사람들을 호출한다.
-        PhotonNetwork.LoadLevel("StartScene");
     }
 }

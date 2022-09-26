@@ -19,7 +19,6 @@ public class Brick : MonoBehaviourPun
         brickListManager.AddBrick(this);
         textHP.transform.position = Camera.main.WorldToScreenPoint(new Vector2(transform.position.x, transform.position.y));  // HP Text의 위치를 카메라 기준으로 변환
         uiManager.CallUpdateHpText(textHP, curHP); // 해당하는 벽돌의 체력을 UI로 출력
-        //uiManager.CallUpdateHPSlider(curHP);
     }
 
     public void CallReceveDamage(float damage)
