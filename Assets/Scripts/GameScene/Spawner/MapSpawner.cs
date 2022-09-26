@@ -2,7 +2,7 @@ using Photon.Pun;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MapSpawner : MonoBehaviourPun
+public class MapSpawner : MonoBehaviourPunCallbacks
 {
     //[SerializeField] private GameObject[] mapPrefab = new GameObject[3];
     [SerializeField] private GameObject playerMap = null;
@@ -14,11 +14,7 @@ public class MapSpawner : MonoBehaviourPun
     List<string> mapPrefabList = new List<string>() { "Prefabs/Map/Map1", "Prefabs/Map/Map2", "Prefabs/Map/Map3" };
     List<Vector3> offsetPos = new List<Vector3>() { new Vector3(-9.5f, -1.5f, 0) , new Vector3(-0.5f, -1.5f, 0) };
 
-    // MapSelectManager에서 가져온 값으로 랜덤한 idx 설정
-    private void Awake()
-    {
-        
-    }
+
     private void Start()
     {
         idx = MapSelectManager.Instance.GetMapSelect();

@@ -17,13 +17,21 @@ public class UIManager : MonoBehaviourPun
     public Action ShowWinText;
     public Action ShowLoseText;
 
+    [SerializeField] TextMeshProUGUI winText = null;
+    [SerializeField] TextMeshProUGUI loseText= null;
 
+    public TextMeshProUGUI WinTextProperty { get { return winText; } }
+    public TextMeshProUGUI LoseTextProperty { get { return loseText; } }
     private void Awake()
     {
         sliHP = FindObjectOfType<Slider>();
+        // Find Text
+        winText = GameObject.FindGameObjectWithTag("Win").GetComponent<TextMeshProUGUI>();
+        loseText = GameObject.FindGameObjectWithTag("Lose").GetComponent<TextMeshProUGUI>();
     }
     private void Start()
     {
+        Invoke("SetActiveFalseText", 0.2f);
         ShowWinText = delegate
         {
             WinText();
@@ -35,6 +43,12 @@ public class UIManager : MonoBehaviourPun
             GameManager.Instance.SetGameOver(true);
         };
 
+    }
+
+    void SetActiveFalseText()
+    {
+        winText.gameObject.SetActive(false);
+        loseText.gameObject.SetActive(false);
     }
     private void Update()
     {
@@ -87,6 +101,7 @@ public class UIManager : MonoBehaviourPun
         Panel.gameObject.SetActive(true);
         TextMeshProUGUI text = Panel.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
         text.gameObject.SetActive(true);
+        //winText = text;
         //GameObject gameOver = Instantiate(WinPrefab, transform.position, Quaternion.identity, GameObject.Find("Canvas").transform);
         //gameOver.transform.position = Camera.main.WorldToScreenPoint(new Vector2(0, 0));
     }
@@ -96,6 +111,7 @@ public class UIManager : MonoBehaviourPun
         Panel.gameObject.SetActive(true);
         TextMeshProUGUI text = Panel.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
         text.gameObject.SetActive(true);
+        //loseText = text;
         //GameObject gameOver = Instantiate(WinPrefab, transform.position, Quaternion.identity, GameObject.Find("Canvas").transform);
         //gameOver.transform.position = Camera.main.WorldToScreenPoint(new Vector2(0, 0));
     }

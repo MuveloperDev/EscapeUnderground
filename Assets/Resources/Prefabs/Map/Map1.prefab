@@ -905,7 +905,6 @@ MonoBehaviour:
   - {fileID: 1645492893885382028}
   - {fileID: 1645492893828921161}
   brickListManager: {fileID: 3403423377610061874}
-  hitting: 0
   mouseDir: {x: 11.2265215, y: 11.521179, z: 0}
   pushPower: 500
   move: 0
@@ -1102,6 +1101,8 @@ MonoBehaviour:
   fullCurHP: 0
   uiManager: {fileID: 7934570161734516703}
   myBall: {fileID: 0}
+  audioManager: {fileID: 0}
+  loadSceneStart: {fileID: 0}
 --- !u!114 &7934570161734516703
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1119,6 +1120,8 @@ MonoBehaviour:
   WinPrefab: {fileID: 0}
   sliderHpPrefab: {fileID: 1573283523906190601, guid: f4b8a10c40d2e6c439308361369e72df, type: 3}
   brickListManager: {fileID: 3403423377610061874}
+  winText: {fileID: 0}
+  loseText: {fileID: 0}
 --- !u!114 &1148624792686963914
 MonoBehaviour:
   m_ObjectHideFlags: 0
