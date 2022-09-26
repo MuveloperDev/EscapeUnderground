@@ -20,8 +20,10 @@ public class Ball : MonoBehaviourPun
     [SerializeField] float[] wallCount;
     [SerializeField] int idx;
 
+    GameSceneAudioManager audioManager = null;
     private void Awake()
     {
+        audioManager = FindObjectOfType<GameSceneAudioManager>();
         rigid2D = GetComponent<Rigidbody2D>();
         childrenObject = GetComponentsInChildren<Transform>();
         if (childrenObject[1] != null) arrow = childrenObject[1];           // GetComponentsInChildren은 부모를 포함한 모든 자식개체를 불러와 배열로 다시한번 저장
@@ -83,6 +85,8 @@ public class Ball : MonoBehaviourPun
     // 충돌시 태그에 따른 조건문
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        audioManager.SoundPlay(audioManager.BoundSound);
+
         if (collision.gameObject.tag == "Brick")
         {
             Hit(collision);
