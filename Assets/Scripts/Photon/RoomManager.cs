@@ -8,10 +8,10 @@ using UnityEngine.UI;
 public class RoomManager : MonoBehaviour
 {
     [Header("( Texts )")]
-    [SerializeField] private TextMeshProUGUI masterClientNameText;          // 마스터 클라이언트 NameText
-    [SerializeField] private TextMeshProUGUI challengerClientNameText;      // 챌린저 클라이언트 NameText
-    [SerializeField] private TextMeshProUGUI cntPlayersTxt;                 // 플레이어 수 Text
-    [SerializeField] private TextMeshProUGUI roomTitleTxt;                  // 방 제목 Text
+    [SerializeField] private TextMeshProUGUI masterClientNameText = null;          // 마스터 클라이언트 NameText
+    [SerializeField] private TextMeshProUGUI challengerClientNameText = null;      // 챌린저 클라이언트 NameText
+    [SerializeField] private TextMeshProUGUI cntPlayersTxt = null;                 // 플레이어 수 Text
+    [SerializeField] private TextMeshProUGUI roomTitleTxt = null;                  // 방 제목 Text
 
     [Header("( Buttons )")]
     [SerializeField] private Button leaveRoomBtn = null;
@@ -29,6 +29,7 @@ public class RoomManager : MonoBehaviour
 
     private void Update()
     {
+        if (!PhotonNetwork.InRoom) return;
         cntPlayersTxt.text = $"[ {PhotonNetwork.CurrentRoom.Players.Count} / {PhotonNetwork.CurrentRoom.MaxPlayers} ]";
         SetRoomInfo();
     }

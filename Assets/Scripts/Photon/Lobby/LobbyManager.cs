@@ -13,6 +13,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     [Header("[ Panels ]")]
     [SerializeField] private Image createRoomPanel = null;
     [SerializeField] private Image findRoomPanel = null;
+    [SerializeField] private Image roomPanel = null;
 
     [Header("[ InputFields ]")]
     [SerializeField] private TMP_InputField roomNameInputField = null;
@@ -57,6 +58,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         myWallet = FindObjectOfType<MyWallet>();
         findRoomPanel.gameObject.SetActive(false);
         createRoomPanel.gameObject.SetActive(false);
+        roomPanel.gameObject.SetActive(false);
         nickNameText.text = "Player : " + PhotonNetwork.NickName;
     }
 
