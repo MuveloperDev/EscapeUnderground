@@ -177,7 +177,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         // 룸 업데이트 콜백 함수 정보를 기준으로 UIroomList 업데이트 
         foreach (RoomInfo roomInfo in roomList)
         {
-            Debug.Log("RoomUI Create");
             // 서버상 룸의 제거예정 상태인지를 확인하여 UIroomList에서 삭제
             // 아니라면 룸에 포함되어있는지 확인하여 생성.
             if (roomInfo.RemovedFromList) uiRoomList.Remove(roomInfo);
