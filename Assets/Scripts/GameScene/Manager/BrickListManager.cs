@@ -23,12 +23,12 @@ public class BrickListManager : MonoBehaviourPunCallbacks
 
     public HpManager hpManager;
 
-    [SerializeField]  GameSceneAudioManager audioManager = null;
+    [SerializeField] AudioManager audioManager = null;
     [SerializeField] LoadSceneStart loadSceneStart = null;
 
     private void Awake()
     {
-        audioManager = FindObjectOfType<GameSceneAudioManager>();
+        audioManager = FindObjectOfType<AudioManager>();
         hpManager = MaxHP;
         uiManager.SildbarSeting();
     }

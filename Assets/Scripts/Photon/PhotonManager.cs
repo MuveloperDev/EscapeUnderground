@@ -38,7 +38,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     List<RoomInfo> uiRoomList = new List<RoomInfo>();
 
     // 사운드 매니저
-    StartSceneAudioManager audioManager = null;
+    AudioManager audioManager = null;
 
     JsonDataController jsonDataController = null;
 
@@ -55,7 +55,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         // UIChatManager
         chatManager = FindObjectOfType<UIChatManager>();
 
-        audioManager = FindObjectOfType<StartSceneAudioManager>();
+        audioManager = FindObjectOfType<AudioManager>();
 
         myWallet = FindObjectOfType<MyWallet>();
 
