@@ -1374,11 +1374,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfe744ca016013046b268a3c5248f60d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BrickType:
-  - {fileID: 450224274346815659, guid: 660fd3ac418357a4680c367cb05e3548, type: 3}
-  - {fileID: 1230772659064122591, guid: 53df7b1dabf70f243ac2b8e7962c198a, type: 3}
-  - {fileID: 3816058997682689484, guid: f42751f52528ca44e87398ea9c60a1d1, type: 3}
-  playerBrick: {fileID: 0}
+  brickType: []
+  idx: 0
 --- !u!1 &3521606220833771037
 GameObject:
   m_ObjectHideFlags: 0

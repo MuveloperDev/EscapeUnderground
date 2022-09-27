@@ -112,11 +112,7 @@ public class BrickListManager : MonoBehaviourPunCallbacks
 
     // 충돌시 Slider로 전달
     [PunRPC]
-    public void ReceiveDamage(float Damage)
-    {
-        uiManager.CallUpdateHPSlider(Damage);
-        Debug.Log("ReceiveDamage" + Damage);
-    }
+    public void ReceiveDamage(float Damage) => uiManager.CallUpdateHPSlider(Damage);
 
     // 게임이 끝나면 모든 클라이언트들에게 LoadStartScene을 호출한다.
     // 플레이어 모두가 방을 나가게 되면 OnLeftRoom이 콜백이 되는데 

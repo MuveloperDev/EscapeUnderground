@@ -25,13 +25,14 @@ public class UIManager : MonoBehaviourPun
     private void Awake()
     {
         sliHP = FindObjectOfType<Slider>();
+
         // Find Text
         winText = GameObject.FindGameObjectWithTag("Win").GetComponent<TextMeshProUGUI>();
         loseText = GameObject.FindGameObjectWithTag("Lose").GetComponent<TextMeshProUGUI>();
     }
     private void Start()
     {
-        Invoke("SetActiveFalseText", 0.2f);
+        Invoke("SetActiveFalseText", 0.5f);
 
         ShowWinText = delegate
         {
@@ -51,18 +52,11 @@ public class UIManager : MonoBehaviourPun
         winText.gameObject.SetActive(false);
         loseText.gameObject.SetActive(false);
     }
-    private void Update()
-    {
-        //GameOverText();
-        //GameManager.Instance.SetGameOver(true);
-    }
     public void SildbarSeting()
     {
         GameObject sliderHp = Instantiate(sliderHpPrefab, transform.position, Quaternion.identity, GameObject.Find("Canvas/HPSliders").transform);
         sliderHp.transform.position = Camera.main.WorldToScreenPoint(new Vector2(transform.position.x, -5.1f));
     }
-
-
     public void CallUpdateHpText(RectTransform obj, float curHP)
     {
 
@@ -70,7 +64,6 @@ public class UIManager : MonoBehaviourPun
         photonView.RPC("UpdateHPText", RpcTarget.All, curHP);
 
     }
-
 
     [PunRPC]
     // Brick의 위치에 curHP를 표시
@@ -83,18 +76,12 @@ public class UIManager : MonoBehaviourPun
     public void CallUpdateHPSlider(float damage)
     {
         if (photonView.IsMine)
-        {
             photonView.RPC("UpdateHPSlider", RpcTarget.All, damage);
-            Debug.Log("CallUpdateHPSlider" + damage);
-        }
     }
     
     [PunRPC]
-    public void UpdateHPSlider(float damage)
-    {
-            sliHP.value -= damage;
-            Debug.Log("UpdateHPSlider" + damage);
-    }
+    public void UpdateHPSlider(float damage) => sliHP.value -= damage;
+
     // 게임오버시 텍스트를 출력 시키는 함수
     public void WinText()
     {
@@ -102,9 +89,6 @@ public class UIManager : MonoBehaviourPun
         Panel.gameObject.SetActive(true);
         TextMeshProUGUI text = Panel.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
         text.gameObject.SetActive(true);
-        //winText = text;
-        //GameObject gameOver = Instantiate(WinPrefab, transform.position, Quaternion.identity, GameObject.Find("Canvas").transform);
-        //gameOver.transform.position = Camera.main.WorldToScreenPoint(new Vector2(0, 0));
     }
     public void LoseText()
     {
@@ -112,8 +96,5 @@ public class UIManager : MonoBehaviourPun
         Panel.gameObject.SetActive(true);
         TextMeshProUGUI text = Panel.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
         text.gameObject.SetActive(true);
-        //loseText = text;
-        //GameObject gameOver = Instantiate(WinPrefab, transform.position, Quaternion.identity, GameObject.Find("Canvas").transform);
-        //gameOver.transform.position = Camera.main.WorldToScreenPoint(new Vector2(0, 0));
     }
 }

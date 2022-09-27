@@ -21,11 +21,9 @@ public class GameSceneUIManager : MonoBehaviour
 
     IEnumerator PanelGetDark()
     {
-        Debug.Log("코루틴 시작");
         yield return new WaitForSeconds(0.5f);
         while (panel.alpha != 0)
         {
-            Debug.Log(panel.alpha);
             panel.alpha -= 0.005f;
             yield return null;
         }

@@ -13,7 +13,6 @@ public class LoadSceneStart : MonoBehaviourPunCallbacks
     private void Awake()
     {
         audioManager = FindObjectOfType<AudioManager>();
-        Debug.Log("Call");
         audioManager.BGMSound(audioManager.GameSceneSoundBGM);
     }
     // 게임이 끝나면 모든 클라이언트들에게 LoadStartScene을 호출한다.

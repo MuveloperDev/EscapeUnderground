@@ -4507,11 +4507,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfe744ca016013046b268a3c5248f60d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BrickType:
-  - {fileID: 450224274346815659, guid: 660fd3ac418357a4680c367cb05e3548, type: 3}
-  - {fileID: 1230772659064122591, guid: 53df7b1dabf70f243ac2b8e7962c198a, type: 3}
-  - {fileID: 3816058997682689484, guid: f42751f52528ca44e87398ea9c60a1d1, type: 3}
-  playerBrick: {fileID: 0}
+  brickType: []
+  idx: 0
 --- !u!1 &9064456036280073154
 GameObject:
   m_ObjectHideFlags: 0
@@ -4895,7 +4892,6 @@ MonoBehaviour:
   WinPrefab: {fileID: 0}
   sliderHpPrefab: {fileID: 1573283523906190601, guid: f4b8a10c40d2e6c439308361369e72df, type: 3}
   brickListManager: {fileID: 4910610431354172600}
-  hpSliderPerent: {fileID: 0}
   winText: {fileID: 0}
   loseText: {fileID: 0}
 --- !u!114 &7272787303797645376
