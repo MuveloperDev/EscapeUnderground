@@ -17,6 +17,8 @@ public class AudioManager : MonoBehaviour
     [SerializeField] AudioClip startSceneSoundBGM = null;
     [SerializeField] AudioClip gameSceneSoundBGM = null;
 
+
+    // 프로퍼티
     public AudioClip ClickSound { get { return clickSound; } }
     public AudioClip BoundSound { get { return boundSound; } }
     public AudioClip WinSound { get { return winSound; } }
