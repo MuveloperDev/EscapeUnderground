@@ -59,6 +59,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
         myWallet = FindObjectOfType<MyWallet>();
 
+        //Json 데이타
         jsonDataController = FindObjectOfType<JsonDataController>();
     }
     void Start()
@@ -145,36 +146,17 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         roomPanel.gameObject.SetActive(true);
         WalletManager.Instance.BetMoney((float)PhotonNetwork.CurrentRoom.CustomProperties["Cost"]);
     }
+    // 랜덤조인이 실패했을 경우
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
-        Debug.Log("Fuck");
         return;
     }
-
     // Room을 나가면 호출 되는 함수
     public override void OnLeftRoom()
     {
+        if (!PhotonNetwork.InLobby) return;
         roomPanel.gameObject.SetActive(false);
-        if (!PhotonNetwork.InLobby)
-            Debug.Log("Not In Lobby");
-        
-        //StartCoroutine(ConnetcedLobby());
         roomStateTxt.text = "Room_State : Left Room";
-        
-    }
-
-    // 룸에서 나온후 마스터서버에 접속되자마자 로비로 접속 요청을 위한 코루틴
-    IEnumerator ConnetcedLobby()
-    {
-        while (true)
-        {
-            yield return null;
-            if (PhotonNetwork.NetworkClientState.ToString() == "ConnectedToMasterServer")
-            {
-                PhotonNetwork.JoinLobby();
-                yield break;
-            }
-        }
     }
     #endregion
 
