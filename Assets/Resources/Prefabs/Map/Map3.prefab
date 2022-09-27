@@ -127,7 +127,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &233084190358324980
 Transform:
   m_ObjectHideFlags: 0
@@ -181,8 +181,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1490576693
-  m_SortingLayer: 0
+  m_SortingLayerID: 449638047
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
   m_Color: {r: 1, g: 0, b: 0, a: 1}
@@ -448,9 +448,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rigid2D: {fileID: 233084190415703052}
   arrow: {fileID: 233084190358324980}
-  childrenObject:
-  - {fileID: 233084190415703089}
-  - {fileID: 233084190358324980}
   brickListManager: {fileID: 4984949981873721989}
   mouseDir: {x: 11.560468, y: 11.580111, z: 0}
   pushPower: 500
