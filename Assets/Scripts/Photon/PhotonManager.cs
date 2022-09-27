@@ -5,8 +5,7 @@ using Photon.Pun;
 using TMPro;
 using Photon.Realtime;
 using UnityEngine.UI;
-using ExitGames.Client.Photon;
-using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 public class PhotonManager : MonoBehaviourPunCallbacks
 {
@@ -21,9 +20,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     [SerializeField] private TextMeshProUGUI    lobbyStateTxt               = null;     // 로비 상태 텍스트
     [SerializeField] private TextMeshProUGUI    roomStateTxt                = null;     // 방 상태 텍스트
 
-
-    [Header("[ InputFields ]")]
-    [SerializeField] private TMP_InputField     nickNameInput               = null;     // 닉네임 인풋 필드
 
     [Header("[ Panels ]")]
     [SerializeField] private LobbyManager       lobbyPanel                  = null;     // 로비 패널
@@ -44,6 +40,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     // 사운드 매니저
     StartSceneAudioManager audioManager = null;
 
+    JsonDataController jsonDataController = null;
+
     // 월렛
     MyWallet myWallet = null;
     private void Awake()
@@ -60,28 +58,22 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         audioManager = FindObjectOfType<StartSceneAudioManager>();
 
         myWallet = FindObjectOfType<MyWallet>();
+
+        jsonDataController = FindObjectOfType<JsonDataController>();
     }
     void Start()
     {
         
         OnClickConnectToMasterServer();
+        // 닉네임 설정
+        PhotonNetwork.LocalPlayer.NickName = jsonDataController.PlayerName;
+
         ServerStateTxt.text = "ServerState : DisConnected";
         clentNickNameTxt.text = "Client NickName : None";
 
         connectServerBtn.onClick.AddListener(delegate { OnClickConnectToMasterServer(); audioManager.SoundPlay(audioManager.ClickSound); });
         disConnectServerBtn.onClick.AddListener(delegate { OnClickDiconnectToMasterServer(); audioManager.SoundPlay(audioManager.ClickSound); });
         joinLobbyBtn.onClick.AddListener(delegate { OnClickJoinLobby(); audioManager.SoundPlay(audioManager.ClickSound); });
-
-        nickNameInput.onEndEdit.AddListener(delegate (string name) {
-            // 연결이 되어있지 않으면 리턴.
-            if (!PhotonNetwork.IsConnected) return;
-            // 인풋필드를 막는다.
-            nickNameInput.enabled = false;
-            SetNickName(name);
-            audioManager.SoundPlay(audioManager.ClickSound);
-        });
-
-
     }
 
     void Update()
@@ -114,16 +106,15 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     // 로비에 접속하기.
     public void OnClickJoinLobby()
     {
-        if (nickNameInput.text.Length == 0) return;
-        PhotonNetwork.JoinLobby();
-        
+        PhotonNetwork.JoinLobby();     
         // 챗 연결
         chatManager.ConnectedMyChat();
     }
 
 
     // Photon Cloud Server에 접속에 성공시 불리는 콜백 함수.
-    public override void OnConnectedToMaster() { 
+    public override void OnConnectedToMaster() {
+        PhotonNetwork.JoinLobby();
         ServerStateTxt.text = "ServerState : Sucess Connected Master Server";
         // 월렛 텍스트 업데이트
         myWallet.moneyUpdate();
@@ -133,19 +124,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     public override void OnDisconnected(DisconnectCause cause) =>
         ServerStateTxt.text = "ServerState : DisConnected Master Server  ->" + cause;
 
-
-    public void SetNickName(string nickName)
-    {
-        if (!PhotonNetwork.IsConnected)
-        {
-            clentNickNameTxt.text = "Client_NickName : Disconnected";
-            return;
-        }
-        // 클라이언트의 닉네임을 설정한다.
-        // LoadBalancingClient 클래스 상에 있는 유저 정보중 nickname을 재정의한다.
-        PhotonNetwork.LocalPlayer.NickName = nickName;
-        clentNickNameTxt.text = "Client_NickName : " + PhotonNetwork.LocalPlayer.NickName;
-    }
+  
     #region Lobby
     // 로비에 접속시 호출되는 콜백 함수
     public override void OnJoinedLobby()
@@ -179,8 +158,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         if (!PhotonNetwork.InLobby)
             Debug.Log("Not In Lobby");
         
-        StartCoroutine(ConnetcedLobby());
+        //StartCoroutine(ConnetcedLobby());
         roomStateTxt.text = "Room_State : Left Room";
+        
     }
 
     // 룸에서 나온후 마스터서버에 접속되자마자 로비로 접속 요청을 위한 코루틴
