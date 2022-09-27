@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using System.IO;
 using TMPro;
 
+// 플레이어의 정보를 담을 클래스
 [System.Serializable]
 public class PlayerInfo
 {
@@ -27,10 +28,8 @@ public class JsonDataController : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
         Instance = this;
         DontDestroyOnLoad(gameObject);
-
     }
 
     public void EndEditSetPlayerName(string text)
