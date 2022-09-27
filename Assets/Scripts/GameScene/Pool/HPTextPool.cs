@@ -5,6 +5,7 @@ public class HPTextPool : SingleTon<HPTextPool>
 {
     [SerializeField] GameObject HPPrefab = null;
     private Queue<GameObject> HPQueue = new Queue<GameObject>();
+    [SerializeField] GameObject HPTexts = null;
 
     // HP Text »ý¼º
     private GameObject Create()
@@ -23,6 +24,7 @@ public class HPTextPool : SingleTon<HPTextPool>
         }
         else hp = HPQueue.Dequeue();
         hp.gameObject.SetActive(true);
+        hp.transform.SetParent(HPTexts.transform);
         return hp;
     }
 

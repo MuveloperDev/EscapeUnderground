@@ -58,7 +58,7 @@ public class UIManager : MonoBehaviourPun
     }
     public void SildbarSeting()
     {
-        GameObject sliderHp = Instantiate(sliderHpPrefab, transform.position, Quaternion.identity, GameObject.Find("Canvas").transform);
+        GameObject sliderHp = Instantiate(sliderHpPrefab, transform.position, Quaternion.identity, GameObject.Find("Canvas/HPSliders").transform);
         sliderHp.transform.position = Camera.main.WorldToScreenPoint(new Vector2(transform.position.x, -5.1f));
     }
 

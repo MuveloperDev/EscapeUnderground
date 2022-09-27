@@ -39,8 +39,9 @@ public class Ball : MonoBehaviourPun
     }
     void Update()
     {
+        
         if (!photonView.IsMine) return;
-        if (!move) PlayerMove();           // Ball의 움직임
+        if (!move && GameManager.Instance.GetSceneChang()) PlayerMove();           // Ball의 움직임
     }
 
     // Ball의 이동 및 회전
