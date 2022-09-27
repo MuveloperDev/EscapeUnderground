@@ -52,7 +52,7 @@ public class Brick : MonoBehaviourPun
     void RelaseBrick()
     {
         brickListManager.listBrick.Remove(this);
-        BrickPool.Instance.Release(this);
+        BrickPool.Instance.Release(this.gameObject);
         HPTextPool.Instance.Release(textHP.gameObject);
     }
 }

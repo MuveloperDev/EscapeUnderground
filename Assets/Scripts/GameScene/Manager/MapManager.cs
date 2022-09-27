@@ -46,7 +46,7 @@ public class MapManager : MonoBehaviour
             {
                 if (isPlaced[x, y] == false)
                 {
-                    BrickPool.Instance.GetBrick(board[x, y]);
+                    BrickPool.Instance.Get(board[x, y]);
                 }
             }
         }
