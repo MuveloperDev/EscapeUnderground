@@ -32,6 +32,7 @@ public class UIManager : MonoBehaviourPun
     private void Start()
     {
         Invoke("SetActiveFalseText", 0.2f);
+
         ShowWinText = delegate
         {
             WinText();

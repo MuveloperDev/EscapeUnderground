@@ -645,6 +645,8 @@ MonoBehaviour:
   fullHP: 0
   fullCurHP: 0
   uiManager: {fileID: 7318407357009237870}
+  audioManager: {fileID: 0}
+  loadSceneStart: {fileID: 0}
 --- !u!114 &7318407357009237870
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -662,6 +664,8 @@ MonoBehaviour:
   WinPrefab: {fileID: 0}
   sliderHpPrefab: {fileID: 1573283523906190601, guid: f4b8a10c40d2e6c439308361369e72df, type: 3}
   brickListManager: {fileID: 4984949981873721989}
+  winText: {fileID: 0}
+  loseText: {fileID: 0}
 --- !u!114 &6329166063617781650
 MonoBehaviour:
   m_ObjectHideFlags: 0
