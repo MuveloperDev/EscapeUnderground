@@ -580,7 +580,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1645492893828921161
 Transform:
   m_ObjectHideFlags: 0
@@ -901,9 +901,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rigid2D: {fileID: 1645492893885382065}
   arrow: {fileID: 1645492893828921161}
-  childrenObject:
-  - {fileID: 1645492893885382028}
-  - {fileID: 1645492893828921161}
   brickListManager: {fileID: 3403423377610061874}
   mouseDir: {x: 11.2265215, y: 11.521179, z: 0}
   pushPower: 500
@@ -1100,7 +1097,6 @@ MonoBehaviour:
   fullHP: 0
   fullCurHP: 0
   uiManager: {fileID: 7934570161734516703}
-  myBall: {fileID: 0}
   audioManager: {fileID: 0}
   loadSceneStart: {fileID: 0}
 --- !u!114 &7934570161734516703

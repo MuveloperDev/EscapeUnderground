@@ -7,7 +7,6 @@ public class Ball : MonoBehaviourPun
     [Header("RigidBody")]
     [SerializeField] private Rigidbody2D rigid2D = null;                // 플레이어의 rigidbody2D를 담을 변수
     [SerializeField] private Transform arrow = null;                    // 자식개체인 arrow를 담을 변수
-    [SerializeField] private Transform[] childrenObject = null;         // GetComponentsInChildren은 배열로 가져오기 때문에 그것을 담아줄 변수
     [SerializeField] private BrickListManager brickListManager;
     
     [Header("Mouse")]
@@ -25,8 +24,6 @@ public class Ball : MonoBehaviourPun
     {
         audioManager = FindObjectOfType<GameSceneAudioManager>();
         rigid2D = GetComponent<Rigidbody2D>();
-        childrenObject = GetComponentsInChildren<Transform>();
-        if (childrenObject[1] != null) arrow = childrenObject[1];           // GetComponentsInChildren은 부모를 포함한 모든 자식개체를 불러와 배열로 다시한번 저장
     }
 
     private void Start()
@@ -35,18 +32,15 @@ public class Ball : MonoBehaviourPun
         pushPower = 500;
         move = false;
         attackPower = 10f;
-        wallCount = new float[2];
+        wallCount = new float[3];
         idx = 0;
+        //  나의 객체일 때만 화살 활성화
+        if (photonView.IsMine) arrow.gameObject.SetActive(true);
     }
-
-    // Update is called once per frame
     void Update()
     {
         if (!photonView.IsMine) return;
-        if (!move)
-        {
-            PlayerMove();           // Ball의 움직임
-        }
+        if (!move) PlayerMove();           // Ball의 움직임
     }
 
     // Ball의 이동 및 회전
@@ -77,8 +71,8 @@ public class Ball : MonoBehaviourPun
     void ClickMouse()
     {
         move = true;
-        photonView.RPC("SetActiveArrow", RpcTarget.All, false);
-        //arrow.gameObject.SetActive(false);
+       
+        arrow.gameObject.SetActive(false);
         rigid2D.AddRelativeForce(Vector2.right * pushPower, ForceMode2D.Force);         // 오브젝트의 기준으로 이동, ForceMode2D.Force = 일정한 속도로 이동
     }
 
@@ -87,40 +81,32 @@ public class Ball : MonoBehaviourPun
     {
         audioManager.SoundPlay(audioManager.BoundSound);
 
-        if (collision.gameObject.tag == "Brick")
-        {
-            Hit(collision);
-        }
+        if (collision.gameObject.tag == "Brick")  Hit(collision);
+
         if (collision.gameObject.tag == "Wall")
         {
-            if (idx < 2)
-            {
-                wallCount[idx] = transform.position.y;
-                idx++;
-            }
-            if (idx >= 1)
+            wallCount[idx] = transform.position.y;
+            idx++;
+            if (idx >= 2)
             {
                 if (wallCount[0] == wallCount[1])
                 {
-                    rigid2D.AddRelativeForce(Vector2.up * 30);
+                    rigid2D.AddRelativeForce(Vector2.down * 40);
+                    idx = 0;
                 }
+                else idx = 0;
             }
-            else
-            {
-                idx = 0;
-            }
+
         }
         if (collision.gameObject.tag == "Place")
         {
             this.rigid2D.velocity = Vector2.zero;           // Ball이 지면에 도착하면 정지
             move = false;
-            photonView.RPC("SetActiveArrow", RpcTarget.All, true);
-            //arrow.gameObject.SetActive(true);
+
+            //  나의 객체일 때만 화살 활성화
+            if (photonView.IsMine) arrow.gameObject.SetActive(true);
         }
     }
-
-    [PunRPC]
-    void SetActiveArrow(bool set) => arrow.gameObject.SetActive(set);
 
     void Hit(Collision2D target)
     {
