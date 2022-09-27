@@ -38,5 +38,4 @@ public class BrickPool : SingleTon<BrickPool>
         usebrick.gameObject.SetActive(false);
         brickQueue.Enqueue(usebrick);
     }
-
 }

@@ -6,43 +6,34 @@ public class MapManager : MonoBehaviour
 {
     private bool[,] isPlaced = null;
     Vector2[,] board = null;
+    private float scale = 0.5f; // Brick의 Scale
 
     // Brick을 설치할 전체 board와 Brick을 생성시킬 위치bool
     private void Awake()
     {
-        board = new Vector2[7, 5];
-        isPlaced = new bool[7, 5];
+        board = new Vector2[14, 12];
+        isPlaced = new bool[14, 12];
     }
     // 랜덤한 맵을 생성
     private void OnEnable()
     {
-        int ranNum = Random.Range(0, 3);
+
         // 배열의 Vector2 값들을 설정
-        for (int y = 0; y < 5; y++)
+        for (int y = 0; y < 12; y++)
         {
-            for (int x = 0; x < 7; x++)
+            for (int x = 0; x < 14; x++)
             {
-                board[x, y] = new Vector2((-8 + x), y);
+                board[x, y] = new Vector2((-8.25f + (x * scale)), -1 + (y * scale));
             }
         }
 
         // 맵의 조건
-        if (ranNum == 0)
+
+        CreateMap1(14, 12);
+
+        for (int y = 0; y < 12; y++)
         {
-            CreateMap1(7, 5);
-        }
-        else if (ranNum == 1)
-        {
-            CreateMap2(7, 5);
-        }
-        else
-        {
-            CreateMap3(7, 5);
-        }
-        
-        for (int y = 0; y < 5; y++)
-        {
-            for (int x = 0; x < 7; x++)
+            for (int x = 0; x < 14; x++)
             {
                 if (isPlaced[x, y] == false)
                 {
@@ -59,7 +50,7 @@ public class MapManager : MonoBehaviour
         {
             isPlaced[x, 3] = true;
         }
-        for (int y = 1; y < y1-1; y++)
+        for (int y = 1; y < y1 - 1; y++)
         {
             isPlaced[3, y] = true;
         }

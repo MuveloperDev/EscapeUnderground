@@ -63,12 +63,10 @@ public class UIManager : MonoBehaviourPun
     }
 
 
-    public void CallUpdateHpText(RectTransform obj, float curHP)
+    public void CallUpdateHpText(Transform obj, float curHP)
     {
-
         birckHPText = obj.GetComponent<Text>();
         photonView.RPC("UpdateHPText", RpcTarget.All, curHP);
-
     }
 
 
@@ -92,8 +90,8 @@ public class UIManager : MonoBehaviourPun
     [PunRPC]
     public void UpdateHPSlider(float damage)
     {
-            sliHP.value -= damage;
-            Debug.Log("UpdateHPSlider" + damage);
+        sliHP.value -= damage;
+        Debug.Log("UpdateHPSlider" + damage);
     }
     // 게임오버시 텍스트를 출력 시키는 함수
     public void WinText()

@@ -81,7 +81,7 @@ public class Ball : MonoBehaviourPun
     {
         audioManager.SoundPlay(audioManager.BoundSound);
 
-        if (collision.gameObject.tag == "Brick")  Hit(collision);
+        if (collision.gameObject.tag == "Brick") Hit(collision);
 
         if (collision.gameObject.tag == "Wall")
         {
@@ -110,7 +110,7 @@ public class Ball : MonoBehaviourPun
 
     void Hit(Collision2D target)
     {
-        if (photonView.IsMine)
+        //if (photonView.IsMine)
         {
             brickListManager.ReceiveDamage(attackPower);
             target.gameObject.GetComponent<Brick>().CallReceveDamage(attackPower);

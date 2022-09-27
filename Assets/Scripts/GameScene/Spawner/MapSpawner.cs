@@ -13,8 +13,7 @@ public class MapSpawner : MonoBehaviourPunCallbacks
     BrickListManager BrickListManager;
 
     List<string> mapPrefabList = new List<string>() { "Prefabs/Map/Map1", "Prefabs/Map/Map2", "Prefabs/Map/Map3" };
-    List<Vector3> offsetPos = new List<Vector3>() { new Vector3(-9.5f, -1.5f, 0) , new Vector3(-0.5f, -1.5f, 0) };
-
+    List<Vector3> offsetPos = new List<Vector3>() { new Vector3(-2, 1, 0) , new Vector3(8, 1, 0) };
     MapSelectManager mapSelectManager = null;
 
     private void Awake()
@@ -43,8 +42,8 @@ public class MapSpawner : MonoBehaviourPunCallbacks
     {
         // 위치 동기화
         if (PhotonNetwork.IsMasterClient)
-            playerMap = PhotonNetwork.Instantiate(mapPrefabList[idx], transform.position + offsetPos[0], Quaternion.identity);
-        else playerMap = PhotonNetwork.Instantiate(mapPrefabList[idx], transform.position + offsetPos[1], Quaternion.identity);
+            playerMap = PhotonNetwork.Instantiate(mapPrefabList[idx], offsetPos[0], Quaternion.identity);
+        else playerMap = PhotonNetwork.Instantiate(mapPrefabList[idx], offsetPos[1], Quaternion.identity);
         BrickListManager = playerMap.GetComponent<BrickListManager>();
         BrickListManager.hpManager();
     }

@@ -10,14 +10,19 @@ public class Brick : MonoBehaviourPun
     [SerializeField] private UIManager uiManager;
 
     public float MaxHP { get { return maxHP; } }
-    RectTransform textHP;  // HP Text의 위치 -> 2D좌표 이기 때문에 RectTransform으로 설정
+    Transform textHP;  // HP Text의 위치 -> 2D좌표 이기 때문에 RectTransform으로 설정
 
+    private void Awake()
+    {
+        
+    }
     private void OnEnable()
     {
-        textHP = HPTextPool.Instance.Gethp().GetComponent<RectTransform>();
+        brickListManager = FindObjectOfType<BrickListManager>();
+        uiManager = FindObjectOfType<UIManager>();
+        textHP = HPTextPool.Instance.Get(Camera.main.WorldToScreenPoint(new Vector3(transform.position.x, transform.position.y,transform.position.z))).GetComponent<RectTransform>(); // HP Text의 위치를 카메라 기준으로 변환
         curHP = maxHP;  // 시작시 현재 체력값을 벽돌의 최대 체력으로 설정
         brickListManager.AddBrick(this);
-        textHP.transform.position = Camera.main.WorldToScreenPoint(new Vector2(transform.position.x, transform.position.y));  // HP Text의 위치를 카메라 기준으로 변환
         uiManager.CallUpdateHpText(textHP, curHP); // 해당하는 벽돌의 체력을 UI로 출력
     }
 
@@ -26,6 +31,7 @@ public class Brick : MonoBehaviourPun
         if (photonView.IsMine)
         {
             photonView.RPC("ReceiveDamage", RpcTarget.All, damage);
+            Debug.Log("해당 블럭의 피는" +this.curHP);
             Debug.Log("(Brick)CallReceveDamage" + damage);
         }
     }
@@ -37,6 +43,7 @@ public class Brick : MonoBehaviourPun
     {
         curHP -= Damage;
         Debug.Log("(Brick)ReceiveDamage" + Damage);
+        Debug.Log("(Brick)curHP " + curHP);
 
         uiManager.CallUpdateHpText(textHP, curHP);
 

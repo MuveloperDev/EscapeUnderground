@@ -52,6 +52,7 @@ public class BrickListManager : MonoBehaviourPunCallbacks
 
         if (listBrick.Count <= 0)
         {
+            Debug.Log(listBrick.Count);
             if (photonView.IsMine)
                 EndGame(0, audioManager.WinSound);
             if (!photonView.IsMine)
