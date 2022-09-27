@@ -19,10 +19,10 @@ public class Ball : MonoBehaviourPun
     [SerializeField] float[] wallCount;
     [SerializeField] int idx;
 
-    GameSceneAudioManager audioManager = null;
+    AudioManager audioManager = null;
     private void Awake()
     {
-        audioManager = FindObjectOfType<GameSceneAudioManager>();
+        audioManager = FindObjectOfType<AudioManager>();
         rigid2D = GetComponent<Rigidbody2D>();
     }
 

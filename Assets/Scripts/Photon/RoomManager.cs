@@ -18,10 +18,10 @@ public class RoomManager : MonoBehaviour
     [SerializeField] private Button gameStartBtn = null;
 
     // 사운드 매니저
-    StartSceneAudioManager audioManager = null;
+    AudioManager audioManager = null;
     private void OnEnable()
     {
-        audioManager = FindObjectOfType<StartSceneAudioManager>();
+        audioManager = FindObjectOfType<AudioManager>();
         roomTitleTxt.text = PhotonNetwork.CurrentRoom.Name;
         leaveRoomBtn.onClick.AddListener(delegate { onClickLeaveRoom(); audioManager.SoundPlay(audioManager.ClickSound); });
         gameStartBtn.onClick.AddListener(delegate { OnClickLoadGameScene(); audioManager.SoundPlay(audioManager.ClickSound); });

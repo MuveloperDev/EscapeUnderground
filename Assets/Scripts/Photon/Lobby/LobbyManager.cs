@@ -36,7 +36,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     MyWallet myWallet = null;   // myWallet
     // 사운드 매니저
-    StartSceneAudioManager audioManager = null;
+    AudioManager audioManager = null;
     private void OnEnable()
     {
         Init();
@@ -54,11 +54,12 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     void Init()
     {
-        audioManager = FindObjectOfType<StartSceneAudioManager>();
+        audioManager = FindObjectOfType<AudioManager>();
         myWallet = FindObjectOfType<MyWallet>();
         findRoomPanel.gameObject.SetActive(false);
         createRoomPanel.gameObject.SetActive(false);
         roomPanel.gameObject.SetActive(false);
+
         nickNameText.text = "Player : " + PhotonNetwork.NickName;
     }
 

@@ -8,10 +8,10 @@ public class TitleSceneManager : MonoBehaviour
 {
     [SerializeField] Button StartBtn = null;
     [SerializeField] JsonDataController jsonDataController = null;
-    [SerializeField] StartSceneAudioManager startSceneAudioManager = null;
+    [SerializeField] AudioManager startSceneAudioManager = null;
     private void Awake()
     {
-        startSceneAudioManager = FindObjectOfType<StartSceneAudioManager>();
+        startSceneAudioManager = FindObjectOfType<AudioManager>();
         if (SceneManager.GetActiveScene().name == "TitleScene")
         { 
             jsonDataController = FindObjectOfType<JsonDataController>();
