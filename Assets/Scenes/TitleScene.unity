@@ -1225,7 +1225,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1123778926}
-  - component: {fileID: 1123778925}
+  - component: {fileID: 1123778927}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -1233,20 +1233,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1123778925
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1123778924}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a652cf5b3a503e747a5f2e9fd1b1ef9f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  oneShotAudioSource: {fileID: 1028569885}
-  clickSound: {fileID: 8300000, guid: 65d17b545633f43498da25e039121a50, type: 3}
 --- !u!4 &1123778926
 Transform:
   m_ObjectHideFlags: 0
@@ -1264,6 +1250,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1123778927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123778924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d368768c830c4cf408f1e3baa06f5f26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oneShotAudioSource: {fileID: 1028569885}
+  bgmAudioSource: {fileID: 2059307108}
+  clickSound: {fileID: 8300000, guid: 65d17b545633f43498da25e039121a50, type: 3}
+  boundSound: {fileID: 8300000, guid: 893935a101162d749a75a9986a0c7914, type: 3}
+  winSound: {fileID: 8300000, guid: 59102b0a94c4e20438aebee2701d0307, type: 3}
+  loseSound: {fileID: 8300000, guid: d171572710b0a6c45a48e6c9d6746c9f, type: 3}
+  startSceneSoundBGM: {fileID: 8300000, guid: 7ab8f6dce8f5869429a18c498ed49515, type: 3}
+  gameSceneSoundBGM: {fileID: 8300000, guid: d69016f532b716348a2764d43ff6f3e0, type: 3}
 --- !u!1 &1384359287
 GameObject:
   m_ObjectHideFlags: 0
@@ -1632,6 +1638,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StartBtn: {fileID: 265841810}
   jsonDataController: {fileID: 0}
+  startSceneAudioManager: {fileID: 0}
 --- !u!4 &1698825417
 Transform:
   m_ObjectHideFlags: 0
