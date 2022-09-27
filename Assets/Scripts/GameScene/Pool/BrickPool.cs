@@ -1,42 +1,34 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
-public class BrickPool : SingleTon<BrickPool>
+public class BrickPool : BaseObjectPool<BrickPool, GameObject>
 {
-    [SerializeField] Brick[] BrickType = null;
-    [SerializeField] Brick playerBrick = null;
-    private Queue<Brick> brickQueue = new Queue<Brick>();
+    [SerializeField] GameObject[] brickType = null;
+    [SerializeField] int idx = 0;
 
     private void Awake()
     {
-        BrickType = new Brick[3];
-    }
-    // 블럭 생성
-    private Brick Create(Vector2 pos)
-    {
-        int ranNum = Random.Range(0, 3);
-        playerBrick = BrickType[ranNum];
-        Brick brick = null;
-        brick = Instantiate(playerBrick, pos, Quaternion.identity, transform);
-        return brick;
+        brickType = new GameObject[3];
+        brickType[0] = Resources.Load<GameObject>("Prefabs/Brick/Iron Brick");
+        brickType[1] = Resources.Load<GameObject>("Prefabs/Brick/Soil Brick");
+        brickType[2] = Resources.Load<GameObject>("Prefabs/Brick/Stone Brick");
     }
 
-    public Brick GetBrick(Vector2 pos)
+    protected override GameObject Create()
     {
-        Brick brick = null;
-        if (brickQueue.Count == 0)
-        {
-            brick = Create(pos);
-        }
-        else brick = brickQueue.Dequeue();
-        brick.gameObject.SetActive(true);
-        return brick;
+        idx = Random.Range(0, 3);
+        return brickType[idx];
     }
 
-    public void Release(Brick usebrick)
+    public override GameObject Get(Vector3 position)
     {
-        usebrick.gameObject.SetActive(false);
-        brickQueue.Enqueue(usebrick);
+        return base.Get(position);
     }
 
+    public override void Release(GameObject obj)
+    {
+        obj.transform.SetParent(transform);
+        base.Release(obj);
+    }
 }
