@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
+using System.IO;
 
-public class MapSelectManager : SingleTon<MapSelectManager>
+public class MapSelectManager : MonoBehaviourPun
 {
     [SerializeField] int mapSelect;
     // ∑£¥˝«— ∏ ¿« ¿Œµ¶Ω∫∏¶ º≥¡§
