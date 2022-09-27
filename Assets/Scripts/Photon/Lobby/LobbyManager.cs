@@ -5,6 +5,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using System;
 using ExitGames.Client.Photon;
+using System.Runtime.CompilerServices;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
@@ -22,6 +23,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     [Header("[ Texts ]")]
     [SerializeField] private TextMeshProUGUI cntPlayers;
+    [SerializeField] private TextMeshProUGUI nickNameText = null;
 
     [Header("[ Buttons ]")]
     [SerializeField] private Button openCreateRoomBtn = null;     // 방 생성패널 열기 버튼
@@ -32,12 +34,10 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     [SerializeField] private Button returnLobbyInCRBtn = null;     // 방 찾기 버튼
 
     MyWallet myWallet = null;   // myWallet
-
     // 사운드 매니저
     StartSceneAudioManager audioManager = null;
     private void OnEnable()
     {
-        
         Init();
         //버튼 연결.
         openCreateRoomBtn.onClick.AddListener(delegate { OnClickActiveCreateRoomPanel(); audioManager.SoundPlay(audioManager.ClickSound); });
@@ -57,12 +57,13 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         myWallet = FindObjectOfType<MyWallet>();
         findRoomPanel.gameObject.SetActive(false);
         createRoomPanel.gameObject.SetActive(false);
+        nickNameText.text = "Player : " + PhotonNetwork.NickName;
     }
 
     private void Update()
     {
         // 현재 들어온 플레이어 수 업데이트
-        cntPlayers.text = "Players : " + PhotonNetwork.CountOfPlayers.ToString();
+        cntPlayers.text = "Players : " + PhotonNetwork.CountOfPlayers.ToString(); 
     }
 
     #region FindRoomMethod
