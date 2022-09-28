@@ -30,7 +30,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     [SerializeField] private Button openCreateRoomBtn = null;     // 방 생성패널 열기 버튼
     [SerializeField] private Button CreateRoomBtn = null;     // 방 생성패널 열기 버튼
     [SerializeField] private Button joinOrCreateRoomBtn = null;     // 방 접속 혹은 생성 버튼
-    [SerializeField] private Button leaveLobbyBtn = null;     // 로비 접속 해제 버튼
     [SerializeField] private Button findEnterRoomBtn = null;     // 방 찾기 버튼
     [SerializeField] private Button returnLobbyInCRBtn = null;     // 방 찾기 버튼
 
@@ -44,7 +43,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         openCreateRoomBtn.onClick.AddListener(delegate { OnClickActiveCreateRoomPanel(); audioManager.SoundPlay(audioManager.ClickSound); });
         CreateRoomBtn.onClick.AddListener(delegate { OnClickCreateRoom(); audioManager.SoundPlay(audioManager.ClickSound); });
         joinOrCreateRoomBtn.onClick.AddListener(delegate { OnClickJoinOnCreateRoom(); audioManager.SoundPlay(audioManager.ClickSound); });
-        leaveLobbyBtn.onClick.AddListener(delegate { OnClickLeaveLobby(); audioManager.SoundPlay(audioManager.ClickSound); });
         findEnterRoomBtn.onClick.AddListener(delegate { OnClickOpenFindRoomPanel(); audioManager.SoundPlay(audioManager.ClickSound); });
         returnLobbyInCRBtn.onClick.AddListener(delegate { OnClickCloseCreateRoomPanel(); audioManager.SoundPlay(audioManager.ClickSound); });
         // InputField 연결
@@ -74,12 +72,17 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     // FindRoomPanel 열기
     void OnClickOpenFindRoomPanel() => findRoomPanel.gameObject.SetActive(true);
     // FindRoomPanel 닫기
-    void OnClickCloseFindRoomPanel() => findRoomPanel.gameObject.SetActive(false);
+    void OnClickCloseFindRoomPanel() 
+    {
+        audioManager.SoundPlay(audioManager.ClickSound);
+        findRoomPanel.gameObject.SetActive(false);
+    } 
 
 
     // 입력한 룸으로 접속.
     void OnClickFindEnterRoom()
     {
+        audioManager.SoundPlay(audioManager.ClickSound);
         if (findRoomNameInputField.text.Length == 0) return;
         PhotonNetwork.JoinRoom(findRoomNameInputField.text);
     }
