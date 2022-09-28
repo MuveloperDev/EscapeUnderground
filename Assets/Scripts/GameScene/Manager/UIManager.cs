@@ -25,13 +25,12 @@ public class UIManager : MonoBehaviourPun
     private void Awake()
     {
         sliHP = FindObjectOfType<Slider>();
-
-        // Find Text
         winText = GameObject.FindGameObjectWithTag("Win").GetComponent<TextMeshProUGUI>();
         loseText = GameObject.FindGameObjectWithTag("Lose").GetComponent<TextMeshProUGUI>();
     }
     private void Start()
     {
+        CallSetSliderValue(brickListManager.FullHP);
         Invoke("SetActiveFalseText", 0.5f);
 
         ShowWinText = delegate
@@ -46,6 +45,20 @@ public class UIManager : MonoBehaviourPun
         };
 
     }
+    public void CallSetSliderValue(float fullHP)
+    {
+        if (photonView.IsMine)
+        {
+            photonView.RPC("SetSliderValue", RpcTarget.All, fullHP);
+        }
+    }
+
+    [PunRPC]
+    public void SetSliderValue(float fullHP)
+    {
+        sliHP.maxValue = fullHP;
+        sliHP.value = fullHP;
+    }
 
     void SetActiveFalseText()
     {
@@ -55,9 +68,9 @@ public class UIManager : MonoBehaviourPun
     public void SildbarSeting()
     {
         GameObject sliderHp = Instantiate(sliderHpPrefab, transform.position, Quaternion.identity, GameObject.Find("Canvas/HPSliders").transform);
-        sliderHp.transform.position = Camera.main.WorldToScreenPoint(new Vector2(transform.position.x, -5.1f));
+        sliderHp.transform.position = Camera.main.WorldToScreenPoint(new Vector2(transform.position.x-3, -5.1f));
     }
-    public void CallUpdateHpText(RectTransform obj, float curHP)
+    public void CallUpdateHpText(Transform obj, float curHP)
     {
         birckHPText = obj.GetComponent<Text>();
         photonView.RPC("UpdateHPText", RpcTarget.All, curHP);
