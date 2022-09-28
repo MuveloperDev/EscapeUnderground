@@ -9,9 +9,12 @@ public class TitleSceneManager : MonoBehaviour
     [SerializeField] Button StartBtn = null;
     [SerializeField] JsonDataController jsonDataController = null;
     [SerializeField] AudioManager startSceneAudioManager = null;
+    [SerializeField] DappxAPIDataConroller dappxAPIDataConroller = null;
+
     private void Awake()
     {
         startSceneAudioManager = FindObjectOfType<AudioManager>();
+        dappxAPIDataConroller = FindObjectOfType<DappxAPIDataConroller>();
         if (SceneManager.GetActiveScene().name == "TitleScene")
         { 
             jsonDataController = FindObjectOfType<JsonDataController>();
@@ -19,6 +22,8 @@ public class TitleSceneManager : MonoBehaviour
             {
                 if (jsonDataController.PlayerName.Length <= 0) return;
                 startSceneAudioManager.SoundPlay(startSceneAudioManager.ClickSound);
+                //Dappx ¿¬°á
+                dappxAPIDataConroller.OnClick_StartUserSetting();
                 LoadScene(); 
             });
         
