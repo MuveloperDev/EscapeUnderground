@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 
 public class MyWallet : MonoBehaviour
 {
+    public static MyWallet Instance;
+
     [SerializeField] static float money;
     [SerializeField] TextMeshProUGUI walletTxt = null;
 
@@ -16,10 +18,16 @@ public class MyWallet : MonoBehaviour
     {
         // MyWallet은 파괴되지 않는다.
         // MyWallet이 하나 이상이면 파괴하고 하나만 남긴다.
-        MyWallet[] obj = FindObjectsOfType<MyWallet>();
-        if (obj.Length == 1) DontDestroyOnLoad(gameObject);
-        else Destroy(gameObject);
-        moneyUpdate = delegate () { walletTxt.text = money.ToString(); };
+
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
+        moneyUpdate = delegate () { walletTxt.text = "MyMoney : " + money.ToString(); };
     }
 
     private void Start()

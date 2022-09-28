@@ -59,10 +59,8 @@ public class UIManager : MonoBehaviourPun
     }
     public void CallUpdateHpText(RectTransform obj, float curHP)
     {
-
         birckHPText = obj.GetComponent<Text>();
         photonView.RPC("UpdateHPText", RpcTarget.All, curHP);
-
     }
 
     [PunRPC]
