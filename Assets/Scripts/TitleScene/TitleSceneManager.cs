@@ -20,7 +20,6 @@ public class TitleSceneManager : MonoBehaviour
             jsonDataController = FindObjectOfType<JsonDataController>();
             StartBtn.onClick.AddListener(delegate 
             {
-                if (jsonDataController.PlayerName.Length <= 0) return;
                 startSceneAudioManager.SoundPlay(startSceneAudioManager.ClickSound);
                 //Dappx ¿¬°á
                 dappxAPIDataConroller.OnClick_StartUserSetting();

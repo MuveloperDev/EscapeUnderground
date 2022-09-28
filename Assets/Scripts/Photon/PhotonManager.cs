@@ -13,6 +13,10 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     [SerializeField] private LobbyManager       lobbyPanel                  = null;     // 로비 패널
     [SerializeField] private RoomManager        roomPanel                   = null;     // 룸 패널
     [SerializeField] private GridLayoutGroup    roomListPanel               = null;     // 룸리스트 패널
+    [SerializeField] private CanvasGroup        walletPanel                 = null;     // 룸리스트 패널
+
+    [Header("[ Buttons ]")]
+    [SerializeField] private Button walletBtn = null;
 
     [Header("[ Components ]")]
     [SerializeField] UIChatManager       chatManager             = null;                     // 채팅 매니저
@@ -37,13 +41,24 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         audioManager        = FindObjectOfType<AudioManager>();         // audioManager
         myWallet            = FindObjectOfType<MyWallet>();             // myWallet
         jsonDataController  = FindObjectOfType<JsonDataController>();   //Json 데이타
+
+
+        walletBtn.onClick.AddListener(delegate { OnClick_OpenCloseWalletPanel(); });
     }
     void Start()
     {
         OnClickConnectToMasterServer(); // 마스터 서버 연결
 
+
+
         // 닉네임 설정
         PhotonNetwork.LocalPlayer.NickName = jsonDataController.PlayerName;
+    }
+
+    // WalletPanel 알파값 조절
+    void OnClick_OpenCloseWalletPanel()
+    {
+        walletPanel.alpha = walletPanel.alpha >= 1 ? 0 : 1;
     }
 
     // 마스터 서버 접속 요청.
@@ -57,8 +72,10 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinLobby();
         chatManager.ConnectedMyChat();  // 챗 연결
         // 월렛 텍스트 업데이트
-        myWallet.moneyUpdate();
+        Invoke("WalletUpdate", 2f);
     }
+
+    void WalletUpdate() => myWallet.MoneyUpdate();
 
     // 마스터 서버 연결이 끊겼을 때 호출되는 함수.
     public override void OnDisconnected(DisconnectCause cause) => Debug.Log("OnDisConnected : " + cause);

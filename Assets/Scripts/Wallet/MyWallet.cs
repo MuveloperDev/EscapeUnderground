@@ -10,15 +10,16 @@ public class MyWallet : MonoBehaviour
     public static MyWallet Instance;
 
     [SerializeField] static float money;
-    [SerializeField] TextMeshProUGUI walletTxt = null;
+    [SerializeField] TextMeshProUGUI zeraCoinTxt = null;
+    [SerializeField] TextMeshProUGUI aceCoinTxt = null;
+    [SerializeField] TextMeshProUGUI dappXCoinTxt = null;
 
-    public Action moneyUpdate;
+    [SerializeField] DappxAPIDataConroller dappxAPIDataConroller = null;
     public float MyMoney { get { return money; } set { money += value; } }
     private void Awake()
     {
         // MyWallet은 파괴되지 않는다.
         // MyWallet이 하나 이상이면 파괴하고 하나만 남긴다.
-
         if (Instance != null)
         {
             Destroy(gameObject);
@@ -27,19 +28,27 @@ public class MyWallet : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        moneyUpdate = delegate () { walletTxt.text = "MyMoney : " + money.ToString(); };
+        if (SceneManager.GetActiveScene().name == "StartScene")
+        {
+            zeraCoinTxt = GameObject.FindGameObjectWithTag("Wallet").transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+            aceCoinTxt = GameObject.FindGameObjectWithTag("Wallet").transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+            dappXCoinTxt = GameObject.FindGameObjectWithTag("Wallet").transform.GetChild(2).GetComponent<TextMeshProUGUI>();
+        }
+        dappxAPIDataConroller = FindObjectOfType<DappxAPIDataConroller>();
     }
 
     private void Start()
     {
         money = 10000;
-        moneyUpdate();
+        //MoneyUpdate();
     }
 
-    private void Update()
+    public void MoneyUpdate()
     {
-        if (walletTxt == null) walletTxt = GameObject.FindGameObjectWithTag("Wallet").GetComponent<TextMeshProUGUI>();
-        
+        zeraCoinTxt.text = "ZeraCoin : " + dappxAPIDataConroller.ZeraBalanceInfo.data.balance;
+        aceCoinTxt.text = "AceCoin : " + dappxAPIDataConroller.AceBalanceInfo.data.balance;
+        dappXCoinTxt.text = "DappXCoin : " + dappxAPIDataConroller.DappXBalanceInfo.data.balance;
     }
+
 
 }
