@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
+    public static AudioManager Instance;
+
     [Header("[ AudioSources ]")]
     [SerializeField] AudioSource oneShotAudioSource = null;
 
@@ -28,9 +30,13 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
-        AudioManager[] obj = FindObjectsOfType<AudioManager>();
-        if (obj.Length == 1) DontDestroyOnLoad(gameObject);
-        else Destroy(gameObject);
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     public void BGMSound(AudioClip clip)

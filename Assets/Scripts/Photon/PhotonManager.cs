@@ -9,41 +9,21 @@ using Unity.VisualScripting;
 
 public class PhotonManager : MonoBehaviourPunCallbacks
 {
-    [Header("[ Texts ]")]
-    [SerializeField] private TextMeshProUGUI    ServerStateTxt              = null;     // 서버 상태 텍스트
-    [SerializeField] private TextMeshProUGUI    clentStateTxt               = null;     // 클라이언트 상태 텍스트
-    [SerializeField] private TextMeshProUGUI    clentNickNameTxt            = null;     // 클라이언트 닉네임 텍스트
-    [SerializeField] private TextMeshProUGUI    countOfRoomsTxt             = null;     // 룸 개수 텍스트
-    [SerializeField] private TextMeshProUGUI    countOfPlayersOnMasterTxt   = null;     // 마스터 서버 상에 있는 플레이어 텍스트
-    [SerializeField] private TextMeshProUGUI    countOfPlayersInRoomsTxt    = null;     // 게임 서버 상에 있는 플레이어 텍스트
-    [SerializeField] private TextMeshProUGUI    countOfPlayersTxt           = null;     // 플레이어 수 텍스트
-    [SerializeField] private TextMeshProUGUI    lobbyStateTxt               = null;     // 로비 상태 텍스트
-    [SerializeField] private TextMeshProUGUI    roomStateTxt                = null;     // 방 상태 텍스트
-
-
     [Header("[ Panels ]")]
     [SerializeField] private LobbyManager       lobbyPanel                  = null;     // 로비 패널
     [SerializeField] private RoomManager        roomPanel                   = null;     // 룸 패널
     [SerializeField] private GridLayoutGroup    roomListPanel               = null;     // 룸리스트 패널
 
-    [Header("[ Buttons ]")]
-    [SerializeField] private Button connectServerBtn        = null;     // 서버 연결 버튼
-    [SerializeField] private Button disConnectServerBtn     = null;     // 서버 연결 해제 버튼
-    [SerializeField] private Button joinLobbyBtn            = null;     // 로비 접속 버튼
+    [Header("[ Components ]")]
+    [SerializeField] UIChatManager       chatManager             = null;                     // 채팅 매니저
+    [SerializeField] AudioManager        audioManager            = null;                     // 사운드 매니저
+    [SerializeField] JsonDataController  jsonDataController      = null;                     // Json Data
+    [SerializeField] MyWallet            myWallet                = null;                     // 월렛
 
-    // 채팅 매니저
-    UIChatManager chatManager = null;
+    [Header("[ Lists ]")]
+    [SerializeField] List<RoomInfo>      uiRoomList              = new List<RoomInfo>();     // 룸리스트 UI 관리 리스트.
 
-    // 룸리스트 UI 관리 리스트.
-    List<RoomInfo> uiRoomList = new List<RoomInfo>();
 
-    // 사운드 매니저
-    AudioManager audioManager = null;
-
-    JsonDataController jsonDataController = null;
-
-    // 월렛
-    MyWallet myWallet = null;
     private void Awake()
     {
         // 게임 시작시 스크린 사이즈를 맞춰줌 16 : 9 사이즈 마지막 인자값은 전체화면 유무
@@ -52,50 +32,18 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         //AutomaticallySyncScene 은 방에 있는 모든 클라이언트들을 자동적으로 마스터 클라이언트와 동일한 레벨을 로드시킨다.
         PhotonNetwork.AutomaticallySyncScene = true;
 
-        // UIChatManager
-        chatManager = FindObjectOfType<UIChatManager>();
-
-        audioManager = FindObjectOfType<AudioManager>();
-
-        myWallet = FindObjectOfType<MyWallet>();
-
-        //Json 데이타
-        jsonDataController = FindObjectOfType<JsonDataController>();
+        
+        chatManager         = FindObjectOfType<UIChatManager>();        // UIChatManager
+        audioManager        = FindObjectOfType<AudioManager>();         // audioManager
+        myWallet            = FindObjectOfType<MyWallet>();             // myWallet
+        jsonDataController  = FindObjectOfType<JsonDataController>();   //Json 데이타
     }
     void Start()
     {
-        
-        OnClickConnectToMasterServer();
+        OnClickConnectToMasterServer(); // 마스터 서버 연결
+
         // 닉네임 설정
         PhotonNetwork.LocalPlayer.NickName = jsonDataController.PlayerName;
-
-        ServerStateTxt.text = "ServerState : DisConnected";
-        clentNickNameTxt.text = "Client NickName : None";
-
-        connectServerBtn.onClick.AddListener(delegate { OnClickConnectToMasterServer(); audioManager.SoundPlay(audioManager.ClickSound); });
-        disConnectServerBtn.onClick.AddListener(delegate { OnClickDiconnectToMasterServer(); audioManager.SoundPlay(audioManager.ClickSound); });
-        joinLobbyBtn.onClick.AddListener(delegate { OnClickJoinLobby(); audioManager.SoundPlay(audioManager.ClickSound); });
-    }
-
-    void Update()
-    {
-
-        // 서버 상태 업데이트
-        ServerStateTxt.text = "ServerState : " + PhotonNetwork.Server;
-        // 클라이언트의 현재 상태를 가져온다.
-        clentStateTxt.text = "Clent_State : " + PhotonNetwork.NetworkClientState.ToString();
-        // 라이브 룸의 개수를 가져온다.
-        countOfRoomsTxt.text = "CountOfRooms : " + PhotonNetwork.CountOfRooms.ToString();
-        // 룸에 참여하지 않은 플레이어의 수를 가져온다.
-        countOfPlayersOnMasterTxt.text = "CountOfPlayersOnMaster : " + PhotonNetwork.CountOfPlayersOnMaster.ToString();
-        // 룸 안에 있는 플레이어의 수를 가져온다.
-        countOfPlayersInRoomsTxt.text = "CountOfPlayersInRooms : " + PhotonNetwork.CountOfPlayersInRooms.ToString();
-        // 연결되어 있는 플레이어의 총 수를 가져온다.
-        countOfPlayersTxt.text = "CountOfPlayers : " + PhotonNetwork.CountOfPlayers.ToString();
-        // 방 상태 업데이트
-        roomStateTxt.text = "Room_State : " + PhotonNetwork.InRoom;
-        // 로비 상태 업데이트
-        lobbyStateTxt.text = "Lobby_State : " + PhotonNetwork.InLobby;
     }
 
     // 마스터 서버 접속 요청.
@@ -107,24 +55,21 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     // 로비에 접속하기.
     public void OnClickJoinLobby()
     {
-        PhotonNetwork.JoinLobby();     
-        // 챗 연결
-        chatManager.ConnectedMyChat();
+        PhotonNetwork.JoinLobby();      // 로비연결
+        chatManager.ConnectedMyChat();  // 챗 연결
     }
 
 
     // Photon Cloud Server에 접속에 성공시 불리는 콜백 함수.
     public override void OnConnectedToMaster() {
         PhotonNetwork.JoinLobby();
-        ServerStateTxt.text = "ServerState : Sucess Connected Master Server";
+
         // 월렛 텍스트 업데이트
         myWallet.moneyUpdate();
     }
 
     // 마스터 서버 연결이 끊겼을 때 호출되는 함수.
-    public override void OnDisconnected(DisconnectCause cause) =>
-        ServerStateTxt.text = "ServerState : DisConnected Master Server  ->" + cause;
-
+    public override void OnDisconnected(DisconnectCause cause) => Debug.Log("OnDisConnected : " + cause);
   
     #region Lobby
     // 로비에 접속시 호출되는 콜백 함수
@@ -147,16 +92,13 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         WalletManager.Instance.BetMoney((float)PhotonNetwork.CurrentRoom.CustomProperties["Cost"]);
     }
     // 랜덤조인이 실패했을 경우
-    public override void OnJoinRandomFailed(short returnCode, string message)
-    {
-        return;
-    }
+    public override void OnJoinRandomFailed(short returnCode, string message) => Debug.Log("OnJoinRandomFailed : " + message);
+
     // Room을 나가면 호출 되는 함수
     public override void OnLeftRoom()
     {
         if (!PhotonNetwork.InLobby) return;
         roomPanel.gameObject.SetActive(false);
-        roomStateTxt.text = "Room_State : Left Room";
     }
     #endregion
 
@@ -204,7 +146,16 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
     #endregion
 
+    // 타이틀 씬 상태 텍스트 출력.
+    private void OnGUI()
+    {
+        GUIStyle gUIStyle = new GUIStyle(GUI.skin.label);
+        gUIStyle.fontSize = 20;
+        gUIStyle.normal.textColor = Color.white;
+        GUI.Label(new Rect(0f, 0f, 350f, 50f), "ServeState : " + PhotonNetwork.Server.ToString(), gUIStyle);
+    }
 
+    #region ContextMenu
     // 인스펙터상의 옵션 추가.
     [ContextMenu("[Info]")]
     public void RoomInfo()
@@ -235,6 +186,5 @@ public class PhotonManager : MonoBehaviourPunCallbacks
             Debug.Log("연결 되었는 지 ? : " + PhotonNetwork.IsConnected);
         }
     }
-
-
+    #endregion
 }

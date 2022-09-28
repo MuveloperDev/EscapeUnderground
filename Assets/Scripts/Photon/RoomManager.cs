@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -13,9 +14,6 @@ public class RoomManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI cntPlayersTxt = null;                 // 플레이어 수 Text
     [SerializeField] private TextMeshProUGUI roomTitleTxt = null;                  // 방 제목 Text
 
-    [Header("( Buttons )")]
-    [SerializeField] private Button leaveRoomBtn = null;
-    [SerializeField] private Button gameStartBtn = null;
 
     // 사운드 매니저
     AudioManager audioManager = null;
@@ -23,8 +21,9 @@ public class RoomManager : MonoBehaviour
     {
         audioManager = FindObjectOfType<AudioManager>();
         roomTitleTxt.text = PhotonNetwork.CurrentRoom.Name;
-        leaveRoomBtn.onClick.AddListener(delegate { onClickLeaveRoom(); audioManager.SoundPlay(audioManager.ClickSound); });
-        gameStartBtn.onClick.AddListener(delegate { OnClickLoadGameScene(); audioManager.SoundPlay(audioManager.ClickSound); });
+
+
+
     }
 
     private void Update()
@@ -32,15 +31,15 @@ public class RoomManager : MonoBehaviour
         if (!PhotonNetwork.InRoom) return;
         cntPlayersTxt.text = $"[ {PhotonNetwork.CurrentRoom.Players.Count} / {PhotonNetwork.CurrentRoom.MaxPlayers} ]";
         SetRoomInfo();
+
+        // 두명 이상 모이면 바로 시작.
+        if (PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount >= 2)
+        {
+            PhotonNetwork.CurrentRoom.IsOpen = false;
+            OnClickLoadGameScene();
+        }
     }
 
-    // 방을 떠난다.
-    void onClickLeaveRoom()
-    {
-        if (!PhotonNetwork.InRoom) return;
-        WalletManager.Instance.GiveBackMoney();
-        PhotonNetwork.LeaveRoom();
-    } 
 
     // 게임씬으로 이동한다.
     void OnClickLoadGameScene()
@@ -55,13 +54,15 @@ public class RoomManager : MonoBehaviour
     // 방정보를 업데이트 한다.
     void SetRoomInfo()
     {
-        for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
+        foreach (Player player in PhotonNetwork.PlayerList)
         {
-            if (PhotonNetwork.PlayerList[i].IsMasterClient)
-                masterClientNameText.text = "MasterClient : " + PhotonNetwork.PlayerList[i].NickName.ToString() ;
-
-            else
-                challengerClientNameText.text = "ChallengerClient : " +  PhotonNetwork.PlayerList[i].NickName.ToString();
+            if (PhotonNetwork.CurrentRoom.PlayerCount < 2)
+            {
+                masterClientNameText.text = "MasterClient : " + player.NickName.ToString();
+                return;
+            }
+            if (player.IsMasterClient) masterClientNameText.text = "MasterClient : " + player.NickName.ToString();
+            else challengerClientNameText.text = "ChallengerClient : " + player.NickName.ToString();
         }
     }
 }
