@@ -26,7 +26,6 @@ public class Brick : MonoBehaviourPun
         if (photonView.IsMine)
         {
             photonView.RPC("ReceiveDamage", RpcTarget.All, damage);
-            Debug.Log("(Brick)CallReceveDamage" + damage);
         }
     }
 
