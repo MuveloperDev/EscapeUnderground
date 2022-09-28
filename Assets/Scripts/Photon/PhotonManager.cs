@@ -90,7 +90,18 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         lobbyPanel.gameObject.SetActive(false);
         roomPanel.gameObject.SetActive(true);
         WalletManager.Instance.BetMoney((float)PhotonNetwork.CurrentRoom.CustomProperties["Cost"]);
+
+
     }
+    // 플레이어가 방에 입장시 정보 업데이트
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        roomPanel.CntPlayersTxt = string.Format("[ {0} / {1} ]", PhotonNetwork.CurrentRoom.Players.Count, PhotonNetwork.CurrentRoom.MaxPlayers);
+        roomPanel.ChallengerClientNameText = "Challenger : " +  newPlayer.NickName;
+        PhotonNetwork.CurrentRoom.IsOpen = false;
+        PhotonNetwork.LoadLevel("GameScene");
+    }
+
     // 랜덤조인이 실패했을 경우
     public override void OnJoinRandomFailed(short returnCode, string message) => Debug.Log("OnJoinRandomFailed : " + message);
 
