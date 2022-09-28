@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RoomManager : MonoBehaviour
+public class RoomManager : MonoBehaviourPunCallbacks
 {
     [Header("( Texts )")]
     [SerializeField] private TextMeshProUGUI masterClientNameText = null;          // 마스터 클라이언트 NameText
@@ -15,31 +15,16 @@ public class RoomManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI roomTitleTxt = null;                  // 방 제목 Text
 
 
+    public string ChallengerClientNameText { set { challengerClientNameText.text = value; } }
+    public string CntPlayersTxt { set { cntPlayersTxt.text = value; } }
     // 사운드 매니저
     AudioManager audioManager = null;
     private void OnEnable()
     {
         audioManager = FindObjectOfType<AudioManager>();
         roomTitleTxt.text = PhotonNetwork.CurrentRoom.Name;
-
-
-
-    }
-
-    private void Update()
-    {
-        if (!PhotonNetwork.InRoom) return;
-        cntPlayersTxt.text = $"[ {PhotonNetwork.CurrentRoom.Players.Count} / {PhotonNetwork.CurrentRoom.MaxPlayers} ]";
         SetRoomInfo();
-
-        // 두명 이상 모이면 바로 시작.
-        if (PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount >= 2)
-        {
-            PhotonNetwork.CurrentRoom.IsOpen = false;
-            OnClickLoadGameScene();
-        }
     }
-
 
     // 게임씬으로 이동한다.
     void OnClickLoadGameScene()
@@ -48,7 +33,12 @@ public class RoomManager : MonoBehaviour
         // 또한 마스터 클라이언트가 아닐시 게임 시작을 해도 레벨이 동기화 되지 않는다.
         if (!PhotonNetwork.IsMasterClient) return;
         if (PhotonNetwork.CurrentRoom.PlayerCount < 2) return;
-        PhotonNetwork.LoadLevel("GameScene");
+        
+    }
+    public override void OnJoinedRoom()
+    {
+        Debug.Log("JoinedROom");
+        if (PhotonNetwork.CurrentRoom.PlayerCount >= 2) PhotonNetwork.LoadLevel("GameScene");
     }
 
     // 방정보를 업데이트 한다.
@@ -62,7 +52,6 @@ public class RoomManager : MonoBehaviour
                 return;
             }
             if (player.IsMasterClient) masterClientNameText.text = "MasterClient : " + player.NickName.ToString();
-            else challengerClientNameText.text = "ChallengerClient : " + player.NickName.ToString();
         }
     }
 }
