@@ -19,14 +19,15 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     [SerializeField] private Button walletBtn = null;
 
     [Header("[ Components ]")]
-    [SerializeField] UIChatManager       chatManager             = null;                     // 채팅 매니저
-    [SerializeField] AudioManager        audioManager            = null;                     // 사운드 매니저
-    [SerializeField] JsonDataController  jsonDataController      = null;                     // Json Data
-    [SerializeField] MyWallet            myWallet                = null;                     // 월렛
+    [SerializeField] UIChatManager          chatManager             = null;         // 채팅 매니저
+    [SerializeField] AudioManager           audioManager            = null;         // 사운드 매니저
+    [SerializeField] JsonDataController     jsonDataController      = null;         // Json Data
+    [SerializeField] MyWallet               myWallet                = null;         // 월렛
+    [SerializeField] DappxAPIDataConroller  dappxAPIDataConroller   = null;         // DappXApi                 
+
 
     [Header("[ Lists ]")]
     [SerializeField] List<RoomInfo>      uiRoomList              = new List<RoomInfo>();     // 룸리스트 UI 관리 리스트.
-
 
     private void Awake()
     {
@@ -37,22 +38,17 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         PhotonNetwork.AutomaticallySyncScene = true;
 
         
-        chatManager         = FindObjectOfType<UIChatManager>();        // UIChatManager
-        audioManager        = FindObjectOfType<AudioManager>();         // audioManager
-        myWallet            = FindObjectOfType<MyWallet>();             // myWallet
-        jsonDataController  = FindObjectOfType<JsonDataController>();   //Json 데이타
-
+        chatManager             = FindObjectOfType<UIChatManager>();            // UIChatManager
+        audioManager            = FindObjectOfType<AudioManager>();             // audioManager
+        myWallet                = FindObjectOfType<MyWallet>();                 // myWallet
+        jsonDataController      = FindObjectOfType<JsonDataController>();       // Json 데이타
+        dappxAPIDataConroller   = FindObjectOfType<DappxAPIDataConroller>();    // dappxAPIDataConroller
 
         walletBtn.onClick.AddListener(delegate { OnClick_OpenCloseWalletPanel(); });
     }
     void Start()
     {
         OnClickConnectToMasterServer(); // 마스터 서버 연결
-
-
-
-        // 닉네임 설정
-        PhotonNetwork.LocalPlayer.NickName = jsonDataController.PlayerName;
     }
 
     // WalletPanel 알파값 조절
@@ -69,13 +65,19 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
     // Photon Cloud Server에 접속에 성공시 불리는 콜백 함수.
     public override void OnConnectedToMaster() {
+        // 닉네임 설정
+        PhotonNetwork.LocalPlayer.NickName = dappxAPIDataConroller.GetUserProfile.userProfile.username;
         PhotonNetwork.JoinLobby();
         chatManager.ConnectedMyChat();  // 챗 연결
         // 월렛 텍스트 업데이트
-        Invoke("WalletUpdate", 2f);
+        Invoke("UserInfoUpdate", 2f);
     }
 
-    void WalletUpdate() => myWallet.MoneyUpdate();
+    void UserInfoUpdate()
+    {
+        
+        myWallet.MoneyUpdate();
+    } 
 
     // 마스터 서버 연결이 끊겼을 때 호출되는 함수.
     public override void OnDisconnected(DisconnectCause cause) => Debug.Log("OnDisConnected : " + cause);

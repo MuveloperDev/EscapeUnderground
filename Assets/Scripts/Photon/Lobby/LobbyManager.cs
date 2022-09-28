@@ -61,7 +61,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         createRoomPanel.gameObject.SetActive(false);
         roomPanel.gameObject.SetActive(false);
 
-        nickNameText.text = "Player : " + dappxAPIDataConroller.GetUserProfile.userProfile.username;
+        nickNameText.text = "Player : " + PhotonNetwork.NickName;
     }
 
     private void Update()
