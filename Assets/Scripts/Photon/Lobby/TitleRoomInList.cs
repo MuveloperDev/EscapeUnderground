@@ -16,10 +16,13 @@ public class TitleRoomInList : MonoBehaviourPun
     public TextMeshProUGUI RoomInPlayerCntText  = null;     // 플레이어 수 텍스트
     public TextMeshProUGUI costText             = null;     // 플레이어 수 텍스트
 
-    MyWallet myWallet = null;   // myWallet
+    MyWallet myWallet           = null;   // myWallet
+    AudioManager audioManager   = null;   // audioManager
     private void OnEnable()
     {
-        myWallet = FindObjectOfType<MyWallet>();
+        myWallet        = FindObjectOfType<MyWallet>();
+        audioManager    = FindObjectOfType<AudioManager>();
+
     }
     private void Update()
     {
@@ -33,6 +36,7 @@ public class TitleRoomInList : MonoBehaviourPun
         // Cost를 지불할 수 없다면 리턴.
         if (myWallet.MyMoney < cost) return;
 
+        audioManager.SoundPlay(audioManager.ClickSound);
         // 방에 들어간다면 코스트를 지불하고 들어가야 한다.
         PhotonNetwork.JoinRoom(roomName);
     }

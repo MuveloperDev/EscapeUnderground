@@ -52,18 +52,10 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     // 마스터 서버 연결 끊기.
     public void OnClickDiconnectToMasterServer() => PhotonNetwork.Disconnect();
 
-    // 로비에 접속하기.
-    public void OnClickJoinLobby()
-    {
-        PhotonNetwork.JoinLobby();      // 로비연결
-        chatManager.ConnectedMyChat();  // 챗 연결
-    }
-
-
     // Photon Cloud Server에 접속에 성공시 불리는 콜백 함수.
     public override void OnConnectedToMaster() {
         PhotonNetwork.JoinLobby();
-
+        chatManager.ConnectedMyChat();  // 챗 연결
         // 월렛 텍스트 업데이트
         myWallet.moneyUpdate();
     }
@@ -96,11 +88,22 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     // 플레이어가 방에 입장시 정보 업데이트
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
+        // 방 인원수 업데이트
         roomPanel.CntPlayersTxt = string.Format("[ {0} / {1} ]", PhotonNetwork.CurrentRoom.Players.Count, PhotonNetwork.CurrentRoom.MaxPlayers);
-        roomPanel.ChallengerClientNameText = "Challenger : " +  newPlayer.NickName;
+
+        // Challenger Info Panel 업데이트
+        roomPanel.ChallengerPanel.gameObject.SetActive(true);
+        TextMeshProUGUI challengerText = roomPanel.ChallengerPanel.GetComponentInChildren<TextMeshProUGUI>();
+        challengerText.text = newPlayer.NickName;
+
+        // 방을 닫는다.
         PhotonNetwork.CurrentRoom.IsOpen = false;
-        PhotonNetwork.LoadLevel("GameScene");
+        // 2초뒤에 시작.
+        Invoke("WaitForLoadLevel", 2f);
     }
+
+    void WaitForLoadLevel() => PhotonNetwork.LoadLevel("GameScene");
+
 
     // 랜덤조인이 실패했을 경우
     public override void OnJoinRandomFailed(short returnCode, string message) => Debug.Log("OnJoinRandomFailed : " + message);
