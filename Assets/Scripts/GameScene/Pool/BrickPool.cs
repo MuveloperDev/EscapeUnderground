@@ -15,12 +15,11 @@ public class BrickPool : BaseObjectPool<BrickPool, GameObject>
         brickType[2] = Resources.Load<GameObject>("Prefabs/Brick/Stone Brick");
     }
 
-    protected override GameObject Create()
+    protected override GameObject getPrefab()
     {
-        idx = Random.Range(0, 3);
+        idx = Random.RandomRange(0, 3);
         return brickType[idx];
     }
-
     public override GameObject Get(Vector3 position)
     {
         return base.Get(position);
@@ -28,7 +27,6 @@ public class BrickPool : BaseObjectPool<BrickPool, GameObject>
 
     public override void Release(GameObject obj)
     {
-        obj.transform.SetParent(transform);
         base.Release(obj);
     }
 }

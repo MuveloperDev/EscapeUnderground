@@ -30,11 +30,11 @@ public class BrickListManager : MonoBehaviourPunCallbacks
     {
         audioManager = FindObjectOfType<AudioManager>();
         hpManager = MaxHP;
-        uiManager.SildbarSeting();
     }
     private void OnEnable()
     {
         loadSceneStart = FindObjectOfType<LoadSceneStart>();
+        uiManager.SildbarSeting();
     }
     private void Start()
     {
@@ -106,7 +106,6 @@ public class BrickListManager : MonoBehaviourPunCallbacks
         if (photonView.IsMine)
         {
             photonView.RPC("ReceiveDamage", RpcTarget.All, damage);
-            Debug.Log("CallReceveDamage" + damage);
         }
     }
 

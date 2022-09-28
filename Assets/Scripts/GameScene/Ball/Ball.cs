@@ -39,7 +39,6 @@ public class Ball : MonoBehaviourPun
     }
     void Update()
     {
-        
         if (!photonView.IsMine) return;
         if (!move && GameManager.Instance.GetSceneChang()) PlayerMove();           // Ball의 움직임
     }
@@ -111,7 +110,7 @@ public class Ball : MonoBehaviourPun
 
     void Hit(Collision2D target)
     {
-        if (photonView.IsMine)
+        //if (photonView.IsMine)
         {
             brickListManager.ReceiveDamage(attackPower);
             target.gameObject.GetComponent<Brick>().CallReceveDamage(attackPower);
