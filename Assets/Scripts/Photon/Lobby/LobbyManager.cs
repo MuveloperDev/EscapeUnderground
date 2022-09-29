@@ -36,6 +36,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     MyWallet myWallet = null;   // myWallet
     // 사운드 매니저
     AudioManager audioManager = null;
+
+    DappxAPIDataConroller dappxAPIDataConroller = null;
     private void OnEnable()
     {
         Init();
@@ -54,6 +56,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         audioManager = FindObjectOfType<AudioManager>();
         myWallet = FindObjectOfType<MyWallet>();
+        dappxAPIDataConroller = FindObjectOfType<DappxAPIDataConroller>();
         findRoomPanel.gameObject.SetActive(false);
         createRoomPanel.gameObject.SetActive(false);
         roomPanel.gameObject.SetActive(false);

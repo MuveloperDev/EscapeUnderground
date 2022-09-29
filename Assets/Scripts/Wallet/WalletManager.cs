@@ -39,7 +39,7 @@ public class WalletManager : SingleTon<WalletManager>
     {
         myWallet.MyMoney = -cost;
         moneyBet += cost;
-        myWallet.moneyUpdate();
+        myWallet.MoneyUpdate();
     }
 
     // µ·À» µ¹·Á ¹Þ´Â´Ù.
@@ -47,7 +47,7 @@ public class WalletManager : SingleTon<WalletManager>
     {
         myWallet.MyMoney = moneyBet;
         moneyBet = 0;
-        myWallet.moneyUpdate();
+        myWallet.MoneyUpdate();
     }
 
     // ½Â¸®½Ã µ·À» °¡Áø´Ù.
@@ -55,7 +55,7 @@ public class WalletManager : SingleTon<WalletManager>
     {
         myWallet.MyMoney = moneyBet * 2;
         moneyBet = 0;
-        myWallet.moneyUpdate();
+        myWallet.MoneyUpdate();
     }
 
     // ÆÐ¹è½Ã µ·À» ÀÒ´Â´Ù.
