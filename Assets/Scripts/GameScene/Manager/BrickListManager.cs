@@ -16,6 +16,7 @@ public class BrickListManager : MonoBehaviourPunCallbacks
     [SerializeField] private UIManager uiManager;
 
     [SerializeField] string sessionId = null;
+    [SerializeField] string[] sessionIds = null;
 
     // 최대 체력과 현재 체력을 넘겨줄 프로퍼티
     public float FullHP { get { return fullHP; } }
@@ -48,37 +49,54 @@ public class BrickListManager : MonoBehaviourPunCallbacks
     {
         fullCurHP = fullHP;
 
-        Invoke("StartBetting", 2f);
+        // 객체별 세션아이디 설정
+        if (!photonView.IsMine) return;
+        photonView.RPC("SetSessionID", RpcTarget.Others, dappxAPIDataConroller.GetSessionID.sessionId);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            Debug.Log("IsMasterClient : " + PhotonNetwork.IsMasterClient);
+            Invoke("StartBetting", 2f);
+        }
+
     }
 
     // ----------------------------------배팅관련-----------------------------------------------------
     [PunRPC]
     void SetSessionID(string sessionId)
     {
-        this.sessionId = sessionId;
+        if (!photonView.IsMine) return;
+        if (this.sessionId.Length <= 0)
+        {
+            this.sessionId = sessionId;
+        }
+        
+        Debug.Log("SessionId In SetSessionID : " + this.sessionId);
+        Debug.Log("SessionId In SetSessionIDPram : " + sessionId);
     }
 
     void StartBetting()
     {
+        if (!photonView.IsMine) return;
         Debug.Log("################## StartBettings");
-        // 객체별 세션아이디 설정
-        if (photonView.IsMine)
-            photonView.RPC("SetSessionID", RpcTarget.Others, dappxAPIDataConroller.GetSessionID.sessionId);
-
         // 마스터 클라이언트만 실행.
-        if (PhotonNetwork.IsMasterClient) Invoke("SetSessionIDArr", 1f);
+        if (PhotonNetwork.IsMasterClient) Invoke("SetSessionIDArr", 2f);
     }
 
     void SetSessionIDArr()
     {
         Debug.Log("################## SetSesstionIDArr");
         BrickListManager[] brickListManager = FindObjectsOfType<BrickListManager>();
+
+        Debug.Log("BrickListManager[] : " + dappxAPIDataConroller.GetSessionID.sessionId + "  " + brickListManager[1].sessionId);
+
         string[] sessionId = new string[2];
 
-        sessionId[0] = brickListManager[0].SessionID;
+        sessionId[0] = dappxAPIDataConroller.GetSessionID.sessionId;
+        Debug.Log("######## # ######## sessionId[0] : " + sessionId[0]);
         sessionId[1] = brickListManager[1].SessionID;
-
-        //dappxAPIDataConroller.SessionIdArr = sessionId;
+        Debug.Log("######## # ######## sessionId[1] : " + sessionId[1]);
+        sessionIds = sessionId;
+        dappxAPIDataConroller.SessionIdArr = sessionId;
         // 배팅 시작.
         dappxAPIDataConroller.BettingCoinToZera(sessionId);
     }

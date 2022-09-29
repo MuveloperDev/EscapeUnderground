@@ -120,12 +120,12 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     // 방 생성
     void OnClickCreateRoom()
     {
-        if(!PhotonNetwork.InLobby) return ;
-        // 배팅 금액
-        float cost = WalletManager.Instance.SetCost();
+        //if(!PhotonNetwork.InLobby) return ;
+        //// 배팅 금액
+        ////float cost = WalletManager.Instance.SetCost();
 
-        // 코스트를 지불할 수 없다면 리턴.
-        if (myWallet.MyMoney < cost) return;
+        //// 코스트를 지불할 수 없다면 리턴.
+        //if (myWallet.MyMoney < cost) return;
 
         // 내가 방을 만든다면 코스트를 지불하고 방을 만든다.
         //WalletManager.Instance.BetMoney(cost);
@@ -134,12 +134,12 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         RoomOptions roomOptions = new RoomOptions();
         roomOptions.MaxPlayers = 2;
 
-        // 룸 안에서의 프로퍼티를 정의.
-        roomOptions.CustomRoomProperties = new Hashtable() { { "Cost",  cost } };
-        // 로비로 내려줄 프로퍼티를 정해주어야 한다.
-        // 형식은 string의 배열 형태로 CustomRoomPropertiesForLobby에 담아주어야 로비에서 받아 사용이 가능하다.
-        string[] CustomPropertiesListForLobby = new string[] { "Cost"};
-        roomOptions.CustomRoomPropertiesForLobby = CustomPropertiesListForLobby;
+        //// 룸 안에서의 프로퍼티를 정의.
+        //roomOptions.CustomRoomProperties = new Hashtable() { { "Cost",  cost } };
+        //// 로비로 내려줄 프로퍼티를 정해주어야 한다.
+        //// 형식은 string의 배열 형태로 CustomRoomPropertiesForLobby에 담아주어야 로비에서 받아 사용이 가능하다.
+        //string[] CustomPropertiesListForLobby = new string[] { "Cost"};
+        //roomOptions.CustomRoomPropertiesForLobby = CustomPropertiesListForLobby;
 
         // 재정의된 룸옵션을 룸에 담아준다.
         PhotonNetwork.CreateRoom(roomNameInputField.text, roomOptions) ;

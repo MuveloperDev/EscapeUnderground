@@ -169,8 +169,11 @@ public class DappxAPIDataConroller : MonoBehaviour
         RequestBettingPlcaeBet requestBettingPlcaeBet = new RequestBettingPlcaeBet();
         // 저장한 SessionID를 넣어준다.
         requestBettingPlcaeBet.player_session_id = sessionIdArr;
+        Debug.Log("####################### Retrun Sucsess sessionIDARR ");
+        Debug.Log("##Sucsess sessionIDARR " + requestBettingPlcaeBet.player_session_id);
         // 배팅 설정.
         requestBettingPlcaeBet.bet_id = betSettings.data.bets[0]._id;
+        Debug.Log("####################### Retrun Sucsess BettingSettings ");
         yield return RequestCoinPlaceBet("zera", requestBettingPlcaeBet, (response) =>
         {
             if (response != null)
