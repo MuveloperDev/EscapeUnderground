@@ -8,6 +8,8 @@ public class DappxAPIDataConroller : MonoBehaviour
 {
     public static DappxAPIDataConroller Instance;
 
+    [SerializeField] string[] sessionIdArr = new string[2];
+
     [Header("[등록된 프로젝트에서 획득가능한 API 키]")]
     [Tooltip("이것은 http://odin-registration-sat.browseosiris.com/# 에 등록된 프로젝트를 통해서 획득할 수 있는 API Key 이다.\nhttps://odin-registration.browseosiris.com/ 는 Production URL")]
     [SerializeField] string API_KEY = "3eg6tzd40ytTvxZJrDXSu9";
@@ -56,6 +58,7 @@ public class DappxAPIDataConroller : MonoBehaviour
     BalanceInfo     aceBalanceInfo      = null;     // Save CoinStorageInfo 
     BalanceInfo     dappXBalanceInfo    = null;     // Save CoinStorageInfo 
 
+    public string[] SessionIdArr { get { return sessionIdArr; } set { sessionIdArr = value; } }
     public GetUserProfile   GetUserProfile      { get { return getUserProfile; }}
     public GetSessionID     GetSessionID        { get { return getSessionID; }}
     public BetSettings      BetSettings         { get { return betSettings; }}
@@ -74,6 +77,23 @@ public class DappxAPIDataConroller : MonoBehaviour
     public void Check_DappXCoinBalance() => StartCoroutine(ProcessRequestCoinBalance("dappx"));
     #endregion
 
+    #region Bet_Function
+    /// <summary>
+    /// Betting Zera Coin
+    /// </summary>
+    public void BettingCoinToZera(string[] sessionIdArr)
+    { 
+        StartCoroutine(ProcessRequestBettingZera(sessionIdArr));
+    }
+    /// <summary>
+    /// Declare Winner
+    /// </summary>
+    public void BettingZara_DeclareWinner()
+    {
+        StartCoroutine(ProcessRequestBettingZara_DeclareWinner());
+    }
+
+    #endregion
 
     // Get UserProfile Info to DappxAPI
     IEnumerator ProcessRequestGetUserInfo()
@@ -113,7 +133,11 @@ public class DappxAPIDataConroller : MonoBehaviour
                 betSettings = response;
                 Debug.Log("## BetSettings " + betSettings.ToString());
                 Debug.Log("## BetSettings.settings : " + betSettings.data.settings.ToString());
-                Debug.Log("## BetSettings.bets : " + betSettings.data.bets.ToString());
+                for (int i = 0; i < betSettings.data.bets.Length; i++)
+                {
+                    Debug.Log("## BetSettings.bets : " + i);
+                    Debug.Log("## BetSettings.bets : " + betSettings.data.bets[i].ToString());
+                }
                 Check_ZeraCoinBalance();
                 Check_AceCoinBalance();
                 Check_DappXCoinBalance();
@@ -137,6 +161,63 @@ public class DappxAPIDataConroller : MonoBehaviour
             }
         });
     }
+
+    // 자라코인 배팅 시작
+    IEnumerator ProcessRequestBettingZera(string[] sessionIdArr)
+    { 
+        ResponseBettingPlaceBet responseBettingPlaceBet = null;
+        RequestBettingPlcaeBet requestBettingPlcaeBet = new RequestBettingPlcaeBet();
+        // 저장한 SessionID를 넣어준다.
+        requestBettingPlcaeBet.player_session_id = sessionIdArr;
+        // 배팅 설정.
+        requestBettingPlcaeBet.bet_id = betSettings.data.bets[0]._id;
+        yield return RequestCoinPlaceBet("zera", requestBettingPlcaeBet, (response) =>
+        {
+            if (response != null)
+            {
+                Debug.Log("### CoinPlaceBet : " + response.message);
+                responseBettingPlaceBet = response;
+            }
+        });
+    }
+
+    // 승자 자라코인 회수
+    IEnumerator ProcessRequestBettingZara_DeclareWinner()
+    { 
+        ResponseBettingDeclareWinner responseBettingDeclareWinner = null;
+        RequestBettingDeclareWinner requestBettingDeclareWinner = new RequestBettingDeclareWinner();
+        requestBettingDeclareWinner.betting_id = betSettings.data.bets[0]._id;
+        requestBettingDeclareWinner.winner_player_id = getUserProfile.userProfile._id;
+        yield return RequestCoinDeclareWinner("Zara", requestBettingDeclareWinner, (response) => {
+            if (response != null)
+            {
+                Debug.Log("## CoinDeclareWinner : " + response.message);
+                // 이러면 웹으로
+                responseBettingDeclareWinner = response;
+            }
+        
+        });
+    }
+
+    //// 베팅금액 반환
+    //public void OnClick_Betting_Zera_Disconnect()
+    //{
+    //    StartCoroutine(processRequestBetting_Zera_Disconnect());
+    //}
+    //IEnumerator processRequestBetting_Zera_Disconnect()
+    //{
+    //    ResBettingDisconnect resBettingDisconnect = null;
+    //    ReqBettingDisconnect reqBettingDisconnect = new ReqBettingDisconnect();
+    //    reqBettingDisconnect.betting_id = selectedBettingID;// resSettigns.data.bets[1]._id;
+    //    yield return requestCoinDisconnect(reqBettingDisconnect, (response) =>
+    //    {
+    //        if (response != null)
+    //        {
+    //            Debug.Log("## CoinDisconnect : " + response.message);
+    //            resBettingDisconnect = response;
+    //        }
+    //    });
+    //}
 
     //----------------------------------------------------------
 
@@ -186,7 +267,7 @@ public class DappxAPIDataConroller : MonoBehaviour
         BetSettings settings = JsonUtility.FromJson<BetSettings>(www.downloadHandler.text);
         callback(settings);
     }
-
+    
     // ???? 문서에는 apiKey 필요없다고 했는데..
     /// <summary>
     /// Check amount coin to Ace, Zera, Dappx to DappxAPI
@@ -219,11 +300,14 @@ public class DappxAPIDataConroller : MonoBehaviour
 
         UnityWebRequest www = UnityWebRequest.Post(url, reqJsonData);
         // Post는 웹에 생성 요청을 하기 때문에 UTF8로 Json값을 인코딩해주어야 한다.
+        // 서버와 데이터를 주고받을 때 서버는 byte형식으로 받기때문에
+        // byte로 변환해서 넘겨주어야한다.
         byte[] buff = System.Text.Encoding.UTF8.GetBytes(reqJsonData);
         // ???? 이건 무엇?
         www.uploadHandler = new UploadHandlerRaw(buff);
         www.SetRequestHeader("api-key", API_KEY);
         // ????? 문서 헤더에는 없는데...?
+        // 바디데이터가 json형식이라는 것을 명시
         www.SetRequestHeader("Content-Type", "application/json");
         yield return www.SendWebRequest();
 
@@ -257,6 +341,7 @@ public class DappxAPIDataConroller : MonoBehaviour
 
     }
 
+    // 돈 회수 함수 구현 X 게임 기능상 필요 X
     /// <summary>
     /// Coin DisConnect
     /// </summary>
@@ -271,6 +356,8 @@ public class DappxAPIDataConroller : MonoBehaviour
 
         UnityWebRequest www = UnityWebRequest.Post(url, reqJsonData);
         byte[] buff = System.Text.Encoding.UTF8.GetBytes(reqJsonData);
+
+
         www.uploadHandler = new UploadHandlerRaw(buff);
 
         www.SetRequestHeader("api-key", API_KEY);

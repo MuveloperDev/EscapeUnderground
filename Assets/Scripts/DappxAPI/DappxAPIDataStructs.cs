@@ -131,6 +131,7 @@ public class RequestBettingPlcaeBet
     public string[] player_session_id;
     public string bet_id;
 }
+
 /// <summary>
 /// Bet Coin
 /// </summary>

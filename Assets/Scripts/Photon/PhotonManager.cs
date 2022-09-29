@@ -100,8 +100,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     {
         lobbyPanel.gameObject.SetActive(false);
         roomPanel.gameObject.SetActive(true);
-        WalletManager.Instance.BetMoney((float)PhotonNetwork.CurrentRoom.CustomProperties["Cost"]);
-
 
     }
     // 플레이어가 방에 입장시 정보 업데이트
@@ -114,6 +112,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         roomPanel.ChallengerPanel.gameObject.SetActive(true);
         TextMeshProUGUI challengerText = roomPanel.ChallengerPanel.GetComponentInChildren<TextMeshProUGUI>();
         challengerText.text = newPlayer.NickName;
+        
+        // 배팅
+
 
         // 방을 닫는다.
         PhotonNetwork.CurrentRoom.IsOpen = false;
