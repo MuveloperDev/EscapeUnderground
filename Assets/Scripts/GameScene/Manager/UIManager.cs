@@ -68,7 +68,7 @@ public class UIManager : MonoBehaviourPun
     public void SildbarSeting()
     {
         GameObject sliderHp = Instantiate(sliderHpPrefab, transform.position, Quaternion.identity, GameObject.Find("Canvas/HPSliders").transform);
-        sliderHp.transform.position = Camera.main.WorldToScreenPoint(new Vector2(transform.position.x-3, -5.1f));
+        sliderHp.transform.position = Camera.main.WorldToScreenPoint(new Vector2(transform.position.x-2.45f, -5.1f));
     }
     public void CallUpdateHpText(Transform obj, float curHP)
     {
