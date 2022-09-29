@@ -15,8 +15,6 @@ public class BrickListManager : MonoBehaviourPunCallbacks
     [SerializeField] private float fullCurHP;
     [SerializeField] private UIManager uiManager;
 
-    [SerializeField] string sessionId = null;
-    [SerializeField] string[] sessionIds = null;
 
     // 최대 체력과 현재 체력을 넘겨줄 프로퍼티
     public float FullHP { get { return fullHP; } }
@@ -29,6 +27,7 @@ public class BrickListManager : MonoBehaviourPunCallbacks
     // 댑엑스 api 값 접근
     [SerializeField] DappxAPIDataConroller dappxAPIDataConroller;
 
+    [SerializeField] string sessionId = null;
 
     public string SessionID { get { return sessionId; } }
 
@@ -49,12 +48,19 @@ public class BrickListManager : MonoBehaviourPunCallbacks
     {
         fullCurHP = fullHP;
 
-        // 객체별 세션아이디 설정
-        if (!photonView.IsMine) return;
+        // 나의 객체면 sseionID 할당. 아니라면 리턴
+        if (photonView.IsMine) sessionId = dappxAPIDataConroller.GetSessionID.sessionId;
+        else return;
+
+        // 상대 로컬의 나의 객체의 SessionID를 갱신한다.
         photonView.RPC("SetSessionID", RpcTarget.Others, dappxAPIDataConroller.GetSessionID.sessionId);
+        
+        // 마스터 클라이언트만 배팅 관련 서버처리.
         if (PhotonNetwork.IsMasterClient)
         {
             Debug.Log("IsMasterClient : " + PhotonNetwork.IsMasterClient);
+
+            // 스타트베팅은 2초뒤에 실행. 플레이어 생성 및 서버동기화를 기다려준다.
             Invoke("StartBetting", 2f);
         }
 
@@ -64,39 +70,37 @@ public class BrickListManager : MonoBehaviourPunCallbacks
     [PunRPC]
     void SetSessionID(string sessionId)
     {
-        if (!photonView.IsMine) return;
-        if (this.sessionId.Length <= 0)
-        {
-            this.sessionId = sessionId;
-        }
+        this.sessionId = sessionId;
         
         Debug.Log("SessionId In SetSessionID : " + this.sessionId);
-        Debug.Log("SessionId In SetSessionIDPram : " + sessionId);
     }
 
     void StartBetting()
     {
-        if (!photonView.IsMine) return;
         Debug.Log("################## StartBettings");
-        // 마스터 클라이언트만 실행.
-        if (PhotonNetwork.IsMasterClient) Invoke("SetSessionIDArr", 2f);
+        // 2초 뒤에 SetSessionIDArr 를 실행한다.
+        Invoke("SetSessionIDArr", 2f);
     }
 
     void SetSessionIDArr()
     {
         Debug.Log("################## SetSesstionIDArr");
+
+        // 플레이어의 SessionID를 받아오기 위해 배열로 찾아준다.
         BrickListManager[] brickListManager = FindObjectsOfType<BrickListManager>();
 
-        Debug.Log("BrickListManager[] : " + dappxAPIDataConroller.GetSessionID.sessionId + "  " + brickListManager[1].sessionId);
+        Debug.Log("BrickListManager[] : " + dappxAPIDataConroller.GetSessionID.sessionId + " / " + brickListManager[1].sessionId);
 
+        // 플레이어들의 SessionId를 담을 배열 객체를 생성한다.
+        // sessionID[0]은 나의 객체 세션 아이디를 할당한다.
+        // sessionID[1]은 상대 객체 세션 아이디를 할당한다.
         string[] sessionId = new string[2];
-
-        sessionId[0] = dappxAPIDataConroller.GetSessionID.sessionId;
+        sessionId[0] = this.sessionId;
         Debug.Log("######## # ######## sessionId[0] : " + sessionId[0]);
         sessionId[1] = brickListManager[1].SessionID;
         Debug.Log("######## # ######## sessionId[1] : " + sessionId[1]);
-        sessionIds = sessionId;
-        dappxAPIDataConroller.SessionIdArr = sessionId;
+
+        // 배열을 인자로 넘겨준다.
         // 배팅 시작.
         dappxAPIDataConroller.BettingCoinToZera(sessionId);
     }
