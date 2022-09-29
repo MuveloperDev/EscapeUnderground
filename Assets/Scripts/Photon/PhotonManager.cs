@@ -110,7 +110,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         roomPanel.CntPlayersTxt = string.Format("[ {0} / {1} ]", PhotonNetwork.CurrentRoom.Players.Count, PhotonNetwork.CurrentRoom.MaxPlayers);
 
         // Challenger Info Panel 업데이트
-        photonView.RPC("OpenChallengerPanelInRoom", RpcTarget.All);
+        photonView.RPC("OpenChallengerPanelInRoom", RpcTarget.All, newPlayer);
 
 
         // 방을 닫는다.
