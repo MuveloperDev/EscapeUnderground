@@ -1827,6 +1827,7 @@ MonoBehaviour:
   audioManager: {fileID: 0}
   jsonDataController: {fileID: 0}
   myWallet: {fileID: 0}
+  dappxAPIDataConroller: {fileID: 0}
 --- !u!4 &441722645
 Transform:
   m_ObjectHideFlags: 0

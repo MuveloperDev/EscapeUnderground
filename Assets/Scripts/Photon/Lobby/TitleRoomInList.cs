@@ -34,7 +34,7 @@ public class TitleRoomInList : MonoBehaviourPun
     {
         Debug.Log("JoinROom");
         // Cost를 지불할 수 없다면 리턴.
-        if (myWallet.MyMoney < cost) return;
+        //if (myWallet.MyMoney < cost) return;
 
         audioManager.SoundPlay(audioManager.ClickSound);
         // 방에 들어간다면 코스트를 지불하고 들어가야 한다.

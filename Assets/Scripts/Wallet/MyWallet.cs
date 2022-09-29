@@ -39,7 +39,6 @@ public class MyWallet : MonoBehaviour
 
     private void Start()
     {
-        money = 10000;
         //MoneyUpdate();
     }
 

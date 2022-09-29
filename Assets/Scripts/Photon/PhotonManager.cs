@@ -49,6 +49,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     void Start()
     {
         OnClickConnectToMasterServer(); // 마스터 서버 연결
+
     }
 
     // WalletPanel 알파값 조절
@@ -69,7 +70,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LocalPlayer.NickName = dappxAPIDataConroller.GetUserProfile.userProfile.username;
         PhotonNetwork.JoinLobby();
         chatManager.ConnectedMyChat();  // 챗 연결
-        // 월렛 텍스트 업데이트
+                                        // 월렛 텍스트 업데이트
         Invoke("UserInfoUpdate", 2f);
     }
 
@@ -109,11 +110,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         roomPanel.CntPlayersTxt = string.Format("[ {0} / {1} ]", PhotonNetwork.CurrentRoom.Players.Count, PhotonNetwork.CurrentRoom.MaxPlayers);
 
         // Challenger Info Panel 업데이트
-        roomPanel.ChallengerPanel.gameObject.SetActive(true);
-        TextMeshProUGUI challengerText = roomPanel.ChallengerPanel.GetComponentInChildren<TextMeshProUGUI>();
-        challengerText.text = newPlayer.NickName;
-        
-        // 배팅
+        photonView.RPC("OpenChallengerPanelInRoom", RpcTarget.All);
 
 
         // 방을 닫는다.
@@ -122,6 +119,14 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         Invoke("WaitForLoadLevel", 2f);
     }
 
+    [PunRPC]
+    void OpenChallengerPanelInRoom(Player newPlayer)
+    {
+        // Challenger Info Panel 업데이트
+        roomPanel.ChallengerPanel.gameObject.SetActive(true);
+        TextMeshProUGUI challengerText = roomPanel.ChallengerPanel.GetComponentInChildren<TextMeshProUGUI>();
+        challengerText.text = newPlayer.NickName;
+    }
     void WaitForLoadLevel() => PhotonNetwork.LoadLevel("GameScene");
 
 
@@ -175,7 +180,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
         // 커스텀 프로퍼티로 방의 값을 추가한다.
         //roomInfo.CustomProperties.Add("cost", WalletManager.Instance.SetCost());
-        roomObj.cost = (float)roomInfo.CustomProperties["Cost"];
+        //roomObj.cost = (float)roomInfo.CustomProperties["Cost"];
     }
 
     #endregion
