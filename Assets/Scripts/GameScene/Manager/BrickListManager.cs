@@ -15,7 +15,7 @@ public class BrickListManager : MonoBehaviourPunCallbacks
     [SerializeField] private float fullCurHP;
     [SerializeField] private UIManager uiManager;
 
-    
+    [SerializeField] string sessionId = null;
 
     // 최대 체력과 현재 체력을 넘겨줄 프로퍼티
     public float FullHP { get { return fullHP; } }
@@ -25,9 +25,17 @@ public class BrickListManager : MonoBehaviourPunCallbacks
 
     [SerializeField] AudioManager audioManager = null;
     [SerializeField] LoadSceneStart loadSceneStart = null;
+    // 댑엑스 api 값 접근
+    [SerializeField] DappxAPIDataConroller dappxAPIDataConroller;
+
+
+    public string SessionID { get { return sessionId; } }
+
+    
 
     private void Awake()
     {
+        dappxAPIDataConroller = FindObjectOfType<DappxAPIDataConroller>();
         audioManager = FindObjectOfType<AudioManager>();
         hpManager = MaxHP;
     }
@@ -39,8 +47,42 @@ public class BrickListManager : MonoBehaviourPunCallbacks
     private void Start()
     {
         fullCurHP = fullHP;
+
+        Invoke("StartBetting", 2f);
     }
 
+    // ----------------------------------배팅관련-----------------------------------------------------
+    [PunRPC]
+    void SetSessionID(string sessionId)
+    {
+        this.sessionId = sessionId;
+    }
+
+    void StartBetting()
+    {
+        Debug.Log("################## StartBettings");
+        // 객체별 세션아이디 설정
+        if (photonView.IsMine)
+            photonView.RPC("SetSessionID", RpcTarget.Others, dappxAPIDataConroller.GetSessionID.sessionId);
+
+        // 마스터 클라이언트만 실행.
+        if (PhotonNetwork.IsMasterClient) Invoke("SetSessionIDArr", 1f);
+    }
+
+    void SetSessionIDArr()
+    {
+        Debug.Log("################## SetSesstionIDArr");
+        BrickListManager[] brickListManager = FindObjectsOfType<BrickListManager>();
+        string[] sessionId = new string[2];
+
+        sessionId[0] = brickListManager[0].SessionID;
+        sessionId[1] = brickListManager[1].SessionID;
+
+        //dappxAPIDataConroller.SessionIdArr = sessionId;
+        // 배팅 시작.
+        dappxAPIDataConroller.BettingCoinToZera(sessionId);
+    }
+    // ---------------------------------------------------------------------------------------------------------
 
 
     private void Update()
@@ -67,6 +109,9 @@ public class BrickListManager : MonoBehaviourPunCallbacks
         audioManager.BGMSound(clip);
         if (trigger == 0)
         {
+            // 승자 돈 회수
+            dappxAPIDataConroller.BettingZara_DeclareWinner();
+
             uiManager.ShowWinText();
             Invoke("LoadWin", 3f);
         }
@@ -79,12 +124,10 @@ public class BrickListManager : MonoBehaviourPunCallbacks
 
     void LoadLose()
     {
-        WalletManager.Instance.LoseMoney();
         photonView.RPC("LoadStartScene", RpcTarget.All);
     }
     void LoadWin()
     {
-        WalletManager.Instance.GetMoney();
         photonView.RPC("LoadStartScene", RpcTarget.All);
     }
 
