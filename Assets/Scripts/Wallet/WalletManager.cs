@@ -37,7 +37,7 @@ public class WalletManager : SingleTon<WalletManager>
     // 돈을 배팅 한다.
     public void BetMoney(float cost)
     {
-        myWallet.MyMoney = -cost;
+        //myWallet.MyMoney = -cost;
         moneyBet += cost;
         myWallet.MoneyUpdate();
     }
@@ -45,7 +45,7 @@ public class WalletManager : SingleTon<WalletManager>
     // 돈을 돌려 받는다.
     public void GiveBackMoney()
     {
-        myWallet.MyMoney = moneyBet;
+        //myWallet.MyMoney = moneyBet;
         moneyBet = 0;
         myWallet.MoneyUpdate();
     }
@@ -53,7 +53,7 @@ public class WalletManager : SingleTon<WalletManager>
     // 승리시 돈을 가진다.
     public void GetMoney()
     {
-        myWallet.MyMoney = moneyBet * 2;
+        //myWallet.MyMoney = moneyBet * 2;
         moneyBet = 0;
         myWallet.MoneyUpdate();
     }
