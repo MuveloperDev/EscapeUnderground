@@ -243,7 +243,7 @@ public class DappxAPIDataConroller : MonoBehaviour
     {
         // 유저 프로필을 가져온다.
         // UnityWebRequest : 웹 서버와 통신을 제공한다.
-        UnityWebRequest www = UnityWebRequest.Get("http://localhost:8546/api/getuserprofile");
+        using UnityWebRequest www = UnityWebRequest.Get("http://localhost:8546/api/getuserprofile");
         // SendWebRequest : 원격서버와 통신을 시작하는 함수이다.
         yield return www.SendWebRequest();
 
@@ -260,7 +260,7 @@ public class DappxAPIDataConroller : MonoBehaviour
     /// </summary>
     IEnumerator RequestGetSessionID(Action<GetSessionID> callback)
     {
-        UnityWebRequest www = UnityWebRequest.Get("http://localhost:8546/api/getsessionid");
+        using UnityWebRequest www = UnityWebRequest.Get("http://localhost:8546/api/getsessionid");
         yield return www.SendWebRequest();
         GetSessionID getSessionID = JsonUtility.FromJson<GetSessionID>(www.downloadHandler.text);
         callback(getSessionID);
@@ -275,7 +275,7 @@ public class DappxAPIDataConroller : MonoBehaviour
     IEnumerator RequestBetSettings(Action<BetSettings> callback)
     {
         string url = GetBaseURL() + "/v1/betting/settings";
-        UnityWebRequest www = UnityWebRequest.Get(url);
+        using UnityWebRequest www = UnityWebRequest.Get(url);
         www.SetRequestHeader("api-key", API_KEY);
         yield return www.SendWebRequest();
         BetSettings settings = JsonUtility.FromJson<BetSettings>(www.downloadHandler.text);
@@ -290,7 +290,7 @@ public class DappxAPIDataConroller : MonoBehaviour
     {
         string url = GetBaseURL() + "/v1/betting/" + coinStorage + "/balance/" + sessionID;
         Debug.Log(url);
-        UnityWebRequest www = UnityWebRequest.Get(url);
+        using UnityWebRequest www = UnityWebRequest.Get(url);
         www.SetRequestHeader("api-key", API_KEY);
         yield return www.SendWebRequest();
         Debug.Log(www.downloadHandler.text);
@@ -312,8 +312,7 @@ public class DappxAPIDataConroller : MonoBehaviour
         // 배팅을 한 플레이어들의 sessionId와 Bet_id를 Json으로 넘겨준다.
         string requestJsonData = JsonUtility.ToJson(request);
         Debug.Log(requestJsonData);
-
-        UnityWebRequest www = UnityWebRequest.Post(url, requestJsonData);
+        using UnityWebRequest www = UnityWebRequest.Post(url, requestJsonData);
 
         // Post는 웹서버에 생성 요청을 하기 때문에 UTF8로 Json값을 인코딩해주어야 한다.
         // 서버와 데이터를 주고받을 때 서버는 byte형식으로 받기때문에
@@ -347,7 +346,7 @@ public class DappxAPIDataConroller : MonoBehaviour
         string requestJsonData = JsonUtility.ToJson(request);
         Debug.Log(requestJsonData);
 
-        UnityWebRequest www = UnityWebRequest.Post(url, requestJsonData);
+        using UnityWebRequest www = UnityWebRequest.Post(url, requestJsonData);
         byte[] buff = System.Text.Encoding.UTF8.GetBytes(requestJsonData);
         www.uploadHandler = new UploadHandlerRaw(buff);
 
