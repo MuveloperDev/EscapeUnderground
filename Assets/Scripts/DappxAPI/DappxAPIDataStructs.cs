@@ -128,7 +128,7 @@ public class BalanceInfo
 // Request Place Bet
 public class RequestBettingPlcaeBet
 {
-    public string[] player_session_id;
+    public string[] players_session_id;
     public string bet_id;
 }
 
