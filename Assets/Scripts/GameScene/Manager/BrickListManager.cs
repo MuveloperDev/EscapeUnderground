@@ -95,7 +95,7 @@ public class BrickListManager : MonoBehaviourPunCallbacks
         // sessionID[0]은 나의 객체 세션 아이디를 할당한다.
         // sessionID[1]은 상대 객체 세션 아이디를 할당한다.
         string[] sessionId = new string[2];
-        sessionId[0] = this.sessionId;
+        sessionId[0] = brickListManager[0].SessionID;
         Debug.Log("######## # ######## sessionId[0] : " + sessionId[0]);
         sessionId[1] = brickListManager[1].SessionID;
         Debug.Log("######## # ######## sessionId[1] : " + sessionId[1]);
