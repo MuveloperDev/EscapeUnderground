@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -31,10 +32,33 @@ public class MyWallet : MonoBehaviour
 
     public void MoneyUpdate()
     {
-        
-        zeraCoinTxt.text = "ZeraCoin : " + dappxAPIDataConroller.ZeraBalanceInfo.data.balance;
-        aceCoinTxt.text = "AceCoin : " + dappxAPIDataConroller.AceBalanceInfo.data.balance;
-        dappXCoinTxt.text = "DappXCoin : " + dappxAPIDataConroller.DappXBalanceInfo.data.balance;
+        StartCoroutine(BringMoney());
+        StartCoroutine(aBringMoney());
+        StartCoroutine(dBringMoney());
+    }
+
+    IEnumerator BringMoney()
+    {
+
+            yield return dappxAPIDataConroller.ZeraBalanceInfo.data.balance > 0;
+            zeraCoinTxt.text = "ZeraCoin : " + dappxAPIDataConroller.ZeraBalanceInfo.data.balance;
+
+
+    }
+    IEnumerator aBringMoney()
+    {
+
+            yield return dappxAPIDataConroller.AceBalanceInfo.data.balance > 0;
+            aceCoinTxt.text = "AceCoin : " + dappxAPIDataConroller.AceBalanceInfo.data.balance;
+
+
+    }
+    IEnumerator dBringMoney()
+    {
+
+            yield return dappxAPIDataConroller.DappXBalanceInfo.data.balance > 0;
+            dappXCoinTxt.text = "DappXCoin : " + dappxAPIDataConroller.DappXBalanceInfo.data.balance;
+
     }
 
 

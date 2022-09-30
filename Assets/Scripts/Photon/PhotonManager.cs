@@ -75,6 +75,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         dappxAPIDataConroller.Check_AceCoinBalance();
         dappxAPIDataConroller.Check_DappXCoinBalance();
         Invoke("UserInfoUpdate", 1f);
+        //myWallet.MoneyUpdate();
     }
 
     void UserInfoUpdate()
@@ -180,9 +181,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         roomObj.roomInPlayer = roomInfo.PlayerCount.ToString();
         roomObj.maxRoomInPlayer = roomInfo.MaxPlayers.ToString();
 
-        //커스텀 프로퍼티로 방의 값을 추가한다.
-        roomInfo.CustomProperties.Add("cost", dappxAPIDataConroller.BetSettings.data.bets[0].amount);
-        roomObj.cost = (float)roomInfo.CustomProperties["Cost"];
+        ////커스텀 프로퍼티로 방의 값을 추가한다.
+        //roomInfo.CustomProperties.Add("cost", dappxAPIDataConroller.BetSettings.data.bets[0].amount);
+        //roomObj.cost = (float)roomInfo.CustomProperties["Cost"];
     }
 
     #endregion

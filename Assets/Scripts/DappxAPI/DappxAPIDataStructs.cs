@@ -113,7 +113,7 @@ public class BalanceInfo
     [System.Serializable]
     public class Data
     {
-        public int balance;
+        public int balance = -1;
     }
 
     public Data data;

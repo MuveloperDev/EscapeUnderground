@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using Photon.Pun;
 using System.Collections;
 using TMPro;
+using System.Security.Cryptography;
 
 // brick의 HP를 전체 합산한 함수
 public delegate void HpManager();
@@ -24,12 +25,19 @@ public class BrickListManager : MonoBehaviourPunCallbacks
 
     [SerializeField] AudioManager audioManager = null;
     [SerializeField] LoadSceneStart loadSceneStart = null;
+
+
+
+    // DappXAPI---------------------------------------------------------
     // 댑엑스 api 값 접근
     [SerializeField] DappxAPIDataConroller dappxAPIDataConroller;
-
+    [SerializeField] BrickListManager[] brickListManager = null;
     [SerializeField] string sessionId = null;
+    [SerializeField] string userProfileId = null;
+    [SerializeField] string[] userProfileIds = new string[2];
 
     public string SessionID { get { return sessionId; } }
+    public string UserProfileID { get { return userProfileId; } }
 
     
 
@@ -49,11 +57,17 @@ public class BrickListManager : MonoBehaviourPunCallbacks
         fullCurHP = fullHP;
 
         // 나의 객체면 sseionID 할당. 아니라면 리턴
-        if (photonView.IsMine) sessionId = dappxAPIDataConroller.GetSessionID.sessionId;
+        if (photonView.IsMine)
+        { 
+            sessionId = dappxAPIDataConroller.GetSessionID.sessionId;
+            userProfileId = dappxAPIDataConroller.GetUserProfile.userProfile._id;
+        } 
         else return;
 
         // 상대 로컬의 나의 객체의 SessionID를 갱신한다.
         photonView.RPC("SetSessionID", RpcTarget.Others, dappxAPIDataConroller.GetSessionID.sessionId);
+        // 상대 로컬의 나의 객체의 userProfile_id를 갱신한다.
+        photonView.RPC("SetUserProfileID", RpcTarget.Others, userProfileId);
         
         // 마스터 클라이언트만 배팅 관련 서버처리.
         if (PhotonNetwork.IsMasterClient)
@@ -71,9 +85,15 @@ public class BrickListManager : MonoBehaviourPunCallbacks
     void SetSessionID(string sessionId)
     {
         this.sessionId = sessionId;
-        
         Debug.Log("SessionId In SetSessionID : " + this.sessionId);
     }
+    [PunRPC]
+    void SetUserProfileID(string userProfile_id)
+    {
+        this.userProfileId = userProfile_id;
+        Debug.Log("SessionId In SetSessionID : " + this.userProfileId);
+    }
+
 
     void StartBetting()
     {
@@ -87,18 +107,25 @@ public class BrickListManager : MonoBehaviourPunCallbacks
         Debug.Log("################## SetSesstionIDArr");
 
         // 플레이어의 SessionID를 받아오기 위해 배열로 찾아준다.
-        BrickListManager[] brickListManager = FindObjectsOfType<BrickListManager>();
+        brickListManager = FindObjectsOfType<BrickListManager>();
 
         Debug.Log("BrickListManager[] : " + dappxAPIDataConroller.GetSessionID.sessionId + " / " + brickListManager[1].sessionId);
 
         // 플레이어들의 SessionId를 담을 배열 객체를 생성한다.
         // sessionID[0]은 나의 객체 세션 아이디를 할당한다.
         // sessionID[1]은 상대 객체 세션 아이디를 할당한다.
+        // UserProfileID[0]은 나의 객체 userId를 할당한다.
+        // UserProfileID[1]은 상대 객체 userId를 할당한다.
         string[] sessionId = new string[2];
         sessionId[0] = brickListManager[0].SessionID;
-        Debug.Log("######## # ######## sessionId[0] : " + sessionId[0]);
+        userProfileIds[0] = brickListManager[0].UserProfileID;
         sessionId[1] = brickListManager[1].SessionID;
+        userProfileIds[1] = brickListManager[1].UserProfileID;
+
+        Debug.Log("######## # ######## sessionId[0] : " + sessionId[0]);
         Debug.Log("######## # ######## sessionId[1] : " + sessionId[1]);
+        Debug.Log("######## # ######## userProfileIds[0] : " + userProfileIds[0]);
+        Debug.Log("######## # ######## userProfileIds[1] : " + userProfileIds[1]);
 
         // 배열을 인자로 넘겨준다.
         // 배팅 시작.
@@ -131,14 +158,16 @@ public class BrickListManager : MonoBehaviourPunCallbacks
         audioManager.BGMSound(clip);
         if (trigger == 0)
         {
-            // 승자 돈 회수
-            dappxAPIDataConroller.BettingZara_DeclareWinner();
+            // 승자가 나일 때 배팅금 회수
+            dappxAPIDataConroller.BettingZara_DeclareWinner(userProfileIds[0]);
 
             uiManager.ShowWinText();
             Invoke("LoadWin", 3f);
         }
         if (trigger == 1)
         {
+            // 승자가 상대일 때 배팅금 회수
+            dappxAPIDataConroller.BettingZara_DeclareWinner(userProfileIds[1]);
             uiManager.ShowLoseText();
             Invoke("LoadLose", 3f);
         }
