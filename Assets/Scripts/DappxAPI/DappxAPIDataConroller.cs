@@ -9,6 +9,8 @@ public class DappxAPIDataConroller : MonoBehaviour
 {
     public static DappxAPIDataConroller Instance;
 
+    [SerializeField] string betId = null;
+
     [SerializeField] string[] sessionIdArr = new string[2];
 
     [Header("[등록된 프로젝트에서 획득가능한 API 키]")]
@@ -58,6 +60,8 @@ public class DappxAPIDataConroller : MonoBehaviour
     BalanceInfo     zeraBalanceInfo     = null;     // Save CoinStorageInfo 
     BalanceInfo     aceBalanceInfo      = null;     // Save CoinStorageInfo 
     BalanceInfo     dappXBalanceInfo    = null;     // Save CoinStorageInfo 
+    ResponseBettingPlaceBet         responseBettingPlaceBet         = null;     // 배팅 정보
+    ResponseBettingDeclareWinner    responseBettingDeclareWinner    = null;     // 배팅 승자 정보
 
     public string[] SessionIdArr { get { return sessionIdArr; } set { sessionIdArr = value; } }
     public GetUserProfile   GetUserProfile      { get { return getUserProfile; }}
@@ -67,7 +71,6 @@ public class DappxAPIDataConroller : MonoBehaviour
     public BalanceInfo      AceBalanceInfo      { get { return aceBalanceInfo; }}
     public BalanceInfo      DappXBalanceInfo    { get { return dappXBalanceInfo; }}
     #endregion
-
 
     #region Function_for_Connectting_UI
     public void OnClick_StartUserSetting() => StartCoroutine(ProcessRequestGetUserInfo());
@@ -140,9 +143,7 @@ public class DappxAPIDataConroller : MonoBehaviour
                     Debug.Log("## BetSettings.bets : " + i);
                     Debug.Log("## BetSettings.bets : " + betSettings.data.bets[i].ToString());
                 }
-                Check_ZeraCoinBalance();
-                Check_AceCoinBalance();
-                Check_DappXCoinBalance();
+                betId = betSettings.data.bets[0]._id;
             }
         });
     }
@@ -167,18 +168,18 @@ public class DappxAPIDataConroller : MonoBehaviour
     // 자라코인 배팅 시작
     IEnumerator ProcessRequestBettingZera(string[] sessionIdArr)
     {
-        ResponseBettingPlaceBet responseBettingPlaceBet = null;
+        
 
         // 서버에 Json파일로 넘겨주기 위해 requestBettingPlcaeBet 데이터 구조를 이용해 넘겨준다.
         RequestBettingPlcaeBet requestBettingPlcaeBet = new RequestBettingPlcaeBet();
 
         // 저장한 플레이어들의 SessionID 배열을 할당한다.
-        requestBettingPlcaeBet.player_session_id = sessionIdArr;
+        requestBettingPlcaeBet.players_session_id = sessionIdArr;
         Debug.Log("####################### Retrun Sucsess sessionIDARR ");
-        Debug.Log("##Sucsess sessionIDARR " + requestBettingPlcaeBet.player_session_id);
+        Debug.Log("##Sucsess sessionIDARR " + requestBettingPlcaeBet.players_session_id);
 
         // 배팅 설정.
-        requestBettingPlcaeBet.bet_id = betSettings.data.bets[0]._id;
+        requestBettingPlcaeBet.bet_id = betId;
         Debug.Log("####################### Retrun Sucsess BettingSettings ");
 
         yield return RequestCoinPlaceBet("zera", requestBettingPlcaeBet, (response) =>
@@ -199,10 +200,12 @@ public class DappxAPIDataConroller : MonoBehaviour
         // 서버에 Json파일로 넘겨주기 위해 RequestBettingDeclareWinner 데이터 구조를 이용해 넘겨준다.
         RequestBettingDeclareWinner requestBettingDeclareWinner = new RequestBettingDeclareWinner();
         // 배팅 id와 승리한 userProfile_id를 넘겨주기 위해 저장한다.
-        requestBettingDeclareWinner.betting_id = betSettings.data.bets[0]._id;
+        // 배팅후 반환되는 배팅 정보의 아이디를 할당한다.
+        // 승자 유저 프로필 아이디 할당.
+        requestBettingDeclareWinner.betting_id = responseBettingPlaceBet.data.betting_id;
         requestBettingDeclareWinner.winner_player_id = getUserProfile.userProfile._id;
 
-        yield return RequestCoinDeclareWinner("Zara", requestBettingDeclareWinner, (response) => {
+        yield return RequestCoinDeclareWinner("zera", requestBettingDeclareWinner, (response) => {
             if (response != null)
             {
                 Debug.Log("## CoinDeclareWinner : " + response.message);
@@ -213,25 +216,25 @@ public class DappxAPIDataConroller : MonoBehaviour
         });
     }
 
-    //// 베팅금액 반환
-    //public void OnClick_Betting_Zera_Disconnect()
-    //{
-    //    StartCoroutine(processRequestBetting_Zera_Disconnect());
-    //}
-    //IEnumerator processRequestBetting_Zera_Disconnect()
-    //{
-    //    ResBettingDisconnect resBettingDisconnect = null;
-    //    ReqBettingDisconnect reqBettingDisconnect = new ReqBettingDisconnect();
-    //    reqBettingDisconnect.betting_id = selectedBettingID;// resSettigns.data.bets[1]._id;
-    //    yield return requestCoinDisconnect(reqBettingDisconnect, (response) =>
-    //    {
-    //        if (response != null)
-    //        {
-    //            Debug.Log("## CoinDisconnect : " + response.message);
-    //            resBettingDisconnect = response;
-    //        }
-    //    });
-    //}
+    // 베팅금액 반환
+    public void Betting_Zera_Disconnect()
+    {
+        StartCoroutine(processRequestBetting_Zera_Disconnect());
+    }
+    IEnumerator processRequestBetting_Zera_Disconnect()
+    {
+        ResponseBettingDisconnect resBettingDisconnect = null;
+        RequestBettingDisconnect reqBettingDisconnect = new RequestBettingDisconnect();
+        reqBettingDisconnect.betting_id = responseBettingPlaceBet.data.betting_id;// resSettigns.data.bets[1]._id;
+        yield return RequestCoinDisConnect("zera", reqBettingDisconnect, (response) =>
+        {
+            if (response != null)
+            {
+                Debug.Log("## CoinDisconnect : " + response.message);
+                resBettingDisconnect = response;
+            }
+        });
+    }
 
     //----------------------------------------------------------
 
@@ -243,7 +246,7 @@ public class DappxAPIDataConroller : MonoBehaviour
     {
         // 유저 프로필을 가져온다.
         // UnityWebRequest : 웹 서버와 통신을 제공한다.
-        UnityWebRequest www = UnityWebRequest.Get("http://localhost:8546/api/getuserprofile");
+        using UnityWebRequest www = UnityWebRequest.Get("http://localhost:8546/api/getuserprofile");
         // SendWebRequest : 원격서버와 통신을 시작하는 함수이다.
         yield return www.SendWebRequest();
 
@@ -260,7 +263,7 @@ public class DappxAPIDataConroller : MonoBehaviour
     /// </summary>
     IEnumerator RequestGetSessionID(Action<GetSessionID> callback)
     {
-        UnityWebRequest www = UnityWebRequest.Get("http://localhost:8546/api/getsessionid");
+        using UnityWebRequest www = UnityWebRequest.Get("http://localhost:8546/api/getsessionid");
         yield return www.SendWebRequest();
         GetSessionID getSessionID = JsonUtility.FromJson<GetSessionID>(www.downloadHandler.text);
         callback(getSessionID);
@@ -275,7 +278,7 @@ public class DappxAPIDataConroller : MonoBehaviour
     IEnumerator RequestBetSettings(Action<BetSettings> callback)
     {
         string url = GetBaseURL() + "/v1/betting/settings";
-        UnityWebRequest www = UnityWebRequest.Get(url);
+        using UnityWebRequest www = UnityWebRequest.Get(url);
         www.SetRequestHeader("api-key", API_KEY);
         yield return www.SendWebRequest();
         BetSettings settings = JsonUtility.FromJson<BetSettings>(www.downloadHandler.text);
@@ -290,7 +293,7 @@ public class DappxAPIDataConroller : MonoBehaviour
     {
         string url = GetBaseURL() + "/v1/betting/" + coinStorage + "/balance/" + sessionID;
         Debug.Log(url);
-        UnityWebRequest www = UnityWebRequest.Get(url);
+        using UnityWebRequest www = UnityWebRequest.Get(url);
         www.SetRequestHeader("api-key", API_KEY);
         yield return www.SendWebRequest();
         Debug.Log(www.downloadHandler.text);
@@ -312,25 +315,26 @@ public class DappxAPIDataConroller : MonoBehaviour
         // 배팅을 한 플레이어들의 sessionId와 Bet_id를 Json으로 넘겨준다.
         string requestJsonData = JsonUtility.ToJson(request);
         Debug.Log(requestJsonData);
+        using (UnityWebRequest www = UnityWebRequest.Post(url, requestJsonData))
+        { 
 
-        UnityWebRequest www = UnityWebRequest.Post(url, requestJsonData);
+            // Post는 웹서버에 생성 요청을 하기 때문에 UTF8로 Json값을 인코딩해주어야 한다.
+            // 서버와 데이터를 주고받을 때 서버는 byte형식으로 받기때문에
+            // byte의 버퍼 형태로 변환해서 넘겨주어야한다.
+            byte[] buff = System.Text.Encoding.UTF8.GetBytes(requestJsonData);
 
-        // Post는 웹서버에 생성 요청을 하기 때문에 UTF8로 Json값을 인코딩해주어야 한다.
-        // 서버와 데이터를 주고받을 때 서버는 byte형식으로 받기때문에
-        // byte의 버퍼 형태로 변환해서 넘겨주어야한다.
-        byte[] buff = System.Text.Encoding.UTF8.GetBytes(requestJsonData);
+            // 버퍼의 임시저장소 형태로 jsom데이터를 저장하여 buffer를 서버에 Upload해준다.
+            www.uploadHandler = new UploadHandlerRaw(buff);
 
-        // 버퍼의 임시저장소 형태로 jsom데이터를 저장하여 buffer를 서버에 Upload해준다.
-        www.uploadHandler = new UploadHandlerRaw(buff);
+            www.SetRequestHeader("api-key", API_KEY);
 
-        www.SetRequestHeader("api-key", API_KEY);
+            // 헤더에는 바디데이터가 json형식이라는 것을 명시해주어야 한다.
+            www.SetRequestHeader("Content-Type", "application/json");
+            yield return www.SendWebRequest();
 
-        // 헤더에는 바디데이터가 json형식이라는 것을 명시해주어야 한다.
-        www.SetRequestHeader("Content-Type", "application/json");
-        yield return www.SendWebRequest();
-
-        ResponseBettingPlaceBet responseBettingPlaceBet = JsonUtility.FromJson<ResponseBettingPlaceBet>(www.downloadHandler.text);
-        callback(responseBettingPlaceBet);
+            ResponseBettingPlaceBet responseBettingPlaceBet = JsonUtility.FromJson<ResponseBettingPlaceBet>(www.downloadHandler.text);
+            callback(responseBettingPlaceBet);
+        }
 
     }
 
@@ -347,7 +351,7 @@ public class DappxAPIDataConroller : MonoBehaviour
         string requestJsonData = JsonUtility.ToJson(request);
         Debug.Log(requestJsonData);
 
-        UnityWebRequest www = UnityWebRequest.Post(url, requestJsonData);
+        using UnityWebRequest www = UnityWebRequest.Post(url, requestJsonData);
         byte[] buff = System.Text.Encoding.UTF8.GetBytes(requestJsonData);
         www.uploadHandler = new UploadHandlerRaw(buff);
 

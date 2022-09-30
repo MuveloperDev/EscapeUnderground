@@ -61,7 +61,7 @@ public class BrickListManager : MonoBehaviourPunCallbacks
             Debug.Log("IsMasterClient : " + PhotonNetwork.IsMasterClient);
 
             // 스타트베팅은 2초뒤에 실행. 플레이어 생성 및 서버동기화를 기다려준다.
-            Invoke("StartBetting", 2f);
+            Invoke("StartBetting", 1f);
         }
 
     }
@@ -79,7 +79,7 @@ public class BrickListManager : MonoBehaviourPunCallbacks
     {
         Debug.Log("################## StartBettings");
         // 2초 뒤에 SetSessionIDArr 를 실행한다.
-        Invoke("SetSessionIDArr", 2f);
+        Invoke("SetSessionIDArr", 1f);
     }
 
     void SetSessionIDArr()
