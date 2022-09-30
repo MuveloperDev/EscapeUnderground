@@ -92,9 +92,9 @@ public class DappxAPIDataConroller : MonoBehaviour
     /// <summary>
     /// Declare Winner
     /// </summary>
-    public void BettingZara_DeclareWinner()
+    public void BettingZara_DeclareWinner(string userProfile_id)
     {
-        StartCoroutine(ProcessRequestBettingZara_DeclareWinner());
+        StartCoroutine(ProcessRequestBettingZara_DeclareWinner(userProfile_id));
     }
 
     #endregion
@@ -193,7 +193,7 @@ public class DappxAPIDataConroller : MonoBehaviour
     }
 
     // 승자 자라코인 회수
-    IEnumerator ProcessRequestBettingZara_DeclareWinner()
+    IEnumerator ProcessRequestBettingZara_DeclareWinner(string userProfile_id)
     { 
         ResponseBettingDeclareWinner responseBettingDeclareWinner = null;
 
@@ -203,7 +203,9 @@ public class DappxAPIDataConroller : MonoBehaviour
         // 배팅후 반환되는 배팅 정보의 아이디를 할당한다.
         // 승자 유저 프로필 아이디 할당.
         requestBettingDeclareWinner.betting_id = responseBettingPlaceBet.data.betting_id;
-        requestBettingDeclareWinner.winner_player_id = getUserProfile.userProfile._id;
+        Debug.Log(requestBettingDeclareWinner.betting_id);
+        //requestBettingDeclareWinner.winner_player_id = getUserProfile.userProfile._id;
+        requestBettingDeclareWinner.winner_player_id = userProfile_id;
 
         yield return RequestCoinDeclareWinner("zera", requestBettingDeclareWinner, (response) => {
             if (response != null)
