@@ -29,7 +29,7 @@ public class Ball : MonoBehaviourPun
     private void Start()
     {
         mouseDir = Vector3.zero;
-        pushPower = 500;
+        pushPower = 430;
         move = false;
         attackPower = 10f;
         wallCount = new float[3];
@@ -73,7 +73,8 @@ public class Ball : MonoBehaviourPun
         move = true;
        
         arrow.gameObject.SetActive(false);
-        rigid2D.AddRelativeForce(Vector2.right * pushPower, ForceMode2D.Force);         // 오브젝트의 기준으로 이동, ForceMode2D.Force = 일정한 속도로 이동
+        //rigid2D.AddRelativeForce(Vector2.right * pushPower, ForceMode2D.Force);         // 오브젝트의 기준으로 이동, ForceMode2D.Force = 일정한 속도로 이동
+        rigid2D.AddRelativeForce(Vector2.right * pushPower);
     }
 
     // 충돌시 태그에 따른 조건문
