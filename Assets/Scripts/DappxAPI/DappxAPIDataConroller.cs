@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 public class DappxAPIDataConroller : MonoBehaviour
 {
@@ -107,6 +108,7 @@ public class DappxAPIDataConroller : MonoBehaviour
                 // UserInfo
                 StartCoroutine(ProcessRequestGetSessionID());
             }
+            else SceneManager.LoadScene("TitleScene");
         });
     }
 
@@ -164,16 +166,21 @@ public class DappxAPIDataConroller : MonoBehaviour
 
     // 자라코인 배팅 시작
     IEnumerator ProcessRequestBettingZera(string[] sessionIdArr)
-    { 
+    {
         ResponseBettingPlaceBet responseBettingPlaceBet = null;
+
+        // 서버에 Json파일로 넘겨주기 위해 requestBettingPlcaeBet 데이터 구조를 이용해 넘겨준다.
         RequestBettingPlcaeBet requestBettingPlcaeBet = new RequestBettingPlcaeBet();
-        // 저장한 SessionID를 넣어준다.
+
+        // 저장한 플레이어들의 SessionID 배열을 할당한다.
         requestBettingPlcaeBet.player_session_id = sessionIdArr;
         Debug.Log("####################### Retrun Sucsess sessionIDARR ");
         Debug.Log("##Sucsess sessionIDARR " + requestBettingPlcaeBet.player_session_id);
+
         // 배팅 설정.
         requestBettingPlcaeBet.bet_id = betSettings.data.bets[0]._id;
         Debug.Log("####################### Retrun Sucsess BettingSettings ");
+
         yield return RequestCoinPlaceBet("zera", requestBettingPlcaeBet, (response) =>
         {
             if (response != null)
@@ -188,9 +195,13 @@ public class DappxAPIDataConroller : MonoBehaviour
     IEnumerator ProcessRequestBettingZara_DeclareWinner()
     { 
         ResponseBettingDeclareWinner responseBettingDeclareWinner = null;
+
+        // 서버에 Json파일로 넘겨주기 위해 RequestBettingDeclareWinner 데이터 구조를 이용해 넘겨준다.
         RequestBettingDeclareWinner requestBettingDeclareWinner = new RequestBettingDeclareWinner();
+        // 배팅 id와 승리한 userProfile_id를 넘겨주기 위해 저장한다.
         requestBettingDeclareWinner.betting_id = betSettings.data.bets[0]._id;
         requestBettingDeclareWinner.winner_player_id = getUserProfile.userProfile._id;
+
         yield return RequestCoinDeclareWinner("Zara", requestBettingDeclareWinner, (response) => {
             if (response != null)
             {
@@ -270,8 +281,8 @@ public class DappxAPIDataConroller : MonoBehaviour
         BetSettings settings = JsonUtility.FromJson<BetSettings>(www.downloadHandler.text);
         callback(settings);
     }
-    
-    // ???? 문서에는 apiKey 필요없다고 했는데..
+
+    #region CoinBalance
     /// <summary>
     /// Check amount coin to Ace, Zera, Dappx to DappxAPI
     /// </summary>
@@ -286,8 +297,9 @@ public class DappxAPIDataConroller : MonoBehaviour
         BalanceInfo balanceInfo = JsonUtility.FromJson<BalanceInfo>(www.downloadHandler.text);
         callback(balanceInfo);
     }
+    #endregion
 
-    #region BettingCoroutin
+    #region BettingCoroutine
     /// <summary>
     /// Bet Coin
     /// </summary>
@@ -297,20 +309,23 @@ public class DappxAPIDataConroller : MonoBehaviour
 
         string url = GetBaseURL() + "/v1/betting/" + coinStorage + "/place-bet";
 
-        // ??? 이거 왜하는 거지
-        string reqJsonData = JsonUtility.ToJson(request);
-        Debug.Log(reqJsonData);
+        // 배팅을 한 플레이어들의 sessionId와 Bet_id를 Json으로 넘겨준다.
+        string requestJsonData = JsonUtility.ToJson(request);
+        Debug.Log(requestJsonData);
 
-        UnityWebRequest www = UnityWebRequest.Post(url, reqJsonData);
-        // Post는 웹에 생성 요청을 하기 때문에 UTF8로 Json값을 인코딩해주어야 한다.
+        UnityWebRequest www = UnityWebRequest.Post(url, requestJsonData);
+
+        // Post는 웹서버에 생성 요청을 하기 때문에 UTF8로 Json값을 인코딩해주어야 한다.
         // 서버와 데이터를 주고받을 때 서버는 byte형식으로 받기때문에
-        // byte로 변환해서 넘겨주어야한다.
-        byte[] buff = System.Text.Encoding.UTF8.GetBytes(reqJsonData);
-        // ???? 이건 무엇?
+        // byte의 버퍼 형태로 변환해서 넘겨주어야한다.
+        byte[] buff = System.Text.Encoding.UTF8.GetBytes(requestJsonData);
+
+        // 버퍼의 임시저장소 형태로 jsom데이터를 저장하여 buffer를 서버에 Upload해준다.
         www.uploadHandler = new UploadHandlerRaw(buff);
+
         www.SetRequestHeader("api-key", API_KEY);
-        // ????? 문서 헤더에는 없는데...?
-        // 바디데이터가 json형식이라는 것을 명시
+
+        // 헤더에는 바디데이터가 json형식이라는 것을 명시해주어야 한다.
         www.SetRequestHeader("Content-Type", "application/json");
         yield return www.SendWebRequest();
 
@@ -328,11 +343,12 @@ public class DappxAPIDataConroller : MonoBehaviour
 
         string url = GetBaseURL() + "/v1/betting/" + coinStorage + "/declare-winner";
 
-        string reqJsonData = JsonUtility.ToJson(request);
-        Debug.Log(reqJsonData);
+        // 저장한 정보를 Json형태로 담아준다.
+        string requestJsonData = JsonUtility.ToJson(request);
+        Debug.Log(requestJsonData);
 
-        UnityWebRequest www = UnityWebRequest.Post(url, reqJsonData);
-        byte[] buff = System.Text.Encoding.UTF8.GetBytes(reqJsonData);
+        UnityWebRequest www = UnityWebRequest.Post(url, requestJsonData);
+        byte[] buff = System.Text.Encoding.UTF8.GetBytes(requestJsonData);
         www.uploadHandler = new UploadHandlerRaw(buff);
 
         www.SetRequestHeader("api-key", API_KEY);

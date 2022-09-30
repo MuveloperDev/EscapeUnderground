@@ -5692,11 +5692,10 @@ MonoBehaviour:
   fullHP: 0
   fullCurHP: 0
   uiManager: {fileID: 1187805532010683244}
-  sessionId: 
-  sessionIds: []
   audioManager: {fileID: 0}
   loadSceneStart: {fileID: 0}
   dappxAPIDataConroller: {fileID: 0}
+  sessionId: 
 --- !u!114 &1187805532010683244
 MonoBehaviour:
   m_ObjectHideFlags: 0
