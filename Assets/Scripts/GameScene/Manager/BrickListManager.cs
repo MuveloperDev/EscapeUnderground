@@ -35,7 +35,6 @@ public class BrickListManager : MonoBehaviourPunCallbacks
     [SerializeField] string sessionId = null;
     [SerializeField] string userProfileId = null;
     [SerializeField] string[] userProfileIds = new string[2];
-    [SerializeField] string betting_id = null;
     public string SessionID { get { return sessionId; } }
     public string UserProfileID { get { return userProfileId; } }
 
@@ -141,11 +140,16 @@ public class BrickListManager : MonoBehaviourPunCallbacks
     {
 
         photonView.RPC("SetBettingID", RpcTarget.All, betting_id);
+        Debug.Log("######## bettingID : " + betting_id);
+
     }
+
     [PunRPC]
     void SetBettingID(string betting_id)
     {
-        this.betting_id = betting_id;
+        dappxAPIDataConroller.betting_id = betting_id;
+        Debug.Log("######## bettingID : " + dappxAPIDataConroller.betting_id);
+
     }
     // ---------------------------------------------------------------------------------------------------------
 
@@ -181,7 +185,6 @@ public class BrickListManager : MonoBehaviourPunCallbacks
         audioManager.BGMSound(clip);
         if (trigger == 0)
         {
-            dappxAPIDataConroller.betting_id = betting_id;
             // 승자가 나일 때 배팅금 회수
             Debug.Log("UserPrfileIDs : " + dappxAPIDataConroller.userProfileID[1]);
             dappxAPIDataConroller.BettingZara_DeclareWinner(1);
