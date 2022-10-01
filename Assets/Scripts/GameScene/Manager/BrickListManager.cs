@@ -185,6 +185,11 @@ public class BrickListManager : MonoBehaviourPunCallbacks
         audioManager.BGMSound(clip);
         if (trigger == 0)
         {
+            if (PhotonNetwork.CurrentRoom.PlayerCount < 2)
+            {
+                dappxAPIDataConroller.BettingZara_DeclareWinner(0);
+                return;
+            }
             // 승자가 나일 때 배팅금 회수
             Debug.Log("UserPrfileIDs : " + dappxAPIDataConroller.userProfileID[1]);
             dappxAPIDataConroller.BettingZara_DeclareWinner(1);
