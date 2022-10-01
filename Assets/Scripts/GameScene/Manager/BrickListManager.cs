@@ -139,7 +139,7 @@ public class BrickListManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
     }
     public void CallSetBettingId(string betting_id)
     {
-
+        // 다른 로컬의 자신들에게 betting Id를 할당하게 한다.
         photonView.RPC("SetBettingID", RpcTarget.All, betting_id);
         Debug.Log("######## bettingID : " + betting_id);
 
@@ -193,8 +193,11 @@ public class BrickListManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
         
         if (trigger == 0)
         {
+            // 게임서버에 플레어가 2명 미만이고 마스터클라이언트가 변경되었다면
             if (PhotonNetwork.CurrentRoom.PlayerCount < 2 && changedMasterClinet)
             {
+                // 원래의 마스터클라이언트가 아닌 클라이언트의 인덱스를 호출하여 준다.
+                // 아래 함수들이 실행되지 않게 return 해준다.
                 dappxAPIDataConroller.BettingZara_DeclareWinner(0);
                 uiManager.ShowWinText();
                 Invoke("LoadWin", 3f);
