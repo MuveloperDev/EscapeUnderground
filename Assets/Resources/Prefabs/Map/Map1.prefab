@@ -14712,7 +14712,12 @@ MonoBehaviour:
   audioManager: {fileID: 0}
   loadSceneStart: {fileID: 0}
   dappxAPIDataConroller: {fileID: 0}
+  brickListManager: []
   sessionId: 
+  userProfileId: 
+  userProfileIds:
+  - 
+  - 
 --- !u!114 &8354502113859163817
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15135,7 +15140,7 @@ Rigidbody2D:
   m_Material: {fileID: 6200000, guid: b47d53784e4a4724db1070228f1b80ab, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!114 &7643850946797141550
 MonoBehaviour:
