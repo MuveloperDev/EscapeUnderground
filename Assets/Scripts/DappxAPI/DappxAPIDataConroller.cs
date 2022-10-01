@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
-public class DappxAPIDataConroller : MonoBehaviourPun
+public class DappxAPIDataConroller : MonoBehaviour
 {
     public static DappxAPIDataConroller Instance;
 
@@ -174,7 +174,7 @@ public class DappxAPIDataConroller : MonoBehaviourPun
         });
     }
 
-    // 자라코인 배팅 시작
+    // 제라코인 배팅 시작
     IEnumerator ProcessRequestBettingZera(string[] sessionIdArr)
     {
         
@@ -197,15 +197,10 @@ public class DappxAPIDataConroller : MonoBehaviourPun
             {
                 Debug.Log("### CoinPlaceBet : " + response.message);
                 responseBettingPlaceBet = response;
-                photonView.RPC("SetBettingID", RpcTarget.All, responseBettingPlaceBet.data.betting_id);
+                BrickListManager brickListManager = FindObjectOfType<BrickListManager>();
+                brickListManager.CallSetBettingId(responseBettingPlaceBet.data.betting_id);
             }
         });
-    }
-
-    [PunRPC]
-    void SetBettingID(string _id)
-    {
-        betting_id = _id;
     }
 
 
