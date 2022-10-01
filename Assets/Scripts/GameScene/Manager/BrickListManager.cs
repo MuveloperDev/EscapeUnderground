@@ -148,8 +148,11 @@ public class BrickListManager : MonoBehaviourPunCallbacks
     private void Update()
     {
         // 방에서 플레이어가 중도에 나갔을 시
-        if (PhotonNetwork.CurrentRoom.PlayerCount < 2 )
+        if (PhotonNetwork.CurrentRoom.PlayerCount < 2 && PhotonNetwork.IsMasterClient)
+        { 
             EndGame(0, audioManager.WinSound);
+            return;
+        }
  
         if (listBrick.Count <= 0)
         {
