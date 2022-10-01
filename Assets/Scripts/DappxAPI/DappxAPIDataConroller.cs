@@ -92,9 +92,9 @@ public class DappxAPIDataConroller : MonoBehaviour
     /// <summary>
     /// Declare Winner
     /// </summary>
-    public void BettingZara_DeclareWinner()
+    public void BettingZara_DeclareWinner(string userProfile_id)
     {
-        StartCoroutine(ProcessRequestBettingZara_DeclareWinner());
+        StartCoroutine(ProcessRequestBettingZara_DeclareWinner(userProfile_id));
     }
 
     #endregion
@@ -192,8 +192,8 @@ public class DappxAPIDataConroller : MonoBehaviour
         });
     }
 
-    // 승자 자라코인 회수
-    IEnumerator ProcessRequestBettingZara_DeclareWinner()
+    // 승자 제라코인 회수
+    IEnumerator ProcessRequestBettingZara_DeclareWinner(string userProfile_id)
     { 
         ResponseBettingDeclareWinner responseBettingDeclareWinner = null;
 
@@ -203,7 +203,9 @@ public class DappxAPIDataConroller : MonoBehaviour
         // 배팅후 반환되는 배팅 정보의 아이디를 할당한다.
         // 승자 유저 프로필 아이디 할당.
         requestBettingDeclareWinner.betting_id = responseBettingPlaceBet.data.betting_id;
-        requestBettingDeclareWinner.winner_player_id = getUserProfile.userProfile._id;
+        Debug.Log(requestBettingDeclareWinner.betting_id);
+        //requestBettingDeclareWinner.winner_player_id = getUserProfile.userProfile._id;
+        requestBettingDeclareWinner.winner_player_id = userProfile_id;
 
         yield return RequestCoinDeclareWinner("zera", requestBettingDeclareWinner, (response) => {
             if (response != null)
@@ -246,16 +248,18 @@ public class DappxAPIDataConroller : MonoBehaviour
     {
         // 유저 프로필을 가져온다.
         // UnityWebRequest : 웹 서버와 통신을 제공한다.
-        using UnityWebRequest www = UnityWebRequest.Get("http://localhost:8546/api/getuserprofile");
-        // SendWebRequest : 원격서버와 통신을 시작하는 함수이다.
-        yield return www.SendWebRequest();
+        using (UnityWebRequest www = UnityWebRequest.Get("http://localhost:8546/api/getuserprofile"))
+        {
+            // SendWebRequest : 원격서버와 통신을 시작하는 함수이다.
+            yield return www.SendWebRequest();
 
-        //FromJson : Json의 Array형태의 값을 GetUserProfile으로 반환해준다.
-        // downloadHandler 서버의 API JSON 정보를 다운로드 한다.
-        GetUserProfile getUserProfile = JsonUtility.FromJson<GetUserProfile>(www.downloadHandler.text);
-        callback(getUserProfile);
-        Debug.Log(getUserProfile.ToString());
-        //Debug.Log("StatusCode" + getUserProfile.StatusCode);
+            //FromJson : Json의 Array형태의 값을 GetUserProfile으로 반환해준다.
+            // downloadHandler 서버의 API JSON 정보를 다운로드 한다.
+            GetUserProfile getUserProfile = JsonUtility.FromJson<GetUserProfile>(www.downloadHandler.text);
+            callback(getUserProfile);
+            Debug.Log(getUserProfile.ToString());
+            //Debug.Log("StatusCode" + getUserProfile.StatusCode);
+        }
     }
 
     /// <summary>
@@ -263,11 +267,12 @@ public class DappxAPIDataConroller : MonoBehaviour
     /// </summary>
     IEnumerator RequestGetSessionID(Action<GetSessionID> callback)
     {
-        using UnityWebRequest www = UnityWebRequest.Get("http://localhost:8546/api/getsessionid");
-        yield return www.SendWebRequest();
-        GetSessionID getSessionID = JsonUtility.FromJson<GetSessionID>(www.downloadHandler.text);
-        callback(getSessionID);
-
+        using (UnityWebRequest www = UnityWebRequest.Get("http://localhost:8546/api/getsessionid"))
+        { 
+            yield return www.SendWebRequest();
+            GetSessionID getSessionID = JsonUtility.FromJson<GetSessionID>(www.downloadHandler.text);
+            callback(getSessionID);
+        }
     }
 
     #endregion
@@ -278,11 +283,13 @@ public class DappxAPIDataConroller : MonoBehaviour
     IEnumerator RequestBetSettings(Action<BetSettings> callback)
     {
         string url = GetBaseURL() + "/v1/betting/settings";
-        using UnityWebRequest www = UnityWebRequest.Get(url);
-        www.SetRequestHeader("api-key", API_KEY);
-        yield return www.SendWebRequest();
-        BetSettings settings = JsonUtility.FromJson<BetSettings>(www.downloadHandler.text);
-        callback(settings);
+        using (UnityWebRequest www = UnityWebRequest.Get(url))
+        { 
+            www.SetRequestHeader("api-key", API_KEY);
+            yield return www.SendWebRequest();
+            BetSettings settings = JsonUtility.FromJson<BetSettings>(www.downloadHandler.text);
+            callback(settings);
+        }
     }
 
     #region CoinBalance
@@ -293,12 +300,14 @@ public class DappxAPIDataConroller : MonoBehaviour
     {
         string url = GetBaseURL() + "/v1/betting/" + coinStorage + "/balance/" + sessionID;
         Debug.Log(url);
-        using UnityWebRequest www = UnityWebRequest.Get(url);
-        www.SetRequestHeader("api-key", API_KEY);
-        yield return www.SendWebRequest();
-        Debug.Log(www.downloadHandler.text);
-        BalanceInfo balanceInfo = JsonUtility.FromJson<BalanceInfo>(www.downloadHandler.text);
-        callback(balanceInfo);
+        using (UnityWebRequest www = UnityWebRequest.Get(url))
+        {
+            www.SetRequestHeader("api-key", API_KEY);
+            yield return www.SendWebRequest();
+            Debug.Log(www.downloadHandler.text);
+            BalanceInfo balanceInfo = JsonUtility.FromJson<BalanceInfo>(www.downloadHandler.text);
+            callback(balanceInfo);
+        }
     }
     #endregion
 
@@ -351,17 +360,18 @@ public class DappxAPIDataConroller : MonoBehaviour
         string requestJsonData = JsonUtility.ToJson(request);
         Debug.Log(requestJsonData);
 
-        using UnityWebRequest www = UnityWebRequest.Post(url, requestJsonData);
-        byte[] buff = System.Text.Encoding.UTF8.GetBytes(requestJsonData);
-        www.uploadHandler = new UploadHandlerRaw(buff);
+        using (UnityWebRequest www = UnityWebRequest.Post(url, requestJsonData))
+        { 
+            byte[] buff = System.Text.Encoding.UTF8.GetBytes(requestJsonData);
+            www.uploadHandler = new UploadHandlerRaw(buff);
 
-        www.SetRequestHeader("api-key", API_KEY);
-        www.SetRequestHeader("Content-Type", "application/json");
-        yield return www.SendWebRequest();
+            www.SetRequestHeader("api-key", API_KEY);
+            www.SetRequestHeader("Content-Type", "application/json");
+            yield return www.SendWebRequest();
 
-        ResponseBettingDeclareWinner responseBettingDeclareWinner = JsonUtility.FromJson<ResponseBettingDeclareWinner>(www.downloadHandler.text);
-        callback(responseBettingDeclareWinner);
-
+            ResponseBettingDeclareWinner responseBettingDeclareWinner = JsonUtility.FromJson<ResponseBettingDeclareWinner>(www.downloadHandler.text);
+            callback(responseBettingDeclareWinner);
+        }
     }
 
     // 돈 회수 함수 구현 X 게임 기능상 필요 X
@@ -377,18 +387,18 @@ public class DappxAPIDataConroller : MonoBehaviour
         string reqJsonData = JsonUtility.ToJson(request);
         Debug.Log(reqJsonData);
 
-        UnityWebRequest www = UnityWebRequest.Post(url, reqJsonData);
-        byte[] buff = System.Text.Encoding.UTF8.GetBytes(reqJsonData);
+        using (UnityWebRequest www = UnityWebRequest.Post(url, reqJsonData))
+        { 
+            byte[] buff = System.Text.Encoding.UTF8.GetBytes(reqJsonData);
+            www.uploadHandler = new UploadHandlerRaw(buff);
 
+            www.SetRequestHeader("api-key", API_KEY);
+            www.SetRequestHeader("Content-Type", "application/json");
+            yield return www.SendWebRequest();
 
-        www.uploadHandler = new UploadHandlerRaw(buff);
-
-        www.SetRequestHeader("api-key", API_KEY);
-        www.SetRequestHeader("Content-Type", "application/json");
-        yield return www.SendWebRequest();
-
-        ResponseBettingDisconnect responseBettingDisconnect = JsonUtility.FromJson<ResponseBettingDisconnect>(www.downloadHandler.text);
-        callback(responseBettingDisconnect);
+            ResponseBettingDisconnect responseBettingDisconnect = JsonUtility.FromJson<ResponseBettingDisconnect>(www.downloadHandler.text);
+            callback(responseBettingDisconnect);
+        }
 
     }
     #endregion
