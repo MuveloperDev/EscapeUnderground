@@ -196,13 +196,13 @@ public class DappxAPIDataConroller : MonoBehaviour
             {
                 Debug.Log("### CoinPlaceBet : " + response.message);
                 responseBettingPlaceBet = response;
+
+                // 플레이어들에게 BettingId를 저장하게 한다.
                 BrickListManager[] brickListManager = FindObjectsOfType<BrickListManager>();
                 foreach (BrickListManager brickManager in brickListManager)
                 {
                     brickManager.CallSetBettingId(responseBettingPlaceBet.data.betting_id);
                 }
-                //betting_id = responseBettingPlaceBet.data.betting_id;
-                //brickListManager.CallSetBettingId(responseBettingPlaceBet.data.betting_id);
             }
         });
     }
@@ -223,6 +223,7 @@ public class DappxAPIDataConroller : MonoBehaviour
 
 
         Debug.Log("######## bettingID : " + betting_id);
+        // 다른 플레이어들과 전부 동기화 시켜둔 bettingId를 담아준다
         requestBettingDeclareWinner.betting_id = betting_id;
         Debug.Log("######## requestBettingDeclareWinner.betting_id : " + requestBettingDeclareWinner.betting_id);
 
