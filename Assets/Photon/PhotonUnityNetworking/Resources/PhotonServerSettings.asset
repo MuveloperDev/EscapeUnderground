@@ -59,6 +59,8 @@ MonoBehaviour:
   - SetSessionID
   - OpenChallengerPanelInRoom
   - SetUserProfileID
+  - SetUserIds
+  - SetBettingID
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
