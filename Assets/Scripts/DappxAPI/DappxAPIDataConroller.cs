@@ -63,6 +63,8 @@ public class DappxAPIDataConroller : MonoBehaviour
     ResponseBettingPlaceBet         responseBettingPlaceBet         = null;     // 배팅 정보
     ResponseBettingDeclareWinner    responseBettingDeclareWinner    = null;     // 배팅 승자 정보
 
+    public string[] userProfileID = new string[2];
+
     public string[] SessionIdArr { get { return sessionIdArr; } set { sessionIdArr = value; } }
     public GetUserProfile   GetUserProfile      { get { return getUserProfile; }}
     public GetSessionID     GetSessionID        { get { return getSessionID; }}
@@ -81,6 +83,8 @@ public class DappxAPIDataConroller : MonoBehaviour
     public void Check_DappXCoinBalance() => StartCoroutine(ProcessRequestCoinBalance("dappx"));
     #endregion
 
+
+
     #region Bet_Function
     /// <summary>
     /// Betting Zera Coin
@@ -92,9 +96,11 @@ public class DappxAPIDataConroller : MonoBehaviour
     /// <summary>
     /// Declare Winner
     /// </summary>
-    public void BettingZara_DeclareWinner(string userProfile_id)
+    public void BettingZara_DeclareWinner(int value)
     {
-        StartCoroutine(ProcessRequestBettingZara_DeclareWinner(userProfile_id));
+        string userProfileId = userProfileID[value];
+        Debug.Log("UserProfileID : " + userProfileId);
+        StartCoroutine(ProcessRequestBettingZara_DeclareWinner(userProfileId));
     }
 
     #endregion
@@ -194,7 +200,8 @@ public class DappxAPIDataConroller : MonoBehaviour
 
     // 승자 제라코인 회수
     IEnumerator ProcessRequestBettingZara_DeclareWinner(string userProfile_id)
-    { 
+    {
+        Debug.Log("UserProfileID : " + userProfile_id);
         ResponseBettingDeclareWinner responseBettingDeclareWinner = null;
 
         // 서버에 Json파일로 넘겨주기 위해 RequestBettingDeclareWinner 데이터 구조를 이용해 넘겨준다.
@@ -206,6 +213,7 @@ public class DappxAPIDataConroller : MonoBehaviour
         Debug.Log(requestBettingDeclareWinner.betting_id);
         //requestBettingDeclareWinner.winner_player_id = getUserProfile.userProfile._id;
         requestBettingDeclareWinner.winner_player_id = userProfile_id;
+        Debug.Log("############## winner Player ID : "  + requestBettingDeclareWinner.winner_player_id);
 
         yield return RequestCoinDeclareWinner("zera", requestBettingDeclareWinner, (response) => {
             if (response != null)
@@ -356,9 +364,11 @@ public class DappxAPIDataConroller : MonoBehaviour
 
         string url = GetBaseURL() + "/v1/betting/" + coinStorage + "/declare-winner";
 
+        Debug.Log("############## winner Player ID : " + request.winner_player_id);
+
         // 저장한 정보를 Json형태로 담아준다.
         string requestJsonData = JsonUtility.ToJson(request);
-        Debug.Log(requestJsonData);
+        Debug.Log("requestJsonData : " + requestJsonData);
 
         using (UnityWebRequest www = UnityWebRequest.Post(url, requestJsonData))
         { 

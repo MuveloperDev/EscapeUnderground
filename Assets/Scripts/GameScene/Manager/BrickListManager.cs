@@ -117,30 +117,40 @@ public class BrickListManager : MonoBehaviourPunCallbacks
         // UserProfileID[0]은 나의 객체 userId를 할당한다.
         // UserProfileID[1]은 상대 객체 userId를 할당한다.
         string[] sessionId = new string[2];
+        string[] userIds = new string[2];
         sessionId[0] = brickListManager[0].SessionID;
-        userProfileIds[0] = brickListManager[0].UserProfileID;
+        userIds[0] = brickListManager[0].UserProfileID;
         sessionId[1] = brickListManager[1].SessionID;
-        userProfileIds[1] = brickListManager[1].UserProfileID;
+        userIds[1] = brickListManager[1].UserProfileID;
+
+        photonView.RPC("SetUserIds", RpcTarget.All, userIds);
 
         Debug.Log("######## # ######## sessionId[0] : " + sessionId[0]);
         Debug.Log("######## # ######## sessionId[1] : " + sessionId[1]);
-        Debug.Log("######## # ######## userProfileIds[0] : " + userProfileIds[0]);
-        Debug.Log("######## # ######## userProfileIds[1] : " + userProfileIds[1]);
+        Debug.Log("######## # ######## userIds[0] : " + userIds[0]);
+        Debug.Log("######## # ######## userIds[1] : " + userIds[1]);
 
         // 배열을 인자로 넘겨준다.
         // 배팅 시작.
+        userProfileIds = userIds;
+        Debug.Log("######## # ######## userProfileIds[0] : " + userProfileIds[0]);
+        Debug.Log("######## # ######## userProfileIds[1] : " + userProfileIds[1]);
         dappxAPIDataConroller.BettingCoinToZera(sessionId);
     }
     // ---------------------------------------------------------------------------------------------------------
 
+    [PunRPC]
+    void SetUserIds(string[] userIds)
+    {
+        dappxAPIDataConroller.userProfileID = userIds;
+    }
 
     private void Update()
     {
         // 방에서 플레이어가 중도에 나갔을 시
-        if (PhotonNetwork.CurrentRoom.PlayerCount < 2)
+        if (PhotonNetwork.CurrentRoom.PlayerCount < 2 )
             EndGame(0, audioManager.WinSound);
-
-
+ 
         if (listBrick.Count <= 0)
         {
             if (photonView.IsMine)
@@ -159,7 +169,8 @@ public class BrickListManager : MonoBehaviourPunCallbacks
         if (trigger == 0)
         {
             // 승자가 나일 때 배팅금 회수
-            dappxAPIDataConroller.BettingZara_DeclareWinner(userProfileIds[0]);
+            Debug.Log("UserPrfileIDs : " + dappxAPIDataConroller.userProfileID[1]);
+            dappxAPIDataConroller.BettingZara_DeclareWinner(1);
 
             uiManager.ShowWinText();
             Invoke("LoadWin", 3f);
@@ -167,7 +178,8 @@ public class BrickListManager : MonoBehaviourPunCallbacks
         if (trigger == 1)
         {
             // 승자가 상대일 때 배팅금 회수
-            dappxAPIDataConroller.BettingZara_DeclareWinner(userProfileIds[1]);
+            Debug.Log("UserPrfileIDs : " + dappxAPIDataConroller.userProfileID[0]);
+            dappxAPIDataConroller.BettingZara_DeclareWinner(0);
             uiManager.ShowLoseText();
             Invoke("LoadLose", 3f);
         }
