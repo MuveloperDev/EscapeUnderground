@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
-public class DappxAPIDataConroller : MonoBehaviour
+public class DappxAPIDataConroller : MonoBehaviourPun
 {
     public static DappxAPIDataConroller Instance;
 
@@ -64,6 +65,7 @@ public class DappxAPIDataConroller : MonoBehaviour
     ResponseBettingDeclareWinner    responseBettingDeclareWinner    = null;     // 배팅 승자 정보
 
     public string[] userProfileID = new string[2];
+    public string betting_id = null;
 
     public string[] SessionIdArr { get { return sessionIdArr; } set { sessionIdArr = value; } }
     public GetUserProfile   GetUserProfile      { get { return getUserProfile; }}
@@ -72,6 +74,7 @@ public class DappxAPIDataConroller : MonoBehaviour
     public BalanceInfo      ZeraBalanceInfo     { get { return zeraBalanceInfo; }}
     public BalanceInfo      AceBalanceInfo      { get { return aceBalanceInfo; }}
     public BalanceInfo      DappXBalanceInfo    { get { return dappXBalanceInfo; }}
+    public ResponseBettingPlaceBet ResponseBettingPlaceBet { get { return responseBettingPlaceBet; }}
     #endregion
 
     #region Function_for_Connectting_UI
@@ -194,9 +197,17 @@ public class DappxAPIDataConroller : MonoBehaviour
             {
                 Debug.Log("### CoinPlaceBet : " + response.message);
                 responseBettingPlaceBet = response;
+                photonView.RPC("SetBettingID", RpcTarget.All, responseBettingPlaceBet.data.betting_id);
             }
         });
     }
+
+    [PunRPC]
+    void SetBettingID(string _id)
+    {
+        betting_id = _id;
+    }
+
 
     // 승자 제라코인 회수
     IEnumerator ProcessRequestBettingZara_DeclareWinner(string userProfile_id)
@@ -209,7 +220,7 @@ public class DappxAPIDataConroller : MonoBehaviour
         // 배팅 id와 승리한 userProfile_id를 넘겨주기 위해 저장한다.
         // 배팅후 반환되는 배팅 정보의 아이디를 할당한다.
         // 승자 유저 프로필 아이디 할당.
-        requestBettingDeclareWinner.betting_id = responseBettingPlaceBet.data.betting_id;
+        requestBettingDeclareWinner.betting_id = betting_id;
         Debug.Log(requestBettingDeclareWinner.betting_id);
         //requestBettingDeclareWinner.winner_player_id = getUserProfile.userProfile._id;
         requestBettingDeclareWinner.winner_player_id = userProfile_id;
