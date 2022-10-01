@@ -49,7 +49,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     void Start()
     {
         OnClickConnectToMasterServer(); // 마스터 서버 연결
-
+        
     }
 
     // WalletPanel 알파값 조절
@@ -70,8 +70,12 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LocalPlayer.NickName = dappxAPIDataConroller.GetUserProfile.userProfile.username;
         PhotonNetwork.JoinLobby();
         chatManager.ConnectedMyChat();  // 챗 연결
-                                        // 월렛 텍스트 업데이트
-        Invoke("UserInfoUpdate", 2f);
+        // 월렛 텍스트 업데이트
+        dappxAPIDataConroller.Check_ZeraCoinBalance();
+        dappxAPIDataConroller.Check_AceCoinBalance();
+        dappxAPIDataConroller.Check_DappXCoinBalance();
+        Invoke("UserInfoUpdate", 1f);
+        //myWallet.MoneyUpdate();
     }
 
     void UserInfoUpdate()
@@ -111,7 +115,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
         // Challenger Info Panel 업데이트
         photonView.RPC("OpenChallengerPanelInRoom", RpcTarget.All, newPlayer);
-
 
         // 방을 닫는다.
         PhotonNetwork.CurrentRoom.IsOpen = false;
@@ -178,8 +181,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         roomObj.roomInPlayer = roomInfo.PlayerCount.ToString();
         roomObj.maxRoomInPlayer = roomInfo.MaxPlayers.ToString();
 
-        // 커스텀 프로퍼티로 방의 값을 추가한다.
-        //roomInfo.CustomProperties.Add("cost", WalletManager.Instance.SetCost());
+        ////커스텀 프로퍼티로 방의 값을 추가한다.
+        //roomInfo.CustomProperties.Add("cost", dappxAPIDataConroller.BetSettings.data.bets[0].amount);
         //roomObj.cost = (float)roomInfo.CustomProperties["Cost"];
     }
 

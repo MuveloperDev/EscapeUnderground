@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using Photon.Pun;
 using Photon.Realtime;
+using System.Collections;
 using System;
 using ExitGames.Client.Photon;
 using System.Runtime.CompilerServices;
@@ -25,6 +26,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     [Header("[ Texts ]")]
     [SerializeField] private TextMeshProUGUI cntPlayers;
     [SerializeField] private TextMeshProUGUI nickNameText = null;
+    [SerializeField] private TextMeshProUGUI amountText = null;
 
     [Header("[ Buttons ]")]
     [SerializeField] private Button openCreateRoomBtn = null;     // 방 생성패널 열기 버튼
@@ -62,6 +64,16 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         roomPanel.gameObject.SetActive(false);
 
         nickNameText.text = "Player : " + PhotonNetwork.NickName;
+        //StartCoroutine(BringAmount());
+        Invoke("RenderAmount", 1f);
+    }
+
+    void RenderAmount() => amountText.text = "Amount : " + dappxAPIDataConroller.BetSettings.data.bets[0].amount;
+
+    IEnumerator BringAmount()
+    {
+        yield return dappxAPIDataConroller.BetSettings.data.bets[0].amount > 0;
+        amountText.text = "Amount : " + dappxAPIDataConroller.BetSettings.data.bets[0].amount;
     }
 
     private void Update()
@@ -120,25 +132,24 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     // 방 생성
     void OnClickCreateRoom()
     {
-        //if(!PhotonNetwork.InLobby) return ;
-        //// 배팅 금액
-        ////float cost = WalletManager.Instance.SetCost();
+        if(!PhotonNetwork.InLobby) return ;
+        // 배팅 금액 베팅세팅의 amount로 설정된다.
+        float cost = dappxAPIDataConroller.BetSettings.data.bets[0].amount;
 
-        //// 코스트를 지불할 수 없다면 리턴.
-        //if (myWallet.MyMoney < cost) return;
+        // 제라 화폐로 코스트를 지불할 수 없다면 리턴.
+        if (dappxAPIDataConroller.ZeraBalanceInfo.data.balance < cost) return;
 
-        // 내가 방을 만든다면 코스트를 지불하고 방을 만든다.
-        //WalletManager.Instance.BetMoney(cost);
+
 
         // 룸 옵션 설정
         RoomOptions roomOptions = new RoomOptions();
         roomOptions.MaxPlayers = 2;
 
         //// 룸 안에서의 프로퍼티를 정의.
-        //roomOptions.CustomRoomProperties = new Hashtable() { { "Cost",  cost } };
+        //roomOptions.CustomRoomProperties = new Hashtable() { { "Cost", cost } };
         //// 로비로 내려줄 프로퍼티를 정해주어야 한다.
         //// 형식은 string의 배열 형태로 CustomRoomPropertiesForLobby에 담아주어야 로비에서 받아 사용이 가능하다.
-        //string[] CustomPropertiesListForLobby = new string[] { "Cost"};
+        //string[] CustomPropertiesListForLobby = new string[] { "Cost" };
         //roomOptions.CustomRoomPropertiesForLobby = CustomPropertiesListForLobby;
 
         // 재정의된 룸옵션을 룸에 담아준다.
