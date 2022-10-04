@@ -284,6 +284,7 @@ public class DappxAPIDataConroller : MonoBehaviour
             callback(getUserProfile);
             Debug.Log(getUserProfile.ToString());
             //Debug.Log("StatusCode" + getUserProfile.StatusCode);
+            www.Dispose();
         }
     }
 
@@ -297,6 +298,7 @@ public class DappxAPIDataConroller : MonoBehaviour
             yield return www.SendWebRequest();
             GetSessionID getSessionID = JsonUtility.FromJson<GetSessionID>(www.downloadHandler.text);
             callback(getSessionID);
+            www.Dispose();
         }
     }
 
@@ -314,6 +316,7 @@ public class DappxAPIDataConroller : MonoBehaviour
             yield return www.SendWebRequest();
             BetSettings settings = JsonUtility.FromJson<BetSettings>(www.downloadHandler.text);
             callback(settings);
+            www.Dispose();
         }
     }
 
@@ -332,6 +335,7 @@ public class DappxAPIDataConroller : MonoBehaviour
             Debug.Log(www.downloadHandler.text);
             BalanceInfo balanceInfo = JsonUtility.FromJson<BalanceInfo>(www.downloadHandler.text);
             callback(balanceInfo);
+            www.Dispose();
         }
     }
     #endregion
@@ -368,6 +372,11 @@ public class DappxAPIDataConroller : MonoBehaviour
 
             ResponseBettingPlaceBet responseBettingPlaceBet = JsonUtility.FromJson<ResponseBettingPlaceBet>(www.downloadHandler.text);
             callback(responseBettingPlaceBet);
+            www.disposeDownloadHandlerOnDispose = true;
+            www.disposeUploadHandlerOnDispose = true;
+            www.downloadHandler.Dispose();
+            www.uploadHandler.Dispose();
+            www.Dispose();
         }
 
     }
@@ -396,8 +405,14 @@ public class DappxAPIDataConroller : MonoBehaviour
             www.SetRequestHeader("Content-Type", "application/json");
             yield return www.SendWebRequest();
 
+
             ResponseBettingDeclareWinner responseBettingDeclareWinner = JsonUtility.FromJson<ResponseBettingDeclareWinner>(www.downloadHandler.text);
             callback(responseBettingDeclareWinner);
+            www.disposeDownloadHandlerOnDispose = true;
+            www.disposeUploadHandlerOnDispose = true;
+            www.downloadHandler.Dispose();
+            www.uploadHandler.Dispose();
+            www.Dispose();
         }
     }
 
@@ -425,8 +440,11 @@ public class DappxAPIDataConroller : MonoBehaviour
 
             ResponseBettingDisconnect responseBettingDisconnect = JsonUtility.FromJson<ResponseBettingDisconnect>(www.downloadHandler.text);
             callback(responseBettingDisconnect);
+            www.Dispose();
         }
 
     }
+
+   
     #endregion
 }

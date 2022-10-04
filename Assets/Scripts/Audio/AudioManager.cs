@@ -18,6 +18,8 @@ public class AudioManager : MonoBehaviour
     [SerializeField] AudioClip loseSound = null;
     [SerializeField] AudioClip startSceneSoundBGM = null;
     [SerializeField] AudioClip gameSceneSoundBGM = null;
+    [SerializeField] AudioClip titleFxSound = null;
+    [SerializeField] AudioClip joinRoomSound = null;
 
 
     // 프로퍼티
@@ -27,6 +29,8 @@ public class AudioManager : MonoBehaviour
     public AudioClip LoseSound { get { return loseSound; } }
     public AudioClip StartSceneSoundBGM { get { return startSceneSoundBGM; } }
     public AudioClip GameSceneSoundBGM { get { return gameSceneSoundBGM; } }
+    public AudioClip TitleFxSound { get { return titleFxSound; } }
+    public AudioClip JoinRoomSound { get { return joinRoomSound; } }
 
     private void Awake()
     {
