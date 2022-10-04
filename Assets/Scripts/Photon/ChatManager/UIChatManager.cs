@@ -94,6 +94,7 @@ public class UIChatManager : MonoBehaviour, IChatClientListener
         obj.transform.SetParent(content.transform);
         obj.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = userName;
         obj.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = ChatLine;
+        obj.transform.localScale = Vector3.one;
     }
 
     #region Chat_CallBacks

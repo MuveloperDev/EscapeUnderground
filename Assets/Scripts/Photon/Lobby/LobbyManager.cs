@@ -7,6 +7,7 @@ using System.Collections;
 using System;
 using ExitGames.Client.Photon;
 using System.Runtime.CompilerServices;
+using UnityEngine.Tilemaps;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
@@ -15,6 +16,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     [SerializeField] private Image createRoomPanel = null;
     [SerializeField] private Image findRoomPanel = null;
     [SerializeField] private Image roomPanel = null;
+    [SerializeField] private Transform lobbyObjectsPanel = null;
 
     [Header("[ InputFields ]")]
     [SerializeField] private TMP_InputField roomNameInputField = null;
@@ -34,6 +36,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     [SerializeField] private Button joinOrCreateRoomBtn = null;     // 방 접속 혹은 생성 버튼
     [SerializeField] private Button findEnterRoomBtn = null;     // 방 찾기 버튼
     [SerializeField] private Button returnLobbyInCRBtn = null;     // 방 찾기 버튼
+
+    [Header("[ TileMaps ]")]
+    [SerializeField] private Tilemap miniPanelTileMap = null;
 
     MyWallet myWallet = null;   // myWallet
     // 사운드 매니저
@@ -62,7 +67,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         findRoomPanel.gameObject.SetActive(false);
         createRoomPanel.gameObject.SetActive(false);
         roomPanel.gameObject.SetActive(false);
-
+        miniPanelTileMap.gameObject.SetActive(false);
         nickNameText.text = "Player : " + PhotonNetwork.NickName;
         //StartCoroutine(BringAmount());
         Invoke("RenderAmount", 1f);
@@ -79,18 +84,26 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     private void Update()
     {
         // 현재 들어온 플레이어 수 업데이트
-        cntPlayers.text = "Players : " + PhotonNetwork.CountOfPlayers.ToString(); 
+        cntPlayers.text = "Players : " + PhotonNetwork.CountOfPlayers.ToString();
     }
 
     #region FindRoomMethod
 
     // FindRoomPanel 열기
-    void OnClickOpenFindRoomPanel() => findRoomPanel.gameObject.SetActive(true);
+    void OnClickOpenFindRoomPanel()
+    {
+        miniPanelTileMap.gameObject.SetActive(true);
+        findRoomPanel.gameObject.SetActive(true);
+        miniPanelTileMap.gameObject.SetActive(true);
+        lobbyObjectsPanel.gameObject.SetActive(false);
+    } 
     // FindRoomPanel 닫기
     void OnClickCloseFindRoomPanel() 
     {
         audioManager.SoundPlay(audioManager.ClickSound);
         findRoomPanel.gameObject.SetActive(false);
+        miniPanelTileMap.gameObject.SetActive(false);
+        lobbyObjectsPanel.gameObject.SetActive(true);
     } 
 
 
@@ -126,7 +139,12 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     }
 
     // 방생성 패널 활성화.
-    public void OnClickActiveCreateRoomPanel() => createRoomPanel.gameObject.SetActive(true);
+    public void OnClickActiveCreateRoomPanel()
+    {
+        miniPanelTileMap.gameObject.SetActive(true);
+        createRoomPanel.gameObject.SetActive(true);
+        lobbyObjectsPanel.gameObject.SetActive(false);
+    } 
 
 
     // 방 생성
@@ -157,7 +175,12 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     }
 
     // 방생성 패널에서 로비로
-    void OnClickCloseCreateRoomPanel() => createRoomPanel.gameObject.SetActive(false);
+    void OnClickCloseCreateRoomPanel()
+    { 
+        createRoomPanel.gameObject.SetActive(false);
+        miniPanelTileMap.gameObject.SetActive(false);
+        lobbyObjectsPanel.gameObject.SetActive(true);
+    } 
     public void SetRoomName(string name) => roomNameInputField.text = name;
 
 }
