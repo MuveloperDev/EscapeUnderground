@@ -6,11 +6,13 @@ using TMPro;
 using Photon.Realtime;
 using UnityEngine.UI;
 using Unity.VisualScripting;
+using UnityEngine.Tilemaps;
 
 public class PhotonManager : MonoBehaviourPunCallbacks
 {
     [Header("[ Panels ]")]
     [SerializeField] private LobbyManager       lobbyPanel                  = null;     // 로비 패널
+    [SerializeField] private Tilemap            lobbyTile                   = null;     // 로비 타일맵
     [SerializeField] private RoomManager        roomPanel                   = null;     // 룸 패널
     [SerializeField] private GridLayoutGroup    roomListPanel               = null;     // 룸리스트 패널
     [SerializeField] private CanvasGroup        walletPanel                 = null;     // 룸리스트 패널
@@ -24,10 +26,16 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     [SerializeField] JsonDataController     jsonDataController      = null;         // Json Data
     [SerializeField] MyWallet               myWallet                = null;         // 월렛
     [SerializeField] DappxAPIDataConroller  dappxAPIDataConroller   = null;         // DappXApi                 
-
+    [SerializeField] Transform              ConnectingServerPF      = null;         // 커넥트 서버 프리펩
+    [SerializeField] TextMeshProUGUI        ConnectingServerText    = null;         // 커넥트 서버 텍스트
 
     [Header("[ Lists ]")]
     [SerializeField] List<RoomInfo>      uiRoomList              = new List<RoomInfo>();     // 룸리스트 UI 관리 리스트.
+
+    [Header("[ TileMaps ]")]
+    [SerializeField] private Tilemap lobbyPanelTileMap = null;
+    [SerializeField] private Tilemap roomPanelTileMap = null;
+    [SerializeField] private Tilemap createRooomPanelTileMap = null;
 
     private void Awake()
     {
@@ -44,7 +52,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         jsonDataController      = FindObjectOfType<JsonDataController>();       // Json 데이타
         dappxAPIDataConroller   = FindObjectOfType<DappxAPIDataConroller>();    // dappxAPIDataConroller
 
-        walletBtn.onClick.AddListener(delegate { OnClick_OpenCloseWalletPanel(); });
+        walletBtn.onClick.AddListener(delegate { OnClick_OpenCloseWalletPanel(); audioManager.SoundPlay(audioManager.ClickSound); });
     }
     void Start()
     {
@@ -75,7 +83,10 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         dappxAPIDataConroller.Check_AceCoinBalance();
         dappxAPIDataConroller.Check_DappXCoinBalance();
         Invoke("UserInfoUpdate", 1f);
-        //myWallet.MoneyUpdate();
+
+        // 커넥트 서버 전 UI 비활성화.
+        ConnectingServerPF.gameObject.SetActive(false);
+        ConnectingServerText.gameObject.SetActive(false);
     }
 
     void UserInfoUpdate()
@@ -93,6 +104,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     {
         chatManager.ClearText();
         lobbyPanel.gameObject.SetActive(true);
+        lobbyTile.gameObject.SetActive(true);
     } 
 
     // 로비를 나가면 호출 되는 콜백 함수
@@ -105,13 +117,14 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     {
         lobbyPanel.gameObject.SetActive(false);
         roomPanel.gameObject.SetActive(true);
+        lobbyPanelTileMap.gameObject.SetActive(false);
+        roomPanelTileMap.gameObject.SetActive(true);
+        createRooomPanelTileMap.gameObject.SetActive(false);
 
     }
     // 플레이어가 방에 입장시 정보 업데이트
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-        // 방 인원수 업데이트
-        roomPanel.CntPlayersTxt = string.Format("[ {0} / {1} ]", PhotonNetwork.CurrentRoom.Players.Count, PhotonNetwork.CurrentRoom.MaxPlayers);
 
         // Challenger Info Panel 업데이트
         photonView.RPC("OpenChallengerPanelInRoom", RpcTarget.All, newPlayer);
@@ -127,6 +140,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     {
         // Challenger Info Panel 업데이트
         roomPanel.ChallengerPanel.gameObject.SetActive(true);
+        audioManager.SoundPlay(audioManager.JoinRoomSound);
         TextMeshProUGUI challengerText = roomPanel.ChallengerPanel.GetComponentInChildren<TextMeshProUGUI>();
         challengerText.text = newPlayer.NickName;
     }
@@ -180,6 +194,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         roomObj.roomName = roomInfo.Name;
         roomObj.roomInPlayer = roomInfo.PlayerCount.ToString();
         roomObj.maxRoomInPlayer = roomInfo.MaxPlayers.ToString();
+        roomObj.transform.localScale = Vector3.one;
 
         ////커스텀 프로퍼티로 방의 값을 추가한다.
         //roomInfo.CustomProperties.Add("cost", dappxAPIDataConroller.BetSettings.data.bets[0].amount);

@@ -5,17 +5,18 @@ using Photon.Pun;
 using System.Collections;
 using TMPro;
 using System.Security.Cryptography;
+using Photon.Realtime;
 
 // brick의 HP를 전체 합산한 함수
 public delegate void HpManager();
-public class BrickListManager : MonoBehaviourPunCallbacks
+public class BrickListManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
 {
 
     public List<Brick> listBrick = new List<Brick>();
     [SerializeField] private float fullHP;
     [SerializeField] private float fullCurHP;
     [SerializeField] private UIManager uiManager;
-
+    [SerializeField] bool changedMasterClinet = false;
 
     // 최대 체력과 현재 체력을 넘겨줄 프로퍼티
     public float FullHP { get { return fullHP; } }
@@ -138,7 +139,7 @@ public class BrickListManager : MonoBehaviourPunCallbacks
     }
     public void CallSetBettingId(string betting_id)
     {
-
+        // 다른 로컬의 자신들에게 betting Id를 할당하게 한다.
         photonView.RPC("SetBettingID", RpcTarget.All, betting_id);
         Debug.Log("######## bettingID : " + betting_id);
 
@@ -163,8 +164,8 @@ public class BrickListManager : MonoBehaviourPunCallbacks
     {
         // 방에서 플레이어가 중도에 나갔을 시
         if (PhotonNetwork.CurrentRoom.PlayerCount < 2 && PhotonNetwork.IsMasterClient)
-        { 
-            EndGame(0, audioManager.WinSound);
+        {
+            StartCoroutine(StartEndGame(0, audioManager.WinSound));
             return;
         }
  
@@ -177,33 +178,49 @@ public class BrickListManager : MonoBehaviourPunCallbacks
         }
     }
 
+
+    IEnumerator StartEndGame(int trigger, AudioClip clip)
+    {
+        yield return new WaitForSeconds(2f);
+        EndGame(0, audioManager.WinSound);
+    }
     void EndGame(int trigger, AudioClip clip)
     {
         if (uiManager.WinTextProperty != null || uiManager.LoseTextProperty != null)
             if (uiManager.WinTextProperty.IsActive() || uiManager.LoseTextProperty.IsActive()) return;
 
         audioManager.BGMSound(clip);
+        
         if (trigger == 0)
         {
-            if (PhotonNetwork.CurrentRoom.PlayerCount < 2)
+            // 게임서버에 플레어가 2명 미만이고 마스터클라이언트가 변경되었다면
+            if (PhotonNetwork.CurrentRoom.PlayerCount < 2 && changedMasterClinet)
             {
+                // 원래의 마스터클라이언트가 아닌 클라이언트의 인덱스를 호출하여 준다.
+                // 아래 함수들이 실행되지 않게 return 해준다.
                 dappxAPIDataConroller.BettingZara_DeclareWinner(0);
+                uiManager.ShowWinText();
+                Invoke("LoadWin", 3f);
                 return;
             }
             // 승자가 나일 때 배팅금 회수
             Debug.Log("UserPrfileIDs : " + dappxAPIDataConroller.userProfileID[1]);
-            dappxAPIDataConroller.BettingZara_DeclareWinner(1);
 
             uiManager.ShowWinText();
             Invoke("LoadWin", 3f);
+
+            if (!PhotonNetwork.IsMasterClient) return;
+            dappxAPIDataConroller.BettingZara_DeclareWinner(1);
         }
         if (trigger == 1)
         {
             // 승자가 상대일 때 배팅금 회수
             Debug.Log("UserPrfileIDs : " + dappxAPIDataConroller.userProfileID[0]);
-            dappxAPIDataConroller.BettingZara_DeclareWinner(0);
             uiManager.ShowLoseText();
             Invoke("LoadLose", 3f);
+
+            if (!PhotonNetwork.IsMasterClient) return;
+            dappxAPIDataConroller.BettingZara_DeclareWinner(0);
         }
     }
 
@@ -249,5 +266,10 @@ public class BrickListManager : MonoBehaviourPunCallbacks
     {
         if (!PhotonNetwork.InRoom) return;
         PhotonNetwork.LeaveRoom();
+    }
+
+    void OnMasterClientSwitched(Player newMasterClient)
+    {
+        changedMasterClinet = true;
     }
 }
