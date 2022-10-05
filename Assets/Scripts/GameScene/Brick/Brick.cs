@@ -9,16 +9,15 @@ public class Brick : MonoBehaviourPun
     [SerializeField] private UIManager uiManager;
 
     public float MaxHP { get { return maxHP; } }
+    public float CurHP { get { return curHP; } }
     Transform textHP;  // HP Text의 위치 -> 2D좌표 이기 때문에 RectTransform으로 설정
 
     private void OnEnable()
     {
         brickListManager = FindObjectOfType<BrickListManager>();
         uiManager = FindObjectOfType<UIManager>();
-        textHP = HPTextPool.Instance.Get(Camera.main.WorldToScreenPoint(new Vector3(transform.position.x, transform.position.y, transform.position.z))).GetComponent<RectTransform>(); // HP Text의 위치를 카메라 기준으로 변환
         curHP = maxHP;  // 시작시 현재 체력값을 벽돌의 최대 체력으로 설정
         brickListManager.AddBrick(this);
-        uiManager.CallUpdateHpText(textHP, curHP); // 해당하는 벽돌의 체력을 UI로 출력
     }
 
     public void CallReceveDamage(float damage)
@@ -35,7 +34,6 @@ public class Brick : MonoBehaviourPun
     public void ReceiveDamage(float Damage)
     {
         curHP -= Damage;
-        uiManager.CallUpdateHpText(textHP, curHP);
         if (curHP <= 0)
         {
             curHP = 0;
@@ -49,6 +47,5 @@ public class Brick : MonoBehaviourPun
     {
         brickListManager.listBrick.Remove(this);
         BrickPool.Instance.Release(this.gameObject);
-        HPTextPool.Instance.Release(textHP.gameObject);
     }
 }

@@ -13,7 +13,7 @@ public class MapSpawner : MonoBehaviourPunCallbacks
     BrickListManager BrickListManager;
 
     List<string> mapPrefabList = new List<string>() { "Prefabs/Map/Map1", "Prefabs/Map/Map2", "Prefabs/Map/Map3" };
-    List<Vector3> offsetPos = new List<Vector3>() { new Vector3(-1.76f, -0.21f, 0), new Vector3(6.66f, -0.21f, 0) };
+    List<Vector3> offsetPos = new List<Vector3>() { new Vector3(-1.43f, -0.21f, 0), new Vector3(6.57f, -0.21f, 0) };
 
     MapSelectManager mapSelectManager = null;
 

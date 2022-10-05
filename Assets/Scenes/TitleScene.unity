@@ -4888,6 +4888,7 @@ MonoBehaviour:
   startSceneSoundBGM: {fileID: 8300000, guid: 7ab8f6dce8f5869429a18c498ed49515, type: 3}
   gameSceneSoundBGM: {fileID: 8300000, guid: d69016f532b716348a2764d43ff6f3e0, type: 3}
   titleFxSound: {fileID: 8300000, guid: db58b8f4c68807f46a367c49da0402af, type: 3}
+  joinRoomSound: {fileID: 0}
 --- !u!1 &1541535220
 GameObject:
   m_ObjectHideFlags: 0
@@ -5228,7 +5229,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -722497305
-  m_SortingLayer: 5
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: b52b1e539fb0d5e4aa3f7502ba0bde30, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -5360,7 +5361,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -722497305
-  m_SortingLayer: 5
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300264, guid: 7810966f0f690954c87305933cabf2b0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -5659,7 +5660,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -722497305
-  m_SortingLayer: 5
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_Sprite: {fileID: -2305204071527019509, guid: 7810966f0f690954c87305933cabf2b0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
