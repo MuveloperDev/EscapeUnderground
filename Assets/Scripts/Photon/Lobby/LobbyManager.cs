@@ -151,6 +151,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     void OnClickCreateRoom()
     {
         if(!PhotonNetwork.InLobby) return ;
+        if (roomNameInputField.text.Length < 1 || roomNameInputField.text.Length > 6) return;
         // 배팅 금액 베팅세팅의 amount로 설정된다.
         float cost = dappxAPIDataConroller.BetSettings.data.bets[0].amount;
 

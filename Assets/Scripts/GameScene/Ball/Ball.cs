@@ -39,16 +39,13 @@ public class Ball : MonoBehaviourPun
     }
     void Update()
     {
-        Debug.Log("ball update 1");
         if (!photonView.IsMine) return;
-        Debug.Log("ball update2");
         if (!move && GameManager.Instance.GetSceneChang()) PlayerMove();           // Ball의 움직임
     }
 
     // Ball의 이동 및 회전
     private void PlayerMove()
     {
-        Debug.Log("ball Move");
         if (!GameManager.Instance.GetGameOver())
         {
             mouseDir = Camera.main.ScreenToWorldPoint(Input.mousePosition);         // window화면에 맞춰져있는 mousePosition값을 ScreenToWorldPoint함수를 이용해 유니티화면으로 맞춰준다mouseDir.z = 0f;
