@@ -1,33 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 public class GameSceneUIManager : MonoBehaviour
 {
-    [SerializeField] private CanvasGroup panel = null;
+    [SerializeField] private CanvasGroup textsPanel = null;
+    [SerializeField] private Light2D masterLight = null;
+    [SerializeField] private Light2D challengerLight = null;
+    [SerializeField] private float alpha = 0f;
 
-    private void Awake()
-    {
-        panel = FindObjectOfType<CanvasGroup>();
-    }
+
 
     private void Start()
     {
-        panel.gameObject.SetActive(true);
-        panel.alpha = 1.0f;
-        StartCoroutine(PanelGetDark());
+        Cursor.visible = true;
+        textsPanel.alpha = 0;
+        masterLight.intensity = alpha;
+        challengerLight.intensity = alpha;
+        StartCoroutine(TrunLight());
     }
 
-    IEnumerator PanelGetDark()
+    IEnumerator TrunLight()
     {
-        yield return new WaitForSeconds(0.5f);
-        while (panel.alpha != 0)
+        while (true)
         {
-            panel.alpha -= 0.005f;
             yield return null;
+            if (challengerLight.intensity >= 1.5f)
+            {
+                GameManager.Instance.SetSceneChang(true);
+                yield break;
+            } 
+            alpha += 0.002f;
+            masterLight.intensity = alpha;
+            challengerLight.intensity = alpha;
+
+
         }
-        panel.gameObject.SetActive(false);
-        GameManager.Instance.SetSceneChang(true);
+        
     }
 }

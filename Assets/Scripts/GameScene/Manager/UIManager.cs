@@ -100,6 +100,7 @@ public class UIManager : MonoBehaviourPun
         Panel.gameObject.SetActive(true);
         TextMeshProUGUI text = Panel.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
         text.gameObject.SetActive(true);
+        Panel.GetComponent<CanvasGroup>().alpha = 1f;
     }
     public void LoseText()
     {
@@ -107,5 +108,6 @@ public class UIManager : MonoBehaviourPun
         Panel.gameObject.SetActive(true);
         TextMeshProUGUI text = Panel.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
         text.gameObject.SetActive(true);
+        Panel.GetComponent<CanvasGroup>().alpha = 1f;
     }
 }

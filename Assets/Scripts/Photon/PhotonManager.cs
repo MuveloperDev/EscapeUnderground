@@ -194,6 +194,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         roomObj.roomName = roomInfo.Name;
         roomObj.roomInPlayer = roomInfo.PlayerCount.ToString();
         roomObj.maxRoomInPlayer = roomInfo.MaxPlayers.ToString();
+        roomObj.transform.localScale = Vector3.one;
 
         ////커스텀 프로퍼티로 방의 값을 추가한다.
         //roomInfo.CustomProperties.Add("cost", dappxAPIDataConroller.BetSettings.data.bets[0].amount);
