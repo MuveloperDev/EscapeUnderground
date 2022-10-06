@@ -8,7 +8,7 @@ public class AudioManager : MonoBehaviour
 
     [Header("[ AudioSources ]")]
     [SerializeField] AudioSource oneShotAudioSource = null;
-
+    [SerializeField] AudioSource brickOneShotAudioSource = null;
     [SerializeField] AudioSource bgmAudioSource = null;
 
     [Header("[ AudioClips ]")]
@@ -20,6 +20,9 @@ public class AudioManager : MonoBehaviour
     [SerializeField] AudioClip gameSceneSoundBGM = null;
     [SerializeField] AudioClip titleFxSound = null;
     [SerializeField] AudioClip joinRoomSound = null;
+    [SerializeField] AudioClip soilBrokenSound = null;
+    [SerializeField] AudioClip stoneBrokenSound = null;
+    [SerializeField] AudioClip ironBrokenSound = null;
 
 
     // 프로퍼티
@@ -31,6 +34,9 @@ public class AudioManager : MonoBehaviour
     public AudioClip GameSceneSoundBGM { get { return gameSceneSoundBGM; } }
     public AudioClip TitleFxSound { get { return titleFxSound; } }
     public AudioClip JoinRoomSound { get { return joinRoomSound; } }
+    public AudioClip SoilBrokenSound { get { return soilBrokenSound; } }
+    public AudioClip StoneBrokenSound { get { return stoneBrokenSound; } }
+    public AudioClip IronBrokenSound { get { return ironBrokenSound; } }
 
     private void Awake()
     {
@@ -54,6 +60,9 @@ public class AudioManager : MonoBehaviour
         oneShotAudioSource.Stop();
         oneShotAudioSource.PlayOneShot(clip);
     }
-
+    public void BrickSoundPlay(AudioClip clip)
+    {
+        brickOneShotAudioSource.PlayOneShot(clip);
+    }
 
 }

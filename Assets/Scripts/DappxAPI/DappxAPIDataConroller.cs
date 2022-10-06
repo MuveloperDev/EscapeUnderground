@@ -282,7 +282,6 @@ public class DappxAPIDataConroller : MonoBehaviour
             // downloadHandler 서버의 API JSON 정보를 다운로드 한다.
             GetUserProfile getUserProfile = JsonUtility.FromJson<GetUserProfile>(www.downloadHandler.text);
             callback(getUserProfile);
-            Debug.Log(getUserProfile.ToString());
             //Debug.Log("StatusCode" + getUserProfile.StatusCode);
             www.Dispose();
         }

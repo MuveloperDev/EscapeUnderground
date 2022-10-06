@@ -75,7 +75,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     // Photon Cloud Server에 접속에 성공시 불리는 콜백 함수.
     public override void OnConnectedToMaster() {
         // 닉네임 설정
-        PhotonNetwork.LocalPlayer.NickName = dappxAPIDataConroller.GetUserProfile.userProfile.username;
+        if (dappxAPIDataConroller != null)
+            if(dappxAPIDataConroller.GetUserProfile.userProfile != null)
+                PhotonNetwork.LocalPlayer.NickName = dappxAPIDataConroller.GetUserProfile.userProfile.username;
         PhotonNetwork.JoinLobby();
         chatManager.ConnectedMyChat();  // 챗 연결
         // 월렛 텍스트 업데이트

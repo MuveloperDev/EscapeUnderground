@@ -25,5 +25,4 @@ public class MyChatPool : BaseObjectPool<MyChatPool, GameObject>
         obj.transform.SetParent(transform);
         base.Release(obj);
     }
-
 }
