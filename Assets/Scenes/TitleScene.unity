@@ -3029,6 +3029,134 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 853090912}
   m_CullTransparentMesh: 1
+--- !u!1 &893263783
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 893263784}
+  - component: {fileID: 893263785}
+  m_Layer: 0
+  m_Name: BrickOneShotAudioSource
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &893263784
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 893263783}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1123778926}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &893263785
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 893263783}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 65d17b545633f43498da25e039121a50, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &908525848
 GameObject:
   m_ObjectHideFlags: 0
@@ -3104,7 +3232,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 65d17b545633f43498da25e039121a50, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.63
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -4864,6 +4992,7 @@ Transform:
   m_Children:
   - {fileID: 2059307107}
   - {fileID: 1028569886}
+  - {fileID: 893263784}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4880,6 +5009,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   oneShotAudioSource: {fileID: 1028569885}
+  brickOneShotAudioSource: {fileID: 893263785}
   bgmAudioSource: {fileID: 2059307108}
   clickSound: {fileID: 8300000, guid: 65d17b545633f43498da25e039121a50, type: 3}
   boundSound: {fileID: 8300000, guid: 893935a101162d749a75a9986a0c7914, type: 3}
@@ -4888,7 +5018,10 @@ MonoBehaviour:
   startSceneSoundBGM: {fileID: 8300000, guid: 7ab8f6dce8f5869429a18c498ed49515, type: 3}
   gameSceneSoundBGM: {fileID: 8300000, guid: d69016f532b716348a2764d43ff6f3e0, type: 3}
   titleFxSound: {fileID: 8300000, guid: db58b8f4c68807f46a367c49da0402af, type: 3}
-  joinRoomSound: {fileID: 0}
+  joinRoomSound: {fileID: 8300000, guid: db8470eb162d21640b67f66125ea5a05, type: 3}
+  soilBrokenSound: {fileID: 8300000, guid: b07f0c3b091db9a4dae18ebebbee019c, type: 3}
+  stoneBrokenSound: {fileID: 8300000, guid: fffa09950acc39544bb7b800a160d2c8, type: 3}
+  ironBrokenSound: {fileID: 8300000, guid: cb854de322b9ba74f83f943b57dcc248, type: 3}
 --- !u!1 &1541535220
 GameObject:
   m_ObjectHideFlags: 0

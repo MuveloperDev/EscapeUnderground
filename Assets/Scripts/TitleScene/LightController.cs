@@ -37,7 +37,8 @@ public class LightController : MonoBehaviour
     }
     IEnumerator Lighting()
     {
-        audioManager.SoundPlay(audioManager.TitleFxSound);
+        if(audioManager != null)
+            audioManager.SoundPlay(audioManager.TitleFxSound);
         while (true)
         {
             yield return null;

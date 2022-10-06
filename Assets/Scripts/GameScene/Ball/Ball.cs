@@ -80,12 +80,13 @@ public class Ball : MonoBehaviourPun
     // 충돌시 태그에 따른 조건문
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        audioManager.SoundPlay(audioManager.BoundSound);
+        
 
         if (collision.gameObject.tag == "Brick")  Hit(collision);
 
         if (collision.gameObject.tag == "Wall")
         {
+            audioManager.SoundPlay(audioManager.BoundSound);
             wallCount[idx] = transform.position.y;
             idx++;
             if (idx >= 2)
@@ -113,11 +114,7 @@ public class Ball : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
-            Debug.Log(target.gameObject.name);
-            Debug.Log(attackPower);
-            Debug.Log(brickListManager.name);
             brickListManager.ReceiveDamage(attackPower);
-            Debug.Log(target.gameObject.name);
             target.gameObject.GetComponent<Brick>().CallReceveDamage(attackPower);
         }
     }
