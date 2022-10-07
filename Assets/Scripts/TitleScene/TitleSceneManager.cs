@@ -13,6 +13,7 @@ public class TitleSceneManager : MonoBehaviour
 
     private void Awake()
     {
+        Screen.SetResolution(1920,1080,true);
         startSceneAudioManager = FindObjectOfType<AudioManager>();
         dappxAPIDataConroller = FindObjectOfType<DappxAPIDataConroller>();
         if (SceneManager.GetActiveScene().name == "TitleScene")
