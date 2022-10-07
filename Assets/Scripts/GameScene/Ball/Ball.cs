@@ -32,7 +32,7 @@ public class Ball : MonoBehaviourPun
         pushPower = 430;
         move = false;
         attackPower = 10f;
-        wallCount = new float[3];
+        wallCount = new float[4];
         idx = 0;
         //  나의 객체일 때만 화살 활성화
         if (photonView.IsMine) arrow.gameObject.SetActive(true);
@@ -88,17 +88,16 @@ public class Ball : MonoBehaviourPun
         {
             audioManager.SoundPlay(audioManager.BoundSound);
             wallCount[idx] = transform.position.y;
-            idx++;
-            if (idx >= 2)
+            if (idx > 1)
             {
-                if (wallCount[0] == wallCount[1])
+                if (wallCount[1] == wallCount[2])
                 {
                     rigid2D.AddRelativeForce(Vector2.down * 40);
                     idx = 0;
                 }
                 else idx = 0;
             }
-
+            idx++;
         }
         if (collision.gameObject.tag == "Place")
         {
