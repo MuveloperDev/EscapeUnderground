@@ -444,7 +444,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 441.7, y: 114.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4321077186008432745
 CanvasRenderer:
@@ -534,8 +534,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 98.2525, y: 0.79999}
-  m_SizeDelta: {x: 196.5051, y: 50}
+  m_AnchoredPosition: {x: 113.37, y: 0.79999}
+  m_SizeDelta: {x: 161.51, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &653891089781510197
 CanvasRenderer:
@@ -565,7 +565,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: RoomTitle
+  m_text: Room Title
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 91703ffe7d2f9af4494e2c1dc3be9114, type: 2}
   m_sharedMaterial: {fileID: 5372142466228257508, guid: 91703ffe7d2f9af4494e2c1dc3be9114, type: 2}
@@ -592,14 +592,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25.6
-  m_fontSizeBase: 25.6
+  m_fontSize: 44.2
+  m_fontSizeBase: 44.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0

@@ -71,7 +71,7 @@ public class UIChatManager : MonoBehaviour, IChatClientListener
             chatClient.Service();
         }
         // 메세지수가 50개가 넘어가면 첫번째 메세지부터 삭제.
-        if (content.transform.childCount > 50)
+        if (content.transform.childCount > 15)
         {
             MyChatPool.Instance.Release(content.transform.GetChild(0).gameObject);
         }
