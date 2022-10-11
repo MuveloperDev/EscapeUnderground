@@ -18,16 +18,16 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     [SerializeField] private CanvasGroup        walletPanel                 = null;     // 룸리스트 패널
 
     [Header("[ Buttons ]")]
-    [SerializeField] private Button walletBtn = null;
+    [SerializeField] private Button             walletBtn                   = null;
 
     [Header("[ Components ]")]
-    [SerializeField] UIChatManager          chatManager             = null;         // 채팅 매니저
-    [SerializeField] AudioManager           audioManager            = null;         // 사운드 매니저
-    [SerializeField] JsonDataController     jsonDataController      = null;         // Json Data
-    [SerializeField] MyWallet               myWallet                = null;         // 월렛
-    [SerializeField] DappxAPIDataConroller  dappxAPIDataConroller   = null;         // DappXApi                 
-    [SerializeField] Transform              ConnectingServerPF      = null;         // 커넥트 서버 프리펩
-    [SerializeField] TextMeshProUGUI        ConnectingServerText    = null;         // 커넥트 서버 텍스트
+    [SerializeField] UIChatManager              chatManager                 = null;         // 채팅 매니저
+    [SerializeField] AudioManager               audioManager                = null;         // 사운드 매니저
+    [SerializeField] JsonDataController         jsonDataController          = null;         // Json Data
+    [SerializeField] MyWallet                   myWallet                    = null;         // 월렛
+    [SerializeField] DappxAPIDataConroller      dappxAPIDataConroller       = null;         // DappXApi                 
+    [SerializeField] Transform                  ConnectingServerPF          = null;         // 커넥트 서버 프리펩
+    [SerializeField] TextMeshProUGUI            ConnectingServerText        = null;         // 커넥트 서버 텍스트
 
     [Header("[ Lists ]")]
     [SerializeField] List<RoomInfo>      uiRoomList              = new List<RoomInfo>();     // 룸리스트 UI 관리 리스트.

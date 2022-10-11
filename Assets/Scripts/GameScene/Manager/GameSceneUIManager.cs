@@ -12,6 +12,11 @@ public class GameSceneUIManager : MonoBehaviour
     [SerializeField] private float alpha = 0f;
 
 
+    private void Awake()
+    {
+        Application.targetFrameRate = 60;//
+    }
+
 
     private void Start()
     {
@@ -19,35 +24,38 @@ public class GameSceneUIManager : MonoBehaviour
         textsPanel.alpha = 0;
         masterLight.intensity = alpha;
         challengerLight.intensity = alpha;
-        //StartCoroutine(TrunLight());
+        StartCoroutine(TrunLight());
     }
 
     IEnumerator TrunLight()
     {
+        float oldTime = Time.time;
         while (true)
         {
             yield return null;
+            //if(Time.time - oldTime >= 1.5f)
             if (challengerLight.intensity >= 1.5f)
             {
+                Debug.Log(Time.time);
                 GameManager.Instance.SetSceneChang(true);
                 yield break;
             } 
-            alpha += 0.002f;
+            alpha += 0.01f;
             masterLight.intensity = alpha;
             challengerLight.intensity = alpha;
         }
         
     }
 
-    private void FixedUpdate()
-    {
-        if(challengerLight.intensity >= 1.5f)
-        {
-            GameManager.Instance.SetSceneChang(true);
-            return;
-        }
-        alpha += 0.02f;
-        masterLight.intensity = alpha;
-        challengerLight.intensity = alpha;
-    }
+    //private void FixedUpdate()
+    //{
+    //    if (challengerLight.intensity >= 1.5f)
+    //    {
+    //        GameManager.Instance.SetSceneChang(true);
+    //        return;
+    //    }
+    //    alpha += 0.02f;
+    //    masterLight.intensity = alpha;
+    //    challengerLight.intensity = alpha;
+    //}
 }
