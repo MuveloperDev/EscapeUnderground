@@ -15,11 +15,11 @@ public class GameSceneUIManager : MonoBehaviour
 
     private void Start()
     {
-        Cursor.visible = true;
+        Cursor.visible = false;
         textsPanel.alpha = 0;
         masterLight.intensity = alpha;
         challengerLight.intensity = alpha;
-        StartCoroutine(TrunLight());
+        //StartCoroutine(TrunLight());
     }
 
     IEnumerator TrunLight()
@@ -35,9 +35,19 @@ public class GameSceneUIManager : MonoBehaviour
             alpha += 0.002f;
             masterLight.intensity = alpha;
             challengerLight.intensity = alpha;
-
-
         }
         
+    }
+
+    private void FixedUpdate()
+    {
+        if(challengerLight.intensity >= 1.5f)
+        {
+            GameManager.Instance.SetSceneChang(true);
+            return;
+        }
+        alpha += 0.02f;
+        masterLight.intensity = alpha;
+        challengerLight.intensity = alpha;
     }
 }

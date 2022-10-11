@@ -10,7 +10,7 @@ public class MapSelectManager : MonoBehaviourPun
     // ∑£¥˝«— ∏ ¿« ¿Œµ¶Ω∫∏¶ º≥¡§
     private void Awake()
     {
-        mapSelect = Random.Range(0, 3);
+        mapSelect = Random.Range(1, 3);
     }
 
     public int GetMapSelect()

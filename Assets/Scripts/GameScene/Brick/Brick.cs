@@ -62,12 +62,12 @@ public class Brick : MonoBehaviourPun
         else if (maxHP == 20)
         {
             BrickParticleManager brickManager = StoneParticlePool.Instance.Get(transform.position).GetComponent<BrickParticleManager>();
-            brickManager.relaseParticle += delegate { SoilParticlePool.Instance.Release(brickManager.gameObject); };
+            brickManager.relaseParticle += delegate { StoneParticlePool.Instance.Release(brickManager.gameObject); };
         }
         else
         {
             BrickParticleManager brickManager = IronParticlePool.Instance.Get(transform.position).GetComponent<BrickParticleManager>();
-            brickManager.relaseParticle += delegate { SoilParticlePool.Instance.Release(brickManager.gameObject); };
+            brickManager.relaseParticle += delegate { IronParticlePool.Instance.Release(brickManager.gameObject); };
         } 
     }
 }
