@@ -24,7 +24,7 @@ public class TitleRoomInList : MonoBehaviourPun
     }
     private void Update()
     {
-        if (roomTitleTxt.text == "RoomTitle") roomTitleTxt.text = roomName;
+        if (roomTitleTxt.text == "Room Title") roomTitleTxt.text = roomName;
         RoomInPlayerCntText.text = roomInPlayer + " / " + maxRoomInPlayer;
     }
     public void OnClickJoinRoom()
